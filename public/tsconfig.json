@@ -12,7 +12,7 @@
   },
   "include": [
     "src/**/*.ts"
-  ],
+, "src/scripts/app.js"  ],
   "exclude": [
     "node_modules"
   ],

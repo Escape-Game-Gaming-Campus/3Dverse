@@ -1,5 +1,5 @@
 enum AppConfig {
-    SCENE_UUID = "ebe1bbc9-2291-476c-a56b-894015b2ede9"
+    SCENE_UUID = "45183496-6d85-4aef-8103-7232b3fa7d49"
 }
 
 export default AppConfig;
