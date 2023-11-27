@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "outDir": "dist",
+    "removeComments": true,
+    "noEmitHelpers": true,
+    "stripInternal": true,
+    "module": "ES6",
+    "jsx": "react",
+    "strict": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
+  "transpileOnly": true
+}

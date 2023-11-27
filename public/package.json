@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@3dverse/api": "^0.4.4"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  }
+}
