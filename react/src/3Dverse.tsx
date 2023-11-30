@@ -1,7 +1,9 @@
 import { useCallback, useEffect } from 'react';
 import { useScript } from '@uidotdev/usehooks';
+import AppConfig from './3dverseEngine/AppConfig';
+import { _SDK3DVerse } from './3dverseEngine/declare';
 
-let SDK3DVerse: any;
+declare const SDK3DVerse: typeof _SDK3DVerse;
 
 export const Canvas = () => {
   const status = useScript(
@@ -13,8 +15,8 @@ export const Canvas = () => {
 
   const initApp = useCallback(async () => {
     await SDK3DVerse.joinOrStartSession({
-      userToken: 'public_OuSCpRzSniXot1_4',
-      sceneUUID: '1b89b1af-d098-4223-bd61-2b55b708b4b4',
+      userToken: AppConfig.USER_TOKEN,
+      sceneUUID: AppConfig.SCENE_UUID,
       canvas: document.getElementById('display-canvas'),
       viewportProperties: {
         defaultControllerType: SDK3DVerse.controller_type.orbit,
