@@ -1,3 +1,5 @@
+import AppConfig from './3dverseEngine/AppConfig';
+
 type Object = 
 {
     name : string,
@@ -56,18 +58,17 @@ export class Inventory
     public display()
     {
         for (let index = 0; index < this.array.length; index++) {
-            // add code to display inventory in app
+            // <img src={this.caseTexture} alt="Image of case of inventory">
         }
     }
 }
 
 export const InventoryReact = () => {
-    const inventory : Inventory = new Inventory(10, '');
-    const object : Object = {name : "ampoule", UUID : '', texture : ''};
-    const object2 : Object = {name : "ampoule2", UUID : '', texture : ''};
+    const inventory : Inventory = new Inventory(10, `${AppConfig.HOST}/img/case.png`);
+    const object : Object = {name : "ampoule", UUID : '', texture : `${AppConfig.HOST}/img/ampoule.png`};
+    const object2 : Object = {name : "ampoule2", UUID : '', texture : `${AppConfig.HOST}/img/ampoule.png`};
 
     inventory.insertList([object, object2]);
-
     inventory.deleteList([object, object2]);
 
     console.log(inventory);
