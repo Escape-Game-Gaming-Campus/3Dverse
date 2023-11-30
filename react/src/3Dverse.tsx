@@ -19,7 +19,7 @@ export const Canvas = () => {
       sceneUUID: AppConfig.SCENE_UUID,
       canvas: (document.getElementById('display-canvas') as HTMLElement),
       viewportProperties: {
-        defaultControllerType: SDK3DVerse.controller_type.orbit,
+        defaultControllerType: SDK3DVerse.controller_type.editor,
       },
     });
   }, []);
