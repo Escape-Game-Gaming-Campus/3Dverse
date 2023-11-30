@@ -1,21 +1,21 @@
-import * as _3DverseGlobal from "./declareGlobal";
+import { AABB, ComponentFilter, Entities, Entity, EntityTemplate, GetSceneSessions_Session, PhysicsRaycastResult, SDK_Vec3, SceneSettings, SessionConstraints, TriggerCallback, viewport_info } from "./declareGlobal";
 
 export module _SDK3DVerse {
-  export module cameraControllerType {
-    export var none: any;
-    export var orbit: any;
-    export var editor: any;
+  export enum cameraControllerType {
+    none,
+    orbit,
+    editor
   }
-  export module controller_type {
-    export var none: any;
-    export var orbit: any;
-    export var editor: any;
+  export enum controller_type {
+    none,
+    orbit,
+    editor
   }
-  export module PhysicsQueryFilterFlag {
-    export var dynamic_block: any;
-    export var static_block: any;
-    export var distance_agnostic_block: any;
-    export var record_touches: any;
+  export enum PhysicsQueryFilterFlags {
+    dynamic_block,
+    static_block,
+    distance_agnostic_block,
+    record_touches
   }
 
   export function close(): void { };
@@ -25,7 +25,7 @@ export module _SDK3DVerse {
   export function findSessions(params: {
     userToken: string,
     sceneUUID: string
-  }): Promise<Array<_3DverseGlobal.GetSceneSessions_Session>> {
+  }): Promise<Array<GetSceneSessions_Session>> {
     return Promise.resolve([]);
   };
   export function getClientUUID(): string {
@@ -44,7 +44,7 @@ export module _SDK3DVerse {
     sceneUUID: string,
     userToken: string,
     canvas: HTMLElement,
-    constraints?: _3DverseGlobal.SessionConstraints,
+    constraints?: SessionConstraints,
     isTransient?: boolean,
     connectToEditor?: boolean,
     startSimulation?: 'no' | 'yes' | 'on-assets-loaded',
@@ -77,11 +77,11 @@ export module _SDK3DVerse {
   export function setApiVersion(apiVersion : string): void {};
   export function setInactivityCallback(callback : Function): void {};
   export function setInputRelayFrequency(inputRelayFrequency : number): void {};
-  export function setMainCamera(cameraEntity : _3DverseGlobal.Entity): void {};
+  export function setMainCamera(cameraEntity : Entity): void {};
   export function setResolution(width : number, height : number, streamingScale ?: number): void {};
   export function setupDisplay(canvasElement : HTMLElement): void {};
   export function setUpperAlignment(value : boolean): void {};
-  export function setViewports(viewports : Array<_3DverseGlobal.viewport_info>): void {};
+  export function setViewports(viewports : Array<viewport_info>): void {};
   export function startSession(params : {
     sceneUUID: string,
     userToken: string,
@@ -100,6 +100,85 @@ export module _SDK3DVerse {
   export function updateControllerSetting(controllerSettings : object): void {};
 
   export module engineAPI {
+    export function assignClientToScripts(...entity : Entity[]): void {};
+    export function canEdit(): boolean {
+      return false;
+    };
+    export function castScreenSpaceRay(
+      x : number,
+      y : number,
+      selectEntity ?: boolean,
+      keepOldSelection ?: boolean,
+      seekExternalLinker ?: boolean,
+      planeNormal ?: SDK_Vec3 | null,
+      planeDistanceFromOrigin ?: number
+    ): {
+      entity : Entity | null,
+      pickedPosition ?: SDK_Vec3,
+      pickedNormal ?: SDK_Vec3
+    } {
+      return {entity: null}
+    };
+    export function computeBoundingBoxes(): {
+      [sceneUUID : string]: { aabb : AABB, entities : Entities, parentLinker : Entity }
+    } {
+      return {}
+    };
+    export function deleteEntities(entities : Entities): void {};
+    export function detachExternalComponent(entities : Entities, componentType : string): void {};
+    export function discardOverriddenComponent(entities : Entities, componentType : string): void {};
+    export function discardOverriddenComponents(entities : Entities): void {};
+    export function findEntities(nameOrEUID : string, componentFilter ?: ComponentFilter): Entities {
+      return []
+    };
+    export function findEntitiesByComponents(componentFilter : ComponentFilter): Entities {
+      return []
+    };
+    export function findEntitiesByEUID(euid : string): Entities {
+      return []
+    };
+    export function findEntitiesByNames(...entityNames : string[]): Entities {
+      return []
+    };
+    export function fireEvent(
+      eventMapUUID : string,
+      eventName : string,
+      entities ?: Entities,
+      dataObject ?: object
+    ): void {};
+    export function getDefaultSceneSettings(settingsType : string): SceneSettings {
+      return {}
+    };
+    export function getEntity(entityRTID : string): Entity {
+      return {}
+    };
+    export function getRootEntities(): Entities {
+      return []
+    };
+    export function getSceneSettings(settingsType : string): SceneSettings {
+      return {}
+    };
+    export function getSceneStats(): {
+      entityCount : number,
+      triangleCount : number,
+      totalTriangleCount : number
+    } {
+      return {entityCount : 0, triangleCount : 0, totalTriangleCount : 0}
+    };
+    export function getSelectedEntities(): Entities {
+      return []
+    };
+    export function instantiateEntities(parent : Entity | null, entityTemplates : Array<EntityTemplate>): Entities {
+      return []
+    };
+    export function onEnterTrigger(callback : TriggerCallback): void {};
+    export function onExitTrigger(callback : TriggerCallback): void {};
+    export function overrideComponent(entities : Entities, componentType: string): void {};
+    export function pauseAnimationSequence(animationSequenceUUID : string, linker : Entity | null): void {};
+    export function pauseSimulation(): void {};
+    export function physicsRaycast(origin : SDK_Vec3, direction : PhysicsQueryFilterFlags, maxNumTouches : number): PhysicsRaycastResult {
+      return {block : null, touches : null}
+    };
     
   }
 }
