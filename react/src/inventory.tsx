@@ -34,7 +34,7 @@ export class Inventory
     public delete(object : Object) 
     {
         for (let index = 0; index < this.array.length; index++) {
-            if (this.array[index] == object)
+            if (this.array[index] === object)
             {
                 this.array.splice(index, 1) // number of element wich are delete at index
             }
@@ -45,7 +45,7 @@ export class Inventory
     {
         for (let index = 0; index < objects.length; index++) {
             for (let index2 = 0; index2 < this.array.length; index2++) {
-                if (this.array[index2] == objects[index])
+                if (this.array[index2] === objects[index])
                 {
                     this.array.splice(index2, 1) // number of element wich are delete at index
                 }
