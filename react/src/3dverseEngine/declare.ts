@@ -1,6 +1,12 @@
 import * as _3DverseGlobal from "./declareGlobal";
 
 export module _SDK3DVerse {
+  export module controller_type {
+    export var none: any;
+    export var orbit: any;
+    export var editor: any;
+  }
+  
   export function joinOrStartSession(params: {
     sceneUUID : string,
     userToken : string,
@@ -29,8 +35,4 @@ export module _SDK3DVerse {
     onConnectingToEditor ?: Function,
     defaultCameraSpeed ?: string | Number
   }) : void {};
-
-  export module controller_type {
-    export var orbit: any;
-  }
 }
