@@ -17,7 +17,7 @@ export const Canvas = () => {
     await SDK3DVerse.joinOrStartSession({
       userToken: AppConfig.USER_TOKEN,
       sceneUUID: AppConfig.SCENE_UUID,
-      canvas: document.getElementById('display-canvas'),
+      canvas: (document.getElementById('display-canvas') as HTMLElement),
       viewportProperties: {
         defaultControllerType: SDK3DVerse.controller_type.orbit,
       },
