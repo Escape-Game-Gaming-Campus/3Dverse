@@ -8,8 +8,8 @@ function App() {
     <Router>
         <Routes>
 
-          <Route path="/" element={<Canvas />} />
           <Route path="/inventory" element={<InventoryReact />} />
+          <Route path="*" element={<Canvas />} />
 
         </Routes>
 
