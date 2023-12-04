@@ -150,7 +150,7 @@ export module _SDK3DVerse {
       return {}
     };
     export function getEntity(entityRTID : string): Entity {
-      return {}
+      return new Entity
     };
     export function getRootEntities(): Entities {
       return []
