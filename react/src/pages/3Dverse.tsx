@@ -33,7 +33,10 @@ export const Canvas3Dverse = () => {
 
   return (
     <>
-      <canvas id='display-canvas' />
+      <canvas id='display-canvas' style={{
+          width: '1920px',
+          height: '1080px'
+        }} />
     </>
   );
 };
