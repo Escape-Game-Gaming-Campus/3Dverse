@@ -40,17 +40,13 @@ export const Canvas3Dverse = () => {
 
   return (
     <>
-      <canvas
-        id='display-canvas'
-        style={{
-          height : '100vh',
-          width : '100vw',
-          verticalAlign : 'middle',
-        }}
-      ></canvas>
-      <div style={{ position: 'absolute', bottom: "48px", left: "48px", zIndex: 999 }}>
-      <Joystick size={100} />
-    </div>
+      <canvas id='display-canvas' style={{
+          width: '1920px',
+          height: '1080px'
+        }} />
+        <div style={{ position: 'absolute', bottom: "48px", left: "48px", zIndex: 999 }}>
+        <Joystick size={100} />
+      </div>
     </>
   );
 };
