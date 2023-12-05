@@ -3,23 +3,23 @@ import { useScript } from '@uidotdev/usehooks';
 import AppConfig from './3dverseEngine/AppConfig';
 import { _SDK3DVerse } from './3dverseEngine/declare';
 
-declare const SDK3DVerse: typeof _SDK3DVerse;
+declare const SDK3DVerse : typeof _SDK3DVerse;
 
 export const Canvas = () => {
   const status = useScript(
-    `https://cdn.3dverse.com/legacy/sdk/latest/SDK3DVerse.js`,
+    `https : //cdn.3dverse.com/legacy/sdk/latest/SDK3DVerse.js`,
     {
-      removeOnUnmount: false,
+      removeOnUnmount : false,
     }
   );
 
   const initApp = useCallback(async () => {
     await SDK3DVerse.joinOrStartSession({
-      userToken: AppConfig.USER_TOKEN,
-      sceneUUID: AppConfig.SCENE_UUID,
-      canvas: (document.getElementById('display-canvas') as HTMLElement),
-      viewportProperties: {
-        defaultControllerType: SDK3DVerse.controller_type.editor,
+      userToken : AppConfig.USER_TOKEN,
+      sceneUUID : AppConfig.SCENE_UUID,
+      canvas : (document.getElementById('display-canvas') as HTMLElement),
+      viewportProperties : {
+        defaultControllerType : SDK3DVerse.controller_type.editor,
       },
     });
   }, []);
@@ -35,9 +35,9 @@ export const Canvas = () => {
       <canvas
         id='display-canvas'
         style={{
-          height: '100vh',
-          width: '100vw',
-          verticalAlign: 'middle',
+          height : '100vh',
+          width : '100vw',
+          verticalAlign : 'middle',
         }}
       ></canvas>
     </>

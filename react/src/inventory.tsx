@@ -10,7 +10,7 @@ type Object =
 
 export class Inventory
 {
-    size: number;
+    size : number;
     array : Object[] = [];
     caseTexture : string;
 
@@ -64,13 +64,12 @@ export class Inventory
 }
 
 export const InventoryReact = () => {
-    const inventory : Inventory = new Inventory(10, `${AppConfig.HOST}/img/case.png`);
-    const object : Object = {name : "ampoule", UUID : '', texture : `${AppConfig.HOST}/img/ampoule.png`};
-    const object2 : Object = {name : "ampoule2", UUID : '', texture : `${AppConfig.HOST}/img/ampoule.png`};
+    const inventory : Inventory = new Inventory(10, `${AppConfig.HOST} : ${AppConfig.PORT}/img/case.png`);
+    const object : Object = {name : "ampoule", UUID : '', texture : `${AppConfig.HOST} : ${AppConfig.PORT}/img/ampoule.png`};
+    const object2 : Object = {name : "ampoule2", UUID : '', texture : `${AppConfig.HOST} : ${AppConfig.PORT}/img/ampoule.png`};
 
     inventory.insertList([object, object2]);
-    inventory.deleteList([object, object2]);
-
+    // inventory.deleteList([object, object2]);
     console.log(inventory);
 
     return <></>
