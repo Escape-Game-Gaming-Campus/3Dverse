@@ -10,15 +10,11 @@ export class Character {
         playerTemplate.attachComponent("scene_ref", { value: charCtlSceneUUID });
         const parentEntity = null;
         const deleteOnClientDisconnection = true;
-        console.log(playerTemplate);
         const playerSceneEntity = await playerTemplate.instantiateTransientEntity(
           "Player",
           parentEntity,
           deleteOnClientDisconnection
         );
-        console.log(playerSceneEntity)
-        console.log("elatim")
-        console.log(playerSceneEntity.getChildren());
         const firstPersonController = (await playerSceneEntity.getChildren())[0];
         const children = await firstPersonController.getChildren();
         const firstPersonCamera = children.find((child: any) =>
@@ -26,6 +22,7 @@ export class Character {
         );
         
         this.SDK3DVerse.engineAPI.assignClientToScripts(firstPersonController);
+        // firstPersonController?.setGlobalTransform({"position":[0,10,0]})
         if(firstPersonCamera)
         this.SDK3DVerse.setMainCamera(firstPersonCamera);}
       }

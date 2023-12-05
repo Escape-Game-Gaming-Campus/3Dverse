@@ -30,7 +30,7 @@ export const Canvas3Dverse = () => {
       createDefaultCamera: false,
       startSimulation: "on-assets-loaded"
     });
-    await character.InitFirstPersonController("ad535b41-11a8-4bee-95a9-9fc89d1b6c99");
+    await character.InitFirstPersonController("92f7e23e-a3e3-48b1-a07c-cf5bff258374");
   }, []);
 
   useEffect(() => {
@@ -45,10 +45,10 @@ export const Canvas3Dverse = () => {
           width: '1920px',
           height: '1080px'
       }} />
-      <div id='UI'>
+      {/* <div id='UI'>
         <Joystick size={150} />
         <InventoryReact />
-      </div>
+      </div> */}
     </>
   );
 };

@@ -46,11 +46,7 @@ export type viewport_info = {
     onCameraCreation ? : Function
 }
 
-export type SDK_Vec3 = {
-    creator_user_id ? : string,
-    country_code ? : string,
-    continent_code ? : string
-}
+export type SDK_Vec3 = [Number, Number, Number]
 
 export type AABB = {
     min ? : SDK_Vec3,
