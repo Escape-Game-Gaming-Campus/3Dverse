@@ -1,4 +1,4 @@
-import AppConfig from './3dverseEngine/AppConfig';
+import AppConfig from '../_3dverseEngine/AppConfig';
 
 type Object = 
 {
@@ -57,20 +57,27 @@ export class Inventory
 
     public display()
     {
-        for (let index = 0; index < this.array.length; index++) {
-            // <img src={this.caseTexture} alt="Image of case of inventory">
-        }
+        // for (let index = 0; index < this.array.length; index++) {
+        //     // <img src={this.caseTexture} alt="Image of case of inventory" />
+        // }
+        return <div className='flex'>
+            {
+                this.array.map((e, i) => {
+                    return <img className='inventory case' src={this.caseTexture} alt="Image of case of inventory" />
+                })
+            }
+        </div>
     }
 }
 
 export const InventoryReact = () => {
-    const inventory : Inventory = new Inventory(10, `${AppConfig.HOST} : ${AppConfig.PORT}/img/case.png`);
-    const object : Object = {name : "ampoule", UUID : '', texture : `${AppConfig.HOST} : ${AppConfig.PORT}/img/ampoule.png`};
-    const object2 : Object = {name : "ampoule2", UUID : '', texture : `${AppConfig.HOST} : ${AppConfig.PORT}/img/ampoule.png`};
+    const inventory : Inventory = new Inventory(10, `${AppConfig.HOST}:${AppConfig.PORT}/img/case.png`);
+    const object : Object = {name : "ampoule", UUID : '', texture : `${AppConfig.HOST}:${AppConfig.PORT}/img/ampoule.png`};
+    const object2 : Object = {name : "ampoule2", UUID : '', texture : `${AppConfig.HOST}:${AppConfig.PORT}/img/ampoule.png`};
 
     inventory.insertList([object, object2]);
     // inventory.deleteList([object, object2]);
     console.log(inventory);
 
-    return <></>
+    return inventory.display()
 }

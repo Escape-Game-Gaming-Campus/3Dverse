@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import { useScript } from '@uidotdev/usehooks';
-import AppConfig from './3dverseEngine/AppConfig';
-import { _SDK3DVerse } from './3dverseEngine/declare';
+import AppConfig from '../_3dverseEngine/AppConfig';
+import { _SDK3DVerse } from '../_3dverseEngine/declare';
 
 declare const SDK3DVerse : typeof _SDK3DVerse;
 
