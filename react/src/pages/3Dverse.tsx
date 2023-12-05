@@ -21,7 +21,7 @@ export const Canvas3Dverse = () => {
       sceneUUID : AppConfig.SCENE_UUID,
       canvas : (document.getElementById('display-canvas') as HTMLElement),
       viewportProperties : {
-        defaultControllerType : SDK3DVerse.controller_type.editor,
+        defaultControllerType : SDK3DVerse.controller_type.orbit,
       },
     });
   }, []);
