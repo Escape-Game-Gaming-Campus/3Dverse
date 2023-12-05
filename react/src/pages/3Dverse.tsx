@@ -4,6 +4,7 @@ import AppConfig from '../_3dverseEngine/AppConfig';
 import { Joystick } from 'react-joystick-component'; 
 import { _SDK3DVerse } from '../_3dverseEngine/declare';
 import './3Dverse.scss';
+import { InventoryReact } from '../components/inventory';
 
 declare const SDK3DVerse : typeof _SDK3DVerse;
 
@@ -37,9 +38,10 @@ export const Canvas3Dverse = () => {
       <canvas id='display-canvas' style={{
           width: '1920px',
           height: '1080px'
-        }} />
-        <div style={{ position: 'absolute', bottom: "48px", left: "48px", zIndex: 999 }}>
-        <Joystick size={100} />
+      }} />
+      <div id='UI'>
+        <Joystick size={150} />
+        <InventoryReact />
       </div>
     </>
   );

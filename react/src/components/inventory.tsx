@@ -1,9 +1,10 @@
 import AppConfig from '../_3dverseEngine/AppConfig';
+import './inventory.scss';
 
 type Object = 
 {
     name : string,
-    UUID : string,
+    UUID : number,
     texture : string,
 }
 
@@ -22,36 +23,36 @@ export class Inventory
 
     public insert(object : Object)
     {
-        this.array.push(object);
+        if (this.size > this.array.length)
+        {
+            this.array.push(object);
+        } else {
+            console.warn(`l'inventaire n'a pas assez d'espace pour stocker un "${object.name}" supplémentaire ${this.array.length}/${this.size}`)
+        }
     }
 
     public insertList(objects : Object[])
     {
         for (let index = 0; index < objects.length; index++) {
-            this.array.push(objects[index]);
-            
+            this.insert(objects[index]);
         }
     }
 
-    public delete(object : Object) 
+    public delete(object : Object | number, onlyFirst : boolean = true) 
     {
         for (let index = 0; index < this.array.length; index++) {
-            if (this.array[index] === object)
+            if ((object as Object).UUID ? this.array[index].UUID === (object as Object).UUID : this.array[index].UUID === object)
             {
                 this.array.splice(index, 1) // number of element wich are delete at index
+                if (onlyFirst) return;
             }
         }
     }
 
-    public deleteList(objects : Object[]) 
+    public deleteList(objects : (Object | number)[], onlyFirst : boolean = true) 
     {
         for (let index = 0; index < objects.length; index++) {
-            for (let index2 = 0; index2 < this.array.length; index2++) {
-                if (this.array[index2] === objects[index])
-                {
-                    this.array.splice(index2, 1) // number of element wich are delete at index
-                }
-            }
+            this.delete(objects[index], onlyFirst)
         }
     }
 
@@ -60,24 +61,36 @@ export class Inventory
         // for (let index = 0; index < this.array.length; index++) {
         //     // <img src={this.caseTexture} alt="Image of case of inventory" />
         // }
-        return <div className='flex'>
-            {
-                this.array.map((e, i) => {
-                    return <img className='inventory case' src={this.caseTexture} alt="Image of case of inventory" />
-                })
-            }
-        </div>
+        return <>
+            <div className='inv'>
+                {
+                    this.array.map((e, i) => {
+                        return <img className='inventory item' src={e.texture} alt={`Image of the item ${e.name} (uuid: ${e.UUID})`} />
+                    })
+                }
+            </div>
+            <div className='inv'>
+                {
+                    this.array.map((e, i) => {
+                        return <img className='inventory case' src={this.caseTexture} alt="Image of case of inventory" />
+                    })
+                }
+            </div>
+        </>
     }
 }
 
 export const InventoryReact = () => {
     const inventory : Inventory = new Inventory(10, `${AppConfig.HOST}:${AppConfig.PORT}/img/case.png`);
-    const object : Object = {name : "ampoule", UUID : '', texture : `${AppConfig.HOST}:${AppConfig.PORT}/img/ampoule.png`};
-    const object2 : Object = {name : "ampoule2", UUID : '', texture : `${AppConfig.HOST}:${AppConfig.PORT}/img/ampoule.png`};
+    const object : Object = {name : "ampoule", UUID : 0, texture : `${AppConfig.HOST}:${AppConfig.PORT}/img/ampoule.png`};
+    const object2 : Object = {name : "ampoule2", UUID : 1, texture : `${AppConfig.HOST}:${AppConfig.PORT}/img/ampoule.png`};
+    const object3 : Object = {name : "ampoule3", UUID : 2, texture : `${AppConfig.HOST}:${AppConfig.PORT}/img/ampoule.png`};
+    const object4 : Object = {name : "ampoule4", UUID : 3, texture : `${AppConfig.HOST}:${AppConfig.PORT}/img/ampoule.png`};
+    const object5 : Object = {name : "gameBible", UUID : 4, texture : `https://static.vecteezy.com/system/resources/previews/009/399/398/original/old-vintage-book-clipart-design-illustration-free-png.png`};
 
-    inventory.insertList([object, object2]);
-    // inventory.deleteList([object, object2]);
-    console.log(inventory);
-
+    inventory.insertList([object, object2, object3, object4, object5]);
+    inventory.insertList([object, object2, object3, object4, object5]);
+    inventory.deleteList([3, 2]);
+    inventory.insertList([object, object2, object3, object4, object5]);
     return inventory.display()
 }
