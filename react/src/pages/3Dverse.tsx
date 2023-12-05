@@ -40,7 +40,7 @@ export const Canvas3Dverse = () => {
         }} />
         <div style={{ position: 'absolute', bottom: "48px", left: "48px", zIndex: 999 }}>
         <Joystick size={100} />
-      </div>63bce03c8e083925971d4438fe1470b071530b
+      </div>
     </>
   );
 };
