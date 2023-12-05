@@ -296,18 +296,6 @@ export class Entity {
     public unselect(triggeredBy : string = "unselect") : void {};
 }
 
-export class EntityTemplate {
-    public attachComponent(componentType : string, componentValue : object) : EntityTemplate {
-        return new EntityTemplate
-    };
-    public instantiateEntity(name : string = "unnamed entity", parent : Entity | null = null) : Entity {
-        return new Entity
-    };
-    public instantiateTransientEntity(name : string = "unnamed entity", parent : Entity | null = null, deleteOnClientDisconnection : boolean = false) : Entity {
-        return new Entity
-    };
-}
-
 export class Viewport {
     public focusOn(entity : Entity, options : {
         startPosition ? : SDK_Vec3,
