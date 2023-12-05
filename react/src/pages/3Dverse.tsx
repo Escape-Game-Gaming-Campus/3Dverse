@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import { useScript } from '@uidotdev/usehooks';
 import AppConfig from '../_3dverseEngine/AppConfig';
+import { Joystick } from 'react-joystick-component'; 
 import { _SDK3DVerse } from '../_3dverseEngine/declare';
 
 declare const SDK3DVerse : typeof _SDK3DVerse;
@@ -40,6 +41,9 @@ export const Canvas = () => {
           verticalAlign : 'middle',
         }}
       ></canvas>
+      <div style={{ position: 'absolute', bottom: "48px", left: "48px", zIndex: 999 }}>
+      <Joystick size={100} />
+    </div>
     </>
   );
 };
