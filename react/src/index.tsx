@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.scss';
-
 import { ReportHandler } from 'web-vitals';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
-import { Canvas } from './pages/3Dverse';
+import { Canvas3Dverse } from './pages/3Dverse';
 import { InventoryReact } from './components/inventory';
 
 const root = ReactDOM.createRoot(
@@ -17,7 +16,7 @@ root.render(
         <Routes>
 
           <Route path="/inventory" element={<InventoryReact />} />
-          <Route path="*" element={<Canvas />} />
+          <Route path="*" element={<Canvas3Dverse />} />
 
         </Routes>
 

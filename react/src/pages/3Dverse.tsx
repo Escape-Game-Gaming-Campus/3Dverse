@@ -2,12 +2,13 @@ import { useCallback, useEffect } from 'react';
 import { useScript } from '@uidotdev/usehooks';
 import AppConfig from '../_3dverseEngine/AppConfig';
 import { _SDK3DVerse } from '../_3dverseEngine/declare';
+import './3Dverse.scss';
 
 declare const SDK3DVerse : typeof _SDK3DVerse;
 
-export const Canvas = () => {
+export const Canvas3Dverse = () => {
   const status = useScript(
-    `https : //cdn.3dverse.com/legacy/sdk/latest/SDK3DVerse.js`,
+    `https://cdn.3dverse.com/legacy/sdk/latest/SDK3DVerse.js`,
     {
       removeOnUnmount : false,
     }
@@ -32,14 +33,7 @@ export const Canvas = () => {
 
   return (
     <>
-      <canvas
-        id='display-canvas'
-        style={{
-          height : '100vh',
-          width : '100vw',
-          verticalAlign : 'middle',
-        }}
-      ></canvas>
+      <canvas id='display-canvas' />
     </>
   );
 };
