@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect ,useState } from 'react';
 import { useScript } from '@uidotdev/usehooks';
 import AppConfig from '../_3dverseEngine/AppConfig';
 import { Joystick } from 'react-joystick-component'; 
@@ -17,9 +17,12 @@ export const Canvas3Dverse = () => {
       removeOnUnmount : false,
     }
   );
-
+  const [character1, setCharacter1] = useState<Character | null>(null);
+  const [joystickActive, setJoystickActive] = useState(false);
+  const [joystickDirection, setjoystickDirection] = useState("None");
   const initApp = useCallback(async () => {
     const character = new Character(SDK3DVerse);
+    setCharacter1(character);
     await SDK3DVerse.joinOrStartSession({
       userToken : AppConfig.USER_TOKEN,
       sceneUUID : AppConfig.SCENE_UUID,
@@ -32,7 +35,23 @@ export const Canvas3Dverse = () => {
     });
     await character.InitFirstPersonController("92f7e23e-a3e3-48b1-a07c-cf5bff258374");
   }, []);
+  const handleJoystickStart = () => {
+    setJoystickActive(true);
+  };
 
+  const handleJoystickStop = () => {
+    setJoystickActive(false);
+  };
+  const handleJoystickMove = (event: any) => {
+    if (character1) {
+      console.log(event.direction);
+      setjoystickDirection(event.direction);
+    }
+  };  
+  const moveCharacter = () =>{
+    //blabla
+    console.log("salut c'est johnny")
+  }
   useEffect(() => {
     if (status === 'ready') {
       initApp();
@@ -47,9 +66,10 @@ export const Canvas3Dverse = () => {
       }} />
       {/* <div id='UI'> */}
       <div style={{ position: 'absolute', bottom: "48px", left: "48px", zIndex: 999 }}>
-        <Joystick size={150} />
+        <Joystick size={150} move={handleJoystickMove} start={handleJoystickStart} stop={handleJoystickStop} />
         </div>
-        <InventoryReact />
+        {joystickActive?moveCharacter():<></>}
+        {/* <InventoryReact/> */}
       {/* </div> */}
     </>
   );
