@@ -45,10 +45,12 @@ export const Canvas3Dverse = () => {
           width: '1920px',
           height: '1080px'
       }} />
-      {/* <div id='UI'>
+      {/* <div id='UI'> */}
+      <div style={{ position: 'absolute', bottom: "48px", left: "48px", zIndex: 999 }}>
         <Joystick size={150} />
+        </div>
         <InventoryReact />
-      </div> */}
+      {/* </div> */}
     </>
   );
 };
