@@ -5,11 +5,14 @@ import { Joystick } from 'react-joystick-component';
 import { _SDK3DVerse } from '../_3dverseEngine/declare';
 import './3Dverse.scss';
 import { InventoryReact } from '../components/inventory';
+import pusherChannels from '../utils/pusherChannels';
 
 declare const SDK3DVerse: typeof _SDK3DVerse;
 declare const Pusher: any;
+export var channel = new Map<pusherChannels, any>();
 
 export const Canvas3Dverse = () => {
+
   const statusPusher = useScript(
     `https://js.pusher.com/8.2.0/pusher.min.js`,
     {
@@ -24,9 +27,9 @@ export const Canvas3Dverse = () => {
       cluster: 'eu'
     });
 
-    var channel = pusher.subscribe('my-channel');
-    channel.bind('my-event', function(data: object) {
-      alert(JSON.stringify(data));
+    channel.set(pusherChannels.DEV, pusher.subscribe(pusherChannels.DEV));
+    channel.get(pusherChannels.DEV).bind('helloWorld', function(data: object) {
+      console.log("PUSHER : ", JSON.stringify(data));
     });
   }
 
@@ -41,7 +44,7 @@ export const Canvas3Dverse = () => {
       fetch('http://localhost:3001/helloWorld')
           .then(response => response.json())
           .then(data => {
-              console.log(data);
+              console.log("AXIOS : ", data);
               // Faire quelque chose avec les données reçues
           })
           .catch(error => console.error('Error:', error));
