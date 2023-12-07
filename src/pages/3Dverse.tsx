@@ -9,7 +9,14 @@ import { InventoryReact } from '../components/inventory';
 declare const SDK3DVerse : typeof _SDK3DVerse;
 
 export const Canvas3Dverse = () => {
-  const status = useScript(
+  async function pusherInit() {
+  }
+
+  useEffect(() => {
+    pusherInit();
+  }, []);
+  
+  const status3Dverse = useScript(
     `https://cdn.3dverse.com/legacy/sdk/latest/SDK3DVerse.js`,
     {
       removeOnUnmount : false,
@@ -28,10 +35,10 @@ export const Canvas3Dverse = () => {
   }, []);
 
   useEffect(() => {
-    if (status === 'ready') {
+    if (status3Dverse === 'ready') {
       initApp();
     }
-  }, [status]);
+  }, [status3Dverse]);
 
   return (
     <>
