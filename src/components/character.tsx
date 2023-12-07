@@ -7,7 +7,7 @@ export class Character {
     };
     public async InitFirstPersonController(charCtlSceneUUID:string) {
         const playerTemplate = new this.SDK3DVerse.EntityTemplate();
-        playerTemplate.attachComponent("scene_ref", { value: charCtlSceneUUID });
+        playerTemplate.attachComponent("scene_ref", { value:charCtlSceneUUID });
         const parentEntity = null;
         const deleteOnClientDisconnection = true;
         console.log(playerTemplate);
@@ -21,7 +21,7 @@ export class Character {
         console.log(playerSceneEntity.getChildren());
         const firstPersonController = (await playerSceneEntity.getChildren())[0];
         const children = await firstPersonController.getChildren();
-        const firstPersonCamera = children.find((child: any) =>
+        const firstPersonCamera = children.find((child:any) =>
           child.isAttached("camera")
         );
         
