@@ -5,39 +5,48 @@ import { Joystick } from 'react-joystick-component';
 import { _SDK3DVerse } from '../_3dverseEngine/declare';
 import './3Dverse.scss';
 import { InventoryReact } from '../components/inventory';
-import { Pusher, PusherMember, PusherChannel, PusherEvent } from '@pusher/pusher-websocket-react-native';
 
 declare const SDK3DVerse: typeof _SDK3DVerse;
+declare const Pusher: any;
 
 export const Canvas3Dverse = () => {
-  async function pusherInit() {
-    const pusher = Pusher.getInstance();
+  const statusPusher = useScript(
+    `https://js.pusher.com/8.2.0/pusher.min.js`,
+    {
+      removeOnUnmount: false,
+    }
+  );
 
-    await pusher.init({
-      apiKey: "39f939b9f53716caf5d8",
-      cluster: "eu"
+  async function pusherInit() {
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('39f939b9f53716caf5d8', {
+      cluster: 'eu'
     });
 
-    await pusher.connect();
-    await pusher.subscribe({
-      channelName: "my-channel",
-      onEvent: (event: PusherEvent) => {
-        console.log(`Event received: ${event}`);
-      }
+    var channel = pusher.subscribe('my-channel');
+    channel.bind('my-event', function(data: object) {
+      alert(JSON.stringify(data));
     });
   }
 
   useEffect(() => {
+    if (statusPusher === 'ready') {
+      pusherInit();
+    }
+  }, [statusPusher]);
+
+  useEffect(() => {
     setTimeout(() => {
-      fetch('http://localhost:3001/sendMessage')
+      fetch('http://localhost:3001/helloWorld')
           .then(response => response.json())
           .then(data => {
               console.log(data);
               // Faire quelque chose avec les données reçues
           })
           .catch(error => console.error('Error:', error));
-        }, 10000);
-        pusherInit();
+        }, 100);
+        
   }, []);
 
   const status3Dverse = useScript(
