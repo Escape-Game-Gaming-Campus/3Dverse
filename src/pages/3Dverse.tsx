@@ -6,6 +6,7 @@ import { _SDK3DVerse } from '../_3dverseEngine/declare';
 import './3Dverse.scss';
 import { InventoryReact } from '../components/inventory';
 import pusherChannels from '../utils/pusherChannels';
+import bluringCanvas from '../utils/blur';
 
 declare const SDK3DVerse: typeof _SDK3DVerse;
 declare const Pusher: any;
@@ -73,6 +74,7 @@ export const Canvas3Dverse = () => {
   useEffect(() => {
     if (status3Dverse === 'ready') {
       initApp();
+      bluringCanvas();
     }
   }, [status3Dverse]);
 
