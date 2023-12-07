@@ -5,6 +5,7 @@ import { Joystick } from 'react-joystick-component';
 import { _SDK3DVerse } from '../_3dverseEngine/declare';
 import {Character} from "../components/character";
 import './3Dverse.scss';
+import { InventoryReact } from '../components/inventory';
 
 declare const SDK3DVerse:typeof _SDK3DVerse;
 

@@ -1,4 +1,5 @@
 import AppConfig from '../_3dverseEngine/AppConfig';
+import './inventory.scss';
 
 type Object = 
 {

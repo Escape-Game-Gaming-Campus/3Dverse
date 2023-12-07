@@ -1,24 +1,24 @@
 * body div.inv {
-    height:75px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    width:100vw;
-    margin-bottom:25px;
-    bottom:0px;
-    position:absolute;
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    margin-bottom: 25px;
+    bottom: 0px;
+    position: absolute;
 
     .inventory {
         &.case {
-            width:75px;
-            height:75px;
-            margin:5px;
+            width: 75px;
+            height: 75px;
+            margin: 5px;
         }
 
         &.item {
-            width:65px;
-            height:65px;
-            margin:10px;
+            width: 65px;
+            height: 65px;
+            margin: 10px;
         }
     }
 }
