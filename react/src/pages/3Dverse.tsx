@@ -6,8 +6,10 @@ import { _SDK3DVerse } from '../_3dverseEngine/declare';
 import {Character} from "../components/character";
 import './3Dverse.scss';
 import { InventoryReact } from '../components/inventory';
+import { SDK3DVerse_ExtensionInterface } from '../_3dverseEngine/declareGlobal';
 
 declare const SDK3DVerse : typeof _SDK3DVerse;
+declare const SDK3DVerse_VirtualJoystick_Ext : SDK3DVerse_ExtensionInterface;
 
 export const Canvas3Dverse = () => {
 
@@ -17,12 +19,8 @@ export const Canvas3Dverse = () => {
       removeOnUnmount : false,
     }
   );
-  const [character1, setCharacter1] = useState<Character | null>(null);
-  const [joystickActive, setJoystickActive] = useState(false);
-  const [joystickDirection, setjoystickDirection] = useState("None");
   const initApp = useCallback(async () => {
     const character = new Character(SDK3DVerse);
-    setCharacter1(character);
     await SDK3DVerse.joinOrStartSession({
       userToken : AppConfig.USER_TOKEN,
       sceneUUID : AppConfig.SCENE_UUID,
@@ -34,24 +32,9 @@ export const Canvas3Dverse = () => {
       startSimulation: "on-assets-loaded"
     });
     await character.InitFirstPersonController("92f7e23e-a3e3-48b1-a07c-cf5bff258374");
+    const joysticksElement = document.getElementById('joysticks') as HTMLElement;
+    await SDK3DVerse.installExtension(SDK3DVerse_VirtualJoystick_Ext, joysticksElement);
   }, []);
-  const handleJoystickStart = () => {
-    setJoystickActive(true);
-  };
-
-  const handleJoystickStop = () => {
-    setJoystickActive(false);
-  };
-  const handleJoystickMove = (event: any) => {
-    if (character1 && joystickDirection != event.direction) {
-      console.log(event.direction);
-      setjoystickDirection(event.direction);
-    }
-  };  
-  const moveCharacter = () =>{
-    //blabla
-    console.log("test")
-  }
   useEffect(() => {
     if (status === 'ready') {
       initApp();
@@ -65,11 +48,13 @@ export const Canvas3Dverse = () => {
           height: '1080px'
       }} tabIndex={1}/>
       {/* <div id='UI'> */}
-      <div style={{ position: 'absolute', bottom: "48px", left: "48px", zIndex: 999 }}>
+      {/* <div style={{ position: 'absolute', bottom: "48px", left: "48px", zIndex: 999 }}>
         <Joystick size={150} move={handleJoystickMove} start={handleJoystickStart} stop={handleJoystickStop} />
+        </div> */}
+        <div>
+
         </div>
-        {joystickActive?moveCharacter():<></>}
-        {/* <InventoryReact/> */}
+        <InventoryReact/>
       {/* </div> */}
     </>
   );

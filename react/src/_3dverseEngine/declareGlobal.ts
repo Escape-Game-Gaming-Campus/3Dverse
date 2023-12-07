@@ -160,6 +160,7 @@ export type SceneSettingsMap = {
     streaming : SceneSettingsMapStreaming,
     voxel : SceneSettingsMapVoxel
 }
+export enum SDK3DVerse_ExtensionInterface {}
 
 export enum componentsType {
     animation_controller = "animation_controller",

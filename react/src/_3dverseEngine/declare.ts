@@ -1,5 +1,5 @@
 import { ComponentType } from "react";
-import { AABB, ComponentFilter, Entities, Entity, GetSceneSessions_Session, PhysicsRaycastResult, SDK_Vec3, SceneSettings, SceneSettingsMap, SessionConstraints, TriggerCallback, onEntitySelectionChangedType, viewport_info } from "./declareGlobal";
+import { AABB, ComponentFilter, Entities, Entity, GetSceneSessions_Session, PhysicsRaycastResult, SDK_Vec3, SceneSettings, SceneSettingsMap, SessionConstraints, TriggerCallback, onEntitySelectionChangedType, viewport_info,SDK3DVerse_ExtensionInterface } from "./declareGlobal";
 
 export module _SDK3DVerse {
   export enum cameraControllerType {
@@ -37,6 +37,10 @@ export module _SDK3DVerse {
   };
   export function getVersion(): string {
     return '';
+  };
+  export function installExtension(extensionClass:SDK3DVerse_ExtensionInterface, parameters:object)
+  {
+    return []
   };
   export function isConnected(): boolean {
     return false;
