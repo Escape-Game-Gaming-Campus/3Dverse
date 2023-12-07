@@ -43,14 +43,14 @@ export const Canvas3Dverse = () => {
     setJoystickActive(false);
   };
   const handleJoystickMove = (event: any) => {
-    if (character1) {
+    if (character1 && joystickDirection != event.direction) {
       console.log(event.direction);
       setjoystickDirection(event.direction);
     }
   };  
   const moveCharacter = () =>{
     //blabla
-    console.log("salut c'est johnny")
+    console.log("test")
   }
   useEffect(() => {
     if (status === 'ready') {
@@ -63,7 +63,7 @@ export const Canvas3Dverse = () => {
       <canvas id='display-canvas' style={{
           width: '1920px',
           height: '1080px'
-      }} />
+      }} tabIndex={1}/>
       {/* <div id='UI'> */}
       <div style={{ position: 'absolute', bottom: "48px", left: "48px", zIndex: 999 }}>
         <Joystick size={150} move={handleJoystickMove} start={handleJoystickStart} stop={handleJoystickStop} />
