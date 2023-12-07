@@ -1,5 +1,6 @@
 enum pusherChannels {
-    DEV = "dev"
+    DEV = "dev",
+    INVENTORY = "inv"
 }
 
 export default pusherChannels;

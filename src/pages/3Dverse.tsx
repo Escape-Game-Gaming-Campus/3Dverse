@@ -5,7 +5,7 @@ import { Joystick } from 'react-joystick-component';
 import { _SDK3DVerse } from '../_3dverseEngine/declare';
 import './3Dverse.scss';
 import { InventoryReact } from '../components/inventory';
-import pusherChannels from '../utils/pusherChannels';
+import pusherChannels from '../constants/pusherChannels';
 import bluringCanvas from '../utils/blur';
 
 declare const SDK3DVerse: typeof _SDK3DVerse;

@@ -1,13 +1,6 @@
 import AppConfig from '../_3dverseEngine/AppConfig';
+import Object from '../constants/object';
 import './inventory.scss';
-
-type Object = 
-{
-    name : string,
-    UUID : number,
-    texture : string,
-}
-
 
 export class Inventory
 {
