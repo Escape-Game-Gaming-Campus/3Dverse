@@ -3,19 +3,19 @@ import './inventory.scss';
 
 type Object = 
 {
-    name:string,
-    UUID:number,
-    texture:string,
+    name : string,
+    UUID : number,
+    texture : string,
 }
 
 
 export class Inventory
 {
-    size:number;
-    array:Object[] = [];
-    caseTexture:string;
+    size : number;
+    array : Object[] = [];
+    caseTexture : string;
 
-    constructor(size:number, texture:string) 
+    constructor(size : number, texture : string) 
     {
         this.size = size;
         this.caseTexture = texture;
@@ -31,7 +31,7 @@ export class Inventory
         }
     }
 
-    public insertList(objects:Object[])
+    public insertList(objects : Object[])
     {
         for (let index = 0; index < objects.length; index++) {
             this.insert(objects[index]);
@@ -65,14 +65,14 @@ export class Inventory
             <div className='inv'>
                 {
                     this.array.map((e, i) => {
-                        return <img className='inventory item' src={e.texture} alt={`Image of the item ${e.name} (uuid: ${e.UUID})`} />
+                        return <img key={`item_${i}`} className='inventory item' src={e.texture} alt={`Image of the item ${e.name} (uuid: ${e.UUID})`} />
                     })
                 }
             </div>
             <div className='inv'>
                 {
                     this.array.map((e, i) => {
-                        return <img className='inventory case' src={this.caseTexture} alt="Image of case of inventory" />
+                        return <img key={`case_${i}`} className='inventory case' src={this.caseTexture} alt="Image of case of inventory" />
                     })
                 }
             </div>
