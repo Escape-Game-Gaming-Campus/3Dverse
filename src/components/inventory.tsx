@@ -33,8 +33,7 @@ export class Inventory
     public insertList(objects:Object[])
     {
         for (let index = 0; index < objects.length; index++) {
-            this.array.push(objects[index]);
-            
+            this.insert(objects[index]);
         }
     }
 
@@ -44,6 +43,7 @@ export class Inventory
             if ((object as Object).UUID ? this.array[index].UUID === (object as Object).UUID : this.array[index].UUID === object)
             {
                 this.array.splice(index, 1) // number of element wich are delete at index
+                if (onlyFirst) return;
             }
         }
     }
@@ -51,12 +51,7 @@ export class Inventory
     public deleteList(objects : (Object | number)[], onlyFirst : boolean = true) 
     {
         for (let index = 0; index < objects.length; index++) {
-            for (let index2 = 0; index2 < this.array.length; index2++) {
-                if (this.array[index2] === objects[index])
-                {
-                    this.array.splice(index2, 1) // number of element wich are delete at index
-                }
-            }
+            this.delete(objects[index], onlyFirst)
         }
     }
 
