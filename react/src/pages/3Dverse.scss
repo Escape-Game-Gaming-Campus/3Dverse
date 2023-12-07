@@ -7,19 +7,6 @@
         top: 0px;
     }
 
-    #UI {
-        z-index: 0;
-
-        > * {
-            position: absolute;
-            bottom: 0px;
-        }
-        
-        div:first-child {
-            margin: 75px;
-        }
-    }
-
     .nipple 
     {
         .back
