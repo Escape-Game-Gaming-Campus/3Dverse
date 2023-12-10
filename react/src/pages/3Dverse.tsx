@@ -6,13 +6,31 @@ import { _SDK3DVerse } from '../_3dverseEngine/declare';
 import {Character} from "../components/character";
 import './3Dverse.scss';
 import { InventoryReact } from '../components/inventory';
+import Digicode from '../components/digicode';
 import { SDK3DVerse_ExtensionInterface } from '../_3dverseEngine/declareGlobal';
 
 declare const SDK3DVerse : typeof _SDK3DVerse;
 declare const SDK3DVerse_VirtualJoystick_Ext : SDK3DVerse_ExtensionInterface;
 
 export const Canvas3Dverse = () => {
+  const [digicodeOpen, setDigicodeOpen] = useState(false);
 
+  const handleDigicodeClick = () => {
+    if(digicodeOpen)
+    handleCloseDigicode()
+    else
+    setDigicodeOpen(true);
+  };
+
+  const handleCloseDigicode = () => {
+    setDigicodeOpen(false);
+  };
+
+  const handleDigitPress = (digit:any) => {
+  }
+  let totoroRoom = false;
+  const [code,setCode] = useState("");
+  const actualCode = "1234";
   const status = useScript(
     `https://cdn.3dverse.com/legacy/sdk/latest/SDK3DVerse.js`,
     {
@@ -43,16 +61,28 @@ export const Canvas3Dverse = () => {
 
   return (
     <>
-      <canvas id='display-canvas' style={{
-          width: '1920px',
-          height: '1080px'
-      }} tabIndex={1}/>
-      {/* <div style={{ position: 'absolute', bottom: "48px", left: "48px", zIndex: 999 }}>
-        <Joystick size={150} move={handleJoystickMove} start={handleJoystickStart} stop={handleJoystickStop} />
-        </div> */}
-        <div>
-        <InventoryReact/>
-      </div> 
-    </>
+  <canvas id='display-canvas' style={{
+      width: '1920px',
+      height: '1080px'
+  }} tabIndex={1} />
+  {actualCode == code ? totoroRoom=true : null}
+  {console.log(code)}
+  {totoroRoom?console.log("ouvert :D"):console.log("fermé D:")}
+  {/* <div style={{ position: 'absolute', bottom: "48px", left: "48px", zIndex: 999 }}>
+    <Joystick size={150} move={handleJoystickMove} start={handleJoystickStart} stop={handleJoystickStop} />
+  </div> */}
+  <div>
+<div style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 999 }}>
+  {totoroRoom?<></>:(<button onClick={handleDigicodeClick}>Open Digicode</button>)}
+
+  {digicodeOpen && (
+    <Digicode onClose={handleCloseDigicode} setCode={setCode} onDigitPress={handleDigitPress} />
+  )}
+</div>
+</div>
+  <div>
+    <InventoryReact />
+  </div>
+</>
   );
 };
