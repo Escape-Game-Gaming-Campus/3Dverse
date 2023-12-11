@@ -1,7 +1,7 @@
 import { useCallback, useEffect ,useState } from 'react';
 import { useScript } from '@uidotdev/usehooks';
 import AppConfig from '../_3dverseEngine/AppConfig';
-import { Joystick } from 'react-joystick-component'; 
+// import { Joystick } from 'react-joystick-component'; 
 import { _SDK3DVerse } from '../_3dverseEngine/declare';
 import {Character} from "../components/character";
 import './3Dverse.scss';
@@ -28,7 +28,7 @@ export const Canvas3Dverse = () => {
 
   const handleDigitPress = (digit:any) => {
   }
-  let totoroRoom = false;
+  const [totoroRoom, setTotoroRoom] = useState(false);
   const [code,setCode] = useState("");
   const actualCode = "1234";
   const status = useScript(
@@ -49,6 +49,7 @@ export const Canvas3Dverse = () => {
       createDefaultCamera: false,
       startSimulation: "on-assets-loaded"
     });
+    SDK3DVerse.engineAPI.startSimulation();
     await character.InitFirstPersonController("92f7e23e-a3e3-48b1-a07c-cf5bff258374");
     const joysticksElement = document.getElementById('joysticks') as HTMLElement;
     await SDK3DVerse.installExtension(SDK3DVerse_VirtualJoystick_Ext, joysticksElement);
@@ -58,6 +59,29 @@ export const Canvas3Dverse = () => {
       initApp();
     }
   }, [status]);
+  useEffect(() => {
+    if (actualCode === code) {
+      setTotoroRoom(true);
+    }
+  }, [code, actualCode]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const entities = await SDK3DVerse.engineAPI.findEntitiesByEUID("16a525a0-5892-4065-a11b-a94862c153a6");
+        console.log(entities);
+        if (totoroRoom && entities.length > 0) {
+          const firstEntity = entities[0];
+          await firstEntity.setGlobalTransform({ "position": [-80, 10, -20] });
+          await firstEntity.setVisibility(false)
+          // await SDK3DVerse.engineAPI.deleteEntities(entities);
+        }
+      } catch (error) {
+        console.error("Error fetching entities:", error);
+      }
+    };
+
+    fetchData();
+  }, [totoroRoom]);
 
   return (
     <>
@@ -65,7 +89,6 @@ export const Canvas3Dverse = () => {
       width: '1920px',
       height: '1080px'
   }} tabIndex={1} />
-  {actualCode == code ? totoroRoom=true : null}
   {console.log(code)}
   {totoroRoom?console.log("ouvert :D"):console.log("fermé D:")}
   {/* <div style={{ position: 'absolute', bottom: "48px", left: "48px", zIndex: 999 }}>
