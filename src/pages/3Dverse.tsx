@@ -21,6 +21,15 @@ export const Canvas3Dverse = () => {
     }
   );
 
+  function updateClient() {
+    setTimeout(() => {
+      fetch(`${AppConfig.API_HOST}:${AppConfig.API_PORT}/update`)
+        .then((response) => response.json())
+        .then((data) => {})
+        .catch(error => console.error('Error:', error));
+    }, 100);
+  }
+
   async function pusherInit() {
     Pusher.logToConsole = true;
 
@@ -40,19 +49,6 @@ export const Canvas3Dverse = () => {
       pusherInit();
     }
   }, [statusPusher]);
-
-  useEffect(() => {
-    setTimeout(() => {
-      fetch(`${AppConfig.API_HOST}:${AppConfig.API_PORT}/update`)
-        .then(response => response.json())
-        .then(data => {
-          console.log("AXIOS : ", data);
-          // Faire quelque chose avec les données reçues
-        })
-        .catch(error => console.error('Error:', error));
-    }, 100);
-
-  }, []);
 
   const status3Dverse = useScript(
     `https://cdn.3dverse.com/legacy/sdk/latest/SDK3DVerse.js`,
@@ -78,6 +74,12 @@ export const Canvas3Dverse = () => {
       bluringCanvas();
     }
   }, [status3Dverse]);
+
+  useEffect(() => {
+    if (status3Dverse === 'ready' && statusPusher === 'ready') {
+      updateClient();
+    }
+  }, [status3Dverse, statusPusher]);
 
   return (
     status3Dverse === 'ready' && statusPusher === 'ready' ?
