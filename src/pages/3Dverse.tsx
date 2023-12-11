@@ -29,7 +29,8 @@ export const Canvas3Dverse = () => {
     });
 
     channel.set(pusherChannels.DEV, pusher.subscribe(pusherChannels.DEV));
-    channel.get(pusherChannels.DEV).bind('helloWorld', function(data: object) {
+    channel.set(pusherChannels.INVENTORY, pusher.subscribe(pusherChannels.INVENTORY));
+    channel.get(pusherChannels.DEV).bind('helloWorld', function (data: object) {
       console.log("PUSHER : ", JSON.stringify(data));
     });
   }
@@ -42,15 +43,15 @@ export const Canvas3Dverse = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      fetch('http://localhost:3001/helloWorld')
-          .then(response => response.json())
-          .then(data => {
-              console.log("AXIOS : ", data);
-              // Faire quelque chose avec les données reçues
-          })
-          .catch(error => console.error('Error:', error));
-        }, 100);
-        
+      fetch(`${AppConfig.API_HOST}:${AppConfig.API_PORT}/update`)
+        .then(response => response.json())
+        .then(data => {
+          console.log("AXIOS : ", data);
+          // Faire quelque chose avec les données reçues
+        })
+        .catch(error => console.error('Error:', error));
+    }, 100);
+
   }, []);
 
   const status3Dverse = useScript(
@@ -79,15 +80,17 @@ export const Canvas3Dverse = () => {
   }, [status3Dverse]);
 
   return (
-    <>
-      <canvas id='display-canvas' style={{
-        width: '1920px',
-        height: '1080px'
-      }} />
-      <div id='UI'>
-        <Joystick size={150} />
-        <InventoryReact />
-      </div>
-    </>
+    status3Dverse === 'ready' && statusPusher === 'ready' ?
+      <>
+        <canvas id='display-canvas' style={{
+          width: '1920px',
+          height: '1080px'
+        }} />
+        <div id='UI'>
+          <Joystick size={150} />
+          <InventoryReact />
+        </div>
+      </>
+      : <></>
   );
 };
