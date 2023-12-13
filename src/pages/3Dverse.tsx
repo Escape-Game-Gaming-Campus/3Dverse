@@ -150,9 +150,6 @@ export const Canvas3Dverse = () => {
         <canvas id='display-canvas' tabIndex={1} />
         {console.log(code)}
         {totoroRoom ? console.log("ouvert :D") : console.log("fermé D:")}
-        {/* <div style={{ position: 'absolute', bottom: "48px", left: "48px"}}>
-    <Joystick size={150} move={handleJoystickMove} start={handleJoystickStart} stop={handleJoystickStop} />
-  </div> */}
         <div className='BlocNoteReact'>
           <BlocNoteReact />
         </div>
