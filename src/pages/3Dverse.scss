@@ -1,9 +1,11 @@
-* body { 
+* body, div#root{ 
+    width : 100vw;
+    height : 100vh;
+
     #display-canvas-3Dverse, #UI {
-        width : 1920px;
-        height : 1080px;
+        width : 100vw;
+        height : 100vh;
         position: absolute;
-        z-index: 999;
         top: 0px;
     }
 
@@ -17,5 +19,16 @@
         {
             background : black !important;
         }
+    }
+
+    #virtual-joystick-height-right, #virtual-joystick-height-left
+    {
+        display: none ;
+    }
+
+    .blocNoteReact 
+    {
+        top: 0;
+        right: 0;
     }
 }
