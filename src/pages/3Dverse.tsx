@@ -9,6 +9,7 @@ import bluringCanvas from '../utils/blur';
 import { Character } from "../components/character";
 import Digicode from '../components/enigms/ddust2/digicode';
 import { SDK3DVerse_ExtensionInterface } from '../_3dverseEngine/declareGlobal';
+import { BlocNoteReact } from '../components/blocNote';
 
 declare const SDK3DVerse: typeof _SDK3DVerse;
 declare const Pusher: any;
@@ -142,17 +143,17 @@ export const Canvas3Dverse = () => {
   return (
     status3Dverse === 'ready' && statusPusher === 'ready' ?
       <>
-        <canvas id='display-canvas' style={{
-          width: '1920px',
-          height: '1080px'
-        }} tabIndex={1} />
+        <canvas id='display-canvas' tabIndex={1} />
         {console.log(code)}
         {totoroRoom ? console.log("ouvert :D") : console.log("fermé D:")}
-        {/* <div style={{ position: 'absolute', bottom: "48px", left: "48px", zIndex: 999 }}>
+        {/* <div style={{ position: 'absolute', bottom: "48px", left: "48px"}}>
     <Joystick size={150} move={handleJoystickMove} start={handleJoystickStart} stop={handleJoystickStop} />
   </div> */}
+        <div className='BlocNoteReact'>
+          <BlocNoteReact />
+        </div>
         <div>
-          <div style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 999 }}>
+          <div style={{ position: "absolute", top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}>
             {totoroRoom ? <></> : (<button onClick={handleDigicodeClick}>Open Digicode</button>)}
 
             {digicodeOpen && (
