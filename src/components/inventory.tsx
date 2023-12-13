@@ -1,4 +1,4 @@
-import AppConfig from '../_3dverseEngine/AppConfig';
+import AppConfig from '../_3dverseEngine/AppConfig.json';
 import Object from '../constants/object';
 import './inventory.scss';
 import pusherChannels from '../constants/pusherChannels';
