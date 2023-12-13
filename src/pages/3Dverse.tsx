@@ -162,8 +162,8 @@ export const Canvas3Dverse = () => {
         </div>
 
         <div>
-          <div className='bluringOff' style={{ position: "absolute", top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
-            {totoroRoom ? <></> : (<button onClick={handleDigicodeClick}>Open Digicode</button>)}
+          <div style={{ position: "absolute", top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+            {totoroRoom ? <></> : (<button className='bluringOff' onClick={handleDigicodeClick}>Open Digicode</button>)}
 
             {digicodeOpen && (
               <Digicode onClose={handleCloseDigicode} setCode={setCode} onDigitPress={handleDigitPress} />
