@@ -22,7 +22,7 @@ export class Character {
         );
         
         this.SDK3DVerse.engineAPI.assignClientToScripts(firstPersonController);
-        // firstPersonController?.setGlobalTransform({"position":[0,10,0]})
+        firstPersonController?.setGlobalTransform({"position":[-8,1,-2]})
         if(firstPersonCamera)
         this.SDK3DVerse.setMainCamera(firstPersonCamera);}
       }
