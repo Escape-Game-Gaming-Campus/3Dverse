@@ -160,6 +160,7 @@ export type SceneSettingsMap = {
     streaming : SceneSettingsMapStreaming,
     voxel : SceneSettingsMapVoxel
 }
+export enum SDK3DVerse_ExtensionInterface {}
 
 export enum componentsType {
     animation_controller = "animation_controller",
@@ -290,18 +291,6 @@ export class Entity {
     public setOrAttachComponent(componentType : string, componentValue : object) : void {};
     public setVisibility(isVisible : boolean) : void {};
     public unselect(triggeredBy : string = "unselect") : void {};
-}
-
-export class EntityTemplate {
-    public attachComponent(componentType : string, componentValue : object) : EntityTemplate {
-        return new EntityTemplate
-    };
-    public instantiateEntity(name : string = "unnamed entity", parent : Entity | null = null) : Entity {
-        return new Entity
-    };
-    public instantiateTransientEntity(name : string = "unnamed entity", parent : Entity | null = null, deleteOnClientDisconnection : boolean = false) : Entity {
-        return new Entity
-    };
 }
 
 export class Viewport {

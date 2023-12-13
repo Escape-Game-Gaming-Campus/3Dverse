@@ -7,16 +7,15 @@
         top: 0px;
     }
 
-    #UI {
-        z-index: 0;
-
-        > * {
-            position: absolute;
-            bottom: 0px;
+    .nipple 
+    {
+        .back
+        {
+            background : gray !important;
         }
-        
-        div:first-child {
-            margin: 75px;
+        .front
+        {
+            background : black !important;
         }
     }
 }
