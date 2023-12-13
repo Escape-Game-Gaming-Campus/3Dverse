@@ -1,5 +1,36 @@
 div.blocNoteButton {
-    width: 500px;
-    height: 75px;
-    margin-top: 75px;
+    position: absolute;
+    top : 3vh;
+    right : 3vw;
+
+    i.fa-regular.fa-clipboard
+    {
+        font-size: 6vw;
+    }
+}
+
+i.fa-solid.fa-x
+{
+    position: absolute;
+    top : 3vh;
+    right : 3vw;
+    font-size: 6vw;
+}
+
+div.information
+{
+    display : flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    top: 0px;
+    position: absolute;
+
+    form
+    {
+        background-color: gray;
+        display : flex;
+        flex-direction: column;
+    }
 }
