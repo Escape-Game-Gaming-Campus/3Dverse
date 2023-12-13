@@ -17,9 +17,19 @@ declare const SDK3DVerse_VirtualJoystick_Ext: SDK3DVerse_ExtensionInterface;
 
 export const Canvas3Dverse = () => {
   const [digicodeOpen, setDigicodeOpen] = useState(false);
+  const [totoroRoom, setTotoroRoom] = useState(false);
+  const [code, setCode] = useState("");
+  const actualCode = "1234";
 
   const statusPusher = useScript(
     `https://js.pusher.com/8.2.0/pusher.min.js`,
+    {
+      removeOnUnmount: false,
+    }
+  );
+
+  const status3Dverse = useScript(
+    `https://cdn.3dverse.com/legacy/sdk/latest/SDK3DVerse.js`,
     {
       removeOnUnmount: false,
     }
@@ -48,19 +58,6 @@ export const Canvas3Dverse = () => {
     });
   }
 
-  useEffect(() => {
-    if (statusPusher === 'ready') {
-      pusherInit();
-    }
-  }, [statusPusher]);
-
-  const status3Dverse = useScript(
-    `https://cdn.3dverse.com/legacy/sdk/latest/SDK3DVerse.js`,
-    {
-      removeOnUnmount: false,
-    }
-  );
-
   const initApp = useCallback(async () => {
     const character = new Character(SDK3DVerse);
     await SDK3DVerse.joinOrStartSession({
@@ -78,6 +75,19 @@ export const Canvas3Dverse = () => {
     const joysticksElement = document.getElementById('joysticks') as HTMLElement;
     await SDK3DVerse.installExtension(SDK3DVerse_VirtualJoystick_Ext, joysticksElement);
   }, []);
+
+  useEffect(() => {
+    if (statusPusher === 'ready') {
+      pusherInit();
+    }
+  }, [statusPusher]);
+
+  useEffect(() => {
+    if (status3Dverse === 'ready') {
+      initApp();
+      bluringCanvas();
+    }
+  }, [status3Dverse]);
   
   const handleDigicodeClick = () => {
     if (digicodeOpen){
@@ -96,16 +106,6 @@ export const Canvas3Dverse = () => {
 
   const handleDigitPress = (digit: any) => {
   }
-  const [totoroRoom, setTotoroRoom] = useState(false);
-  const [code, setCode] = useState("");
-  const actualCode = "1234";
-
-  useEffect(() => {
-    if (status3Dverse === 'ready') {
-      initApp();
-      bluringCanvas();
-    }
-  }, [status3Dverse]);
 
   useEffect(() => {
     if (status3Dverse === 'ready' && statusPusher === 'ready') {
