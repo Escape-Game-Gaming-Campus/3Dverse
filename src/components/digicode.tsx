@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './digicode.scss';
+import bluringCanvas from '../utils/blur';
 interface DigicodeProps {
     onClose: () => void;
     onDigitPress: (digit: string) => void;
@@ -26,6 +27,7 @@ interface DigicodeProps {
     const handleSubmit = () => {
         setCode(enteredCode);
         onClose();
+        bluringCanvas();
     };
 
     return (
