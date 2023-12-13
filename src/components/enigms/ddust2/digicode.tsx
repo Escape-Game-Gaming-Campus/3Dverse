@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './digicode.scss';
-import bluringCanvas from '../utils/blur';
+import bluringCanvas from '../../../utils/blur';
 interface DigicodeProps {
   onClose: () => void;
   onDigitPress: (digit: string) => void;

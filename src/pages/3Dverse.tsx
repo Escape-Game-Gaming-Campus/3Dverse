@@ -7,7 +7,7 @@ import { InventoryReact } from '../components/inventory';
 import pusherChannels from '../constants/pusherChannels';
 import bluringCanvas from '../utils/blur';
 import { Character } from "../components/character";
-import Digicode from '../components/digicode';
+import Digicode from '../components/enigms/ddust2/digicode';
 import { SDK3DVerse_ExtensionInterface } from '../_3dverseEngine/declareGlobal';
 
 declare const SDK3DVerse: typeof _SDK3DVerse;
@@ -19,7 +19,7 @@ export const Canvas3Dverse = () => {
   const [digicodeOpen, setDigicodeOpen] = useState(false);
   const [totoroRoom, setTotoroRoom] = useState(false);
   const [code, setCode] = useState("");
-  const actualCode = "1234";
+  const actualCode = "00000";
 
   const statusPusher = useScript(
     `https://js.pusher.com/8.2.0/pusher.min.js`,
@@ -53,6 +53,7 @@ export const Canvas3Dverse = () => {
 
     channel.set(pusherChannels.DEV, pusher.subscribe(pusherChannels.DEV));
     channel.set(pusherChannels.INVENTORY, pusher.subscribe(pusherChannels.INVENTORY));
+    channel.set(pusherChannels.ENIGMS, pusher.subscribe(pusherChannels.ENIGMS));
     channel.get(pusherChannels.DEV).bind('helloWorld', function (data: object) {
       console.log("PUSHER : ", JSON.stringify(data));
     });
