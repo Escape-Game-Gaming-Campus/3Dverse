@@ -80,6 +80,11 @@ export const Canvas3Dverse = () => {
     await character.InitFirstPersonController("92f7e23e-a3e3-48b1-a07c-cf5bff258374");
     const joysticksElement = document.getElementById('joysticks') as HTMLElement;
     await SDK3DVerse.installExtension(SDK3DVerse_VirtualJoystick_Ext, joysticksElement);
+    document.getElementById("virtual-joystick-move")?.className as string;
+    const joyStickLeft : HTMLElement = document.getElementById("virtual-joystick-move") as HTMLElement;
+    joyStickLeft.className = "bluringOff"
+    const joyStickRight : HTMLElement = document.getElementById("virtual-joystick-orientation") as HTMLElement;
+    joyStickRight.className = "bluringOff"
   }, []);
 
   useEffect(() => {
@@ -149,12 +154,15 @@ export const Canvas3Dverse = () => {
       <>
         <canvas id='display-canvas' tabIndex={1} />
         {console.log(code)}
+
         {totoroRoom ? console.log("ouvert :D") : console.log("fermé D:")}
+
         <div className='BlocNoteReact'>
           <BlocNoteReact />
         </div>
+
         <div>
-          <div style={{ position: "absolute", top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+          <div className='bluringOff' style={{ position: "absolute", top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
             {totoroRoom ? <></> : (<button onClick={handleDigicodeClick}>Open Digicode</button>)}
 
             {digicodeOpen && (
@@ -162,7 +170,7 @@ export const Canvas3Dverse = () => {
             )}
           </div>
         </div>
-        <div>
+        <div className='bluringOff'>
           <InventoryReact />
         </div>
       </>
