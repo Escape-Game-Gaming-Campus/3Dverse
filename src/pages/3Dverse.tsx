@@ -10,6 +10,7 @@ import { Character } from "../components/character";
 import Digicode from '../components/enigms/ddust2/digicode';
 import { SDK3DVerse_ExtensionInterface } from '../_3dverseEngine/declareGlobal';
 import { BlocNoteReact } from '../components/blocNote';
+import axios from 'axios';
 
 declare const SDK3DVerse: typeof _SDK3DVerse;
 declare const Pusher: any;
@@ -20,7 +21,6 @@ export const Canvas3Dverse = () => {
   const [digicodeOpen, setDigicodeOpen] = useState(false);
   const [totoroRoom, setTotoroRoom] = useState(false);
   const [code, setCode] = useState("");
-  const actualCode = "00000";
 
   const statusPusher = useScript(
     `https://js.pusher.com/8.2.0/pusher.min.js`,
@@ -58,6 +58,10 @@ export const Canvas3Dverse = () => {
     channel.get(pusherChannels.DEV).bind('helloWorld', function (data: object) {
       console.log("PUSHER : ", JSON.stringify(data));
     });
+    channel.get(pusherChannels.ENIGMS).bind('ddust2TryPsd', function (data: { valid: boolean }) {
+      console.log("PUSHER : ", JSON.stringify(data));
+      setTotoroRoom(data.valid);
+    });
   }
 
   const initApp = useCallback(async () => {
@@ -90,9 +94,9 @@ export const Canvas3Dverse = () => {
       bluringCanvas();
     }
   }, [status3Dverse]);
-  
+
   const handleDigicodeClick = () => {
-    if (digicodeOpen){
+    if (digicodeOpen) {
 
       handleCloseDigicode();
       bluringCanvas(0);
@@ -116,10 +120,10 @@ export const Canvas3Dverse = () => {
   }, [status3Dverse, statusPusher]);
 
   useEffect(() => {
-    if (actualCode === code) {
-      setTotoroRoom(true);
-    }
-  }, [code, actualCode]);
+    axios.post(`${AppConfig.API_HOST}:${AppConfig.API_PORT}/ddust2/tryPsd`, { psd: code })
+      .then((response) => {})
+      .catch(error => console.error('Error:', error));
+  }, [code]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -153,7 +157,7 @@ export const Canvas3Dverse = () => {
           <BlocNoteReact />
         </div>
         <div>
-          <div style={{ position: "absolute", top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}>
+          <div style={{ position: "absolute", top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
             {totoroRoom ? <></> : (<button onClick={handleDigicodeClick}>Open Digicode</button>)}
 
             {digicodeOpen && (
