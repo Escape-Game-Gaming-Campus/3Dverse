@@ -11,7 +11,7 @@ export class Character {
         const parentEntity = null;
         const deleteOnClientDisconnection = true;
         const playerSceneEntity = await playerTemplate.instantiateTransientEntity(
-          "Player",
+          "Player"+this.SDK3DVerse.getClientUUID(),
           parentEntity,
           deleteOnClientDisconnection
         );

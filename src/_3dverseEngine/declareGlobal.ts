@@ -339,8 +339,8 @@ export class Viewport {
                 0,0,1,0,
                 0,0,0,1]
     } ;
-    public getWorldMatrix() : Entity {
-        return new Entity
+    public getWorldMatrix() : Array<number> {
+        return []
     };
     public getZoomFactor() : number {
         return 0

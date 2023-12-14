@@ -1,5 +1,5 @@
 import { ComponentType } from "react";
-import { AABB, ComponentFilter, Entities, Entity, GetSceneSessions_Session, PhysicsRaycastResult, SDK_Vec3, SceneSettings, SceneSettingsMap, SessionConstraints, TriggerCallback, onEntitySelectionChangedType, viewport_info, SDK3DVerse_ExtensionInterface } from "./declareGlobal";
+import { AABB, ComponentFilter, Entities, Entity, GetSceneSessions_Session, PhysicsRaycastResult, SDK_Vec3, SceneSettings, SceneSettingsMap, SessionConstraints, TriggerCallback, onEntitySelectionChangedType, viewport_info, SDK3DVerse_ExtensionInterface,Viewport } from "./declareGlobal";
 
 export module _SDK3DVerse {
   export enum cameraControllerType {
@@ -118,6 +118,28 @@ export module _SDK3DVerse {
   }
 
   export module engineAPI {
+    export module cameraAPI{
+      export function getActiveViewports():Array<Viewport>{
+        return []
+      };
+      export function getClientCameras(clientUUID:Entity):Array<Entity>{
+        return []
+      }
+      export function getViewportByID():Viewport{
+        return new Viewport;
+      }
+      export function onMouseEvent(eventName:string, listener:Function){
+
+      }
+      export function refresh(){
+
+      }
+      export function stopTravel(){
+
+      }
+      // export function teleport(clientUUID:string, speed:number, viewportopt:Viewport):Promise{
+      // }
+    }
     export function assignClientToScripts(...entity: Entity[]): void { };
     export function canEdit(): boolean {
       return false;

@@ -8,9 +8,11 @@ import pusherChannels from '../constants/pusherChannels';
 import bluringCanvas from '../utils/blur';
 import { Character } from "../components/character";
 import Digicode from '../components/enigms/ddust2/digicode';
+import {Raycast} from '../components/raycast';
 import { SDK3DVerse_ExtensionInterface } from '../_3dverseEngine/declareGlobal';
 import { BlocNoteReact } from '../components/blocNote';
 import axios from 'axios';
+
 
 declare const SDK3DVerse: typeof _SDK3DVerse;
 declare const Pusher: any;
@@ -20,8 +22,8 @@ declare const SDK3DVerse_VirtualJoystick_Ext: SDK3DVerse_ExtensionInterface;
 export const Canvas3Dverse = () => {
   const [digicodeOpen, setDigicodeOpen] = useState(false);
   const [totoroRoom, setTotoroRoom] = useState(false);
+  const [raycastGlobal, setRaycastGlobal] = useState<Raycast>();
   const [code, setCode] = useState("");
-
   const statusPusher = useScript(
     `https://js.pusher.com/8.2.0/pusher.min.js`,
     {
@@ -80,6 +82,8 @@ export const Canvas3Dverse = () => {
     await character.InitFirstPersonController("92f7e23e-a3e3-48b1-a07c-cf5bff258374");
     const joysticksElement = document.getElementById('joysticks') as HTMLElement;
     await SDK3DVerse.installExtension(SDK3DVerse_VirtualJoystick_Ext, joysticksElement);
+    const raycast = new Raycast(SDK3DVerse);
+    setRaycastGlobal(raycast);
   }, []);
 
   useEffect(() => {
@@ -123,6 +127,7 @@ export const Canvas3Dverse = () => {
     axios.post(`${AppConfig.API_HOST}:${AppConfig.API_PORT}/ddust2/tryPsd`, { psd: code })
       .then((response) => {})
       .catch(error => console.error('Error:', error));
+    raycastGlobal?.fireRay();
   }, [code]);
 
   useEffect(() => {
@@ -165,6 +170,7 @@ export const Canvas3Dverse = () => {
         <div>
           <InventoryReact />
         </div>
+
       </>
       : <></>
   );
