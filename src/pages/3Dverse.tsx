@@ -8,6 +8,7 @@ import pusherChannels from '../constants/pusherChannels';
 import bluringCanvas from '../utils/blur';
 import { Character } from "../components/character";
 import Digicode from '../components/enigms/ddust2/digicode';
+import CrimeScene from '../components/enigms/hallway/crimeScene';
 import {Raycast} from '../components/raycast';
 import { Entity, SDK3DVerse_ExtensionInterface } from '../_3dverseEngine/declareGlobal';
 import { BlocNoteReact } from '../components/blocNote';
@@ -21,14 +22,16 @@ export var channel = new Map<pusherChannels, any>();
 declare const SDK3DVerse_VirtualJoystick_Ext: SDK3DVerse_ExtensionInterface;
 export const Canvas3Dverse = () => {
   const audioRef = useRef(new Audio('Boo_house.mp3'));
-  const interactableObjects = ["ee4d6092-4dca-4ace-a55c-3c3d4a468e84"];
-  const [countdown, setCountdown] = useState(12); // Initial countdown time in seconds
+  const interactableObjects = ["ee4d6092-4dca-4ace-a55c-3c3d4a468e84","d62610ef-5aa4-473c-b540-3a623e9590b9"];
+  const [countdown, setCountdown] = useState(120);
   const [eventTriggered, setEventTriggered] = useState(false);
   const [selectedEntity, setSelectedEntity] = useState(-1);
   const [digicodeOpen, setDigicodeOpen] = useState(false);
+  const [crimeSceneOpen, setCrimeSceneOpen] = useState(false);
   const [totoroRoom, setTotoroRoom] = useState(false);
   const [raycastGlobal, setRaycastGlobal] = useState<Raycast>();
   const [code, setCode] = useState("");
+  const [codeCrime, setCodeCrime] = useState("");
   const statusPusher = useScript(
     `https://js.pusher.com/8.2.0/pusher.min.js`,
     {
@@ -107,20 +110,30 @@ export const Canvas3Dverse = () => {
   const handleDigicodeClick = () => {
     if(!totoroRoom)
    { if (digicodeOpen) {
-
-      handleCloseDigicode();
-      bluringCanvas(0);
     } else {
       setDigicodeOpen(true);
       bluringCanvas(25);
     }}
   };
 
+  const handleCrimeSceneClick = () => {
+     if (crimeSceneOpen) {
+    } else {
+      setCrimeSceneOpen(true);
+      bluringCanvas(25);
+    }
+  };
+
   const handleCloseDigicode = () => {
     setDigicodeOpen(false);
   };
+  const handleCloseCrimeScene = () => {
+    setCrimeSceneOpen(false);
+  };
 
   const handleDigitPress = (digit: any) => {
+  }
+  const handlePicturePress = (digit: any) => {
   }
   const handleClick = (event: React.MouseEvent<HTMLCanvasElement>) => {
     const x = event.clientX;
@@ -139,6 +152,13 @@ export const Canvas3Dverse = () => {
       .catch(error => console.error('Error:', error));
   }, [code]);
 
+
+  // useEffect(() => {
+  //   axios.post(`${AppConfig.API_HOST}:${AppConfig.API_PORT}/hallway2/tryPsd`, { psd: codeCrime })
+  //     .then((response) => {})
+  //     .catch(error => console.error('Error:', error));
+  // }, [codeCrime]);
+//à rajouter dans l'API
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -157,7 +177,7 @@ export const Canvas3Dverse = () => {
 
     fetchData();
   }, [totoroRoom]);
-  const list = [handleDigicodeClick];
+  const list = [handleDigicodeClick,handleCrimeSceneClick];
 
   useEffect(() => {
     if (eventTriggered && countdown > 0) {
@@ -169,7 +189,6 @@ export const Canvas3Dverse = () => {
     }else if(eventTriggered && countdown == 0)
     {
       playAlarm();
-      console.log("set Alarm");
     }
   }, [eventTriggered, countdown]);
 
@@ -198,9 +217,11 @@ export const Canvas3Dverse = () => {
         <div>
           <div style={{ position: "absolute", top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
             {/* {totoroRoom ? <></> : (<button onClick={handleDigicodeClick}>Open Digicode</button>)} */}
-
             {digicodeOpen && (
               <Digicode onClose={handleCloseDigicode} setCode={setCode} onDigitPress={handleDigitPress} />
+            )}
+            {crimeSceneOpen && (
+              <CrimeScene onClose={handleCloseCrimeScene} setCodeCrime={setCodeCrime} onPicturePress={handlePicturePress} />
             )}
           </div>
         </div>
