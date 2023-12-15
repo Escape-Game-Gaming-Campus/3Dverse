@@ -18,8 +18,9 @@ declare const SDK3DVerse: typeof _SDK3DVerse;
 declare const Pusher: any;
 export var channel = new Map<pusherChannels, any>();
 declare const SDK3DVerse_VirtualJoystick_Ext: SDK3DVerse_ExtensionInterface;
-
 export const Canvas3Dverse = () => {
+  const interactableObjects = ["ee4d6092-4dca-4ace-a55c-3c3d4a468e84"];
+  const [selectedEntity, setSelectedEntity] = useState(-1);
   const [digicodeOpen, setDigicodeOpen] = useState(false);
   const [totoroRoom, setTotoroRoom] = useState(false);
   const [raycastGlobal, setRaycastGlobal] = useState<Raycast>();
@@ -82,7 +83,7 @@ export const Canvas3Dverse = () => {
     await character.InitFirstPersonController("92f7e23e-a3e3-48b1-a07c-cf5bff258374");
     const joysticksElement = document.getElementById('joysticks') as HTMLElement;
     await SDK3DVerse.installExtension(SDK3DVerse_VirtualJoystick_Ext, joysticksElement);
-    const raycast = new Raycast(SDK3DVerse);
+    const raycast = new Raycast(SDK3DVerse,interactableObjects,setSelectedEntity);
     setRaycastGlobal(raycast);
   }, []);
 
@@ -100,14 +101,15 @@ export const Canvas3Dverse = () => {
   }, [status3Dverse]);
 
   const handleDigicodeClick = () => {
-    if (digicodeOpen) {
+    if(!totoroRoom)
+   { if (digicodeOpen) {
 
       handleCloseDigicode();
       bluringCanvas(0);
     } else {
       setDigicodeOpen(true);
       bluringCanvas(25);
-    }
+    }}
   };
 
   const handleCloseDigicode = () => {
@@ -116,7 +118,11 @@ export const Canvas3Dverse = () => {
 
   const handleDigitPress = (digit: any) => {
   }
-
+  const handleClick = (event: React.MouseEvent<HTMLCanvasElement>) => {
+    const x = event.clientX;
+    const y = event.clientY;
+    raycastGlobal?.fireRay(x,y);
+  };
   useEffect(() => {
     if (status3Dverse === 'ready' && statusPusher === 'ready') {
       updateClient();
@@ -127,7 +133,6 @@ export const Canvas3Dverse = () => {
     axios.post(`${AppConfig.API_HOST}:${AppConfig.API_PORT}/ddust2/tryPsd`, { psd: code })
       .then((response) => {})
       .catch(error => console.error('Error:', error));
-    raycastGlobal?.fireRay();
   }, [code]);
 
   useEffect(() => {
@@ -148,11 +153,17 @@ export const Canvas3Dverse = () => {
 
     fetchData();
   }, [totoroRoom]);
-
+  const list = [handleDigicodeClick];
+  
+  useEffect(() => {
+    if(selectedEntity != -1)
+    {list[selectedEntity]();}
+  setSelectedEntity(-1);
+  }, [selectedEntity]);
   return (
     status3Dverse === 'ready' && statusPusher === 'ready' ?
       <>
-        <canvas id='display-canvas' tabIndex={1} />
+        <canvas id='display-canvas' tabIndex={1} onClick={handleClick} />
         {console.log(code)}
         {totoroRoom ? console.log("ouvert :D") : console.log("fermé D:")}
         <div className='BlocNoteReact'>
@@ -160,7 +171,7 @@ export const Canvas3Dverse = () => {
         </div>
         <div>
           <div style={{ position: "absolute", top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
-            {totoroRoom ? <></> : (<button onClick={handleDigicodeClick}>Open Digicode</button>)}
+            {/* {totoroRoom ? <></> : (<button onClick={handleDigicodeClick}>Open Digicode</button>)} */}
 
             {digicodeOpen && (
               <Digicode onClose={handleCloseDigicode} setCode={setCode} onDigitPress={handleDigitPress} />

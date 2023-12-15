@@ -35,6 +35,7 @@ const Digicode: React.FC<DigicodeProps> = ({ onClose, onDigitPress, setCode }) =
 
   return (
     <div className="digicode">
+      <button className="digicode-button" onClick={()=>{onClose();bluringCanvas()}}>X</button>
       <div className="code-display">{enteredCode}</div>
       <div className="button-container">
         <div className="row">
