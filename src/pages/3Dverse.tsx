@@ -148,7 +148,7 @@ export const Canvas3Dverse = () => {
           const firstEntity = entities[0];
           await firstEntity.setGlobalTransform({ "position": [-80, 10, -20] });
           await firstEntity.setVisibility(false);
-
+          setEventTriggered(true);
         }
       } catch (error) {
         console.error("Error fetching entities:", error);
@@ -188,10 +188,6 @@ export const Canvas3Dverse = () => {
     {list[selectedEntity]();}
   setSelectedEntity(-1);
   }, [selectedEntity]);
-
-  useEffect(() => {
-    setEventTriggered(true);
-  }, []);
   return (
     status3Dverse === 'ready' && statusPusher === 'ready' ?
       <>
