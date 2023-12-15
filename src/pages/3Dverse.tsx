@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState ,useRef } from 'react';
 import { useScript } from '@uidotdev/usehooks';
 import AppConfig from '../_3dverseEngine/AppConfig.json';
 import { _SDK3DVerse } from '../_3dverseEngine/declare';
@@ -9,9 +9,10 @@ import bluringCanvas from '../utils/blur';
 import { Character } from "../components/character";
 import Digicode from '../components/enigms/ddust2/digicode';
 import {Raycast} from '../components/raycast';
-import { SDK3DVerse_ExtensionInterface } from '../_3dverseEngine/declareGlobal';
+import { Entity, SDK3DVerse_ExtensionInterface } from '../_3dverseEngine/declareGlobal';
 import { BlocNoteReact } from '../components/blocNote';
 import axios from 'axios';
+import { count } from 'console';
 
 
 declare const SDK3DVerse: typeof _SDK3DVerse;
@@ -19,7 +20,10 @@ declare const Pusher: any;
 export var channel = new Map<pusherChannels, any>();
 declare const SDK3DVerse_VirtualJoystick_Ext: SDK3DVerse_ExtensionInterface;
 export const Canvas3Dverse = () => {
+  const audioRef = useRef(new Audio('Boo_house.mp3'));
   const interactableObjects = ["ee4d6092-4dca-4ace-a55c-3c3d4a468e84"];
+  const [countdown, setCountdown] = useState(12); // Initial countdown time in seconds
+  const [eventTriggered, setEventTriggered] = useState(false);
   const [selectedEntity, setSelectedEntity] = useState(-1);
   const [digicodeOpen, setDigicodeOpen] = useState(false);
   const [totoroRoom, setTotoroRoom] = useState(false);
@@ -143,8 +147,8 @@ export const Canvas3Dverse = () => {
         if (totoroRoom && entities.length > 0) {
           const firstEntity = entities[0];
           await firstEntity.setGlobalTransform({ "position": [-80, 10, -20] });
-          await firstEntity.setVisibility(false)
-          // await SDK3DVerse.engineAPI.deleteEntities(entities);
+          await firstEntity.setVisibility(false);
+
         }
       } catch (error) {
         console.error("Error fetching entities:", error);
@@ -154,18 +158,44 @@ export const Canvas3Dverse = () => {
     fetchData();
   }, [totoroRoom]);
   const list = [handleDigicodeClick];
-  
+
+  useEffect(() => {
+    if (eventTriggered && countdown > 0) {
+      const intervalId = setInterval(() => {
+        setCountdown((prevCountdown) => prevCountdown - 1);
+      }, 1000);
+      console.log(countdown);
+      return () => clearInterval(intervalId);
+    }else if(eventTriggered && countdown == 0)
+    {
+      playAlarm();
+      console.log("set Alarm");
+    }
+  }, [eventTriggered, countdown]);
+
+  const playAlarm = () => {
+    audioRef.current.loop = true;
+    audioRef.current.play();
+  };
+
+  const stopAlarm = () =>{
+    audioRef.current.pause();
+    audioRef.current.currentTime = 0;
+  }
+
   useEffect(() => {
     if(selectedEntity != -1)
     {list[selectedEntity]();}
   setSelectedEntity(-1);
   }, [selectedEntity]);
+
+  useEffect(() => {
+    setEventTriggered(true);
+  }, []);
   return (
     status3Dverse === 'ready' && statusPusher === 'ready' ?
       <>
         <canvas id='display-canvas' tabIndex={1} onClick={handleClick} />
-        {console.log(code)}
-        {totoroRoom ? console.log("ouvert :D") : console.log("fermé D:")}
         <div className='BlocNoteReact'>
           <BlocNoteReact />
         </div>
