@@ -8,9 +8,10 @@ import pusherChannels from '../constants/pusherChannels';
 import bluringCanvas from '../utils/blur';
 import { Character } from "../components/character";
 import Digicode from '../components/enigms/ddust2/digicode';
-import { SDK3DVerse_ExtensionInterface } from '../_3dverseEngine/declareGlobal';
+import { Entity, SDK3DVerse_ExtensionInterface } from '../_3dverseEngine/declareGlobal';
 import { BlocNoteReact } from '../components/blocNote';
 import axios from 'axios';
+import Totoro from '../components/enigms/totoro/totoro';
 
 declare const SDK3DVerse: typeof _SDK3DVerse;
 declare const Pusher: any;
@@ -80,6 +81,10 @@ export const Canvas3Dverse = () => {
     await character.InitFirstPersonController("92f7e23e-a3e3-48b1-a07c-cf5bff258374");
     const joysticksElement = document.getElementById('joysticks') as HTMLElement;
     await SDK3DVerse.installExtension(SDK3DVerse_VirtualJoystick_Ext, joysticksElement);
+
+    const item = (await SDK3DVerse.engineAPI.findEntitiesByEUID("89ecb9f6-c7b9-489d-a872-c733c83b0bc5"))[0].getGlobalTransform().position
+    const tt : Totoro = new Totoro(item);
+    tt.hotAndCold();
   }, []);
 
   useEffect(() => {
