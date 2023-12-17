@@ -18,10 +18,14 @@ export class Raycast
             {
                 this.setSelectedEntity(i);
                 console.log(i);
+            }else if(entity.entity?.getParent().getEUID() == this.interactableObjects[i]){
+                this.setSelectedEntity(i);
+                console.log(i);
             }
         }
         console.log(entity.entity?.getEUID());
-    }
+        console.log(entity.entity?.getParent().getEUID());
+        }
 }
 
 export default Raycast;

@@ -46,7 +46,7 @@ export type viewport_info = {
     onCameraCreation ? : Function
 }
 
-export type SDK_Vec3 = [Number, Number, Number]
+export type SDK_Vec3 = [number, number, number]
 
 export type AABB = {
     min ? : SDK_Vec3,
@@ -240,7 +240,7 @@ export class Entity {
                 0,0,1,0,
                 0,0,0,1]
     } ;
-    public getGlobalTransform(stopAtParen ? : Entity | null) : Transform {
+    public getGlobalTransform(stopAtParent ? : Entity | null) : Transform {
         return {}
     } ;
     public getID() : string {

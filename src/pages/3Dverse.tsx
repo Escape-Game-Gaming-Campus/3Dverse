@@ -22,11 +22,12 @@ export var channel = new Map<pusherChannels, any>();
 declare const SDK3DVerse_VirtualJoystick_Ext: SDK3DVerse_ExtensionInterface;
 export const Canvas3Dverse = () => {
   const audioRef = useRef(new Audio('Boo_house.mp3'));
-  const interactableObjects = ["ee4d6092-4dca-4ace-a55c-3c3d4a468e84","d62610ef-5aa4-473c-b540-3a623e9590b9"];
+  const interactableObjects = ["ee4d6092-4dca-4ace-a55c-3c3d4a468e84","d62610ef-5aa4-473c-b540-3a623e9590b9","a46593ad-794c-4cb1-b0f3-728ec6803859","7b79a430-8aea-4f6a-8c1c-1eb05fe41089","c930d200-ae0a-4467-b106-663ca3dfe0cf"];//pin code / crime Scene / drawer / handle / lightbulb Totoro
   const [countdown, setCountdown] = useState(120);
   const [eventTriggered, setEventTriggered] = useState(false);
   const [selectedEntity, setSelectedEntity] = useState(-1);
   const [digicodeOpen, setDigicodeOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const [crimeSceneOpen, setCrimeSceneOpen] = useState(false);
   const [totoroRoom, setTotoroRoom] = useState(false);
   const [raycastGlobal, setRaycastGlobal] = useState<Raycast>();
@@ -124,6 +125,33 @@ export const Canvas3Dverse = () => {
     }
   };
 
+  const handleDrawerClick = async () => {
+    const drawer = await SDK3DVerse.engineAPI.findEntitiesByEUID("162ca7cb-089b-4a0a-8114-ce7dec2fb977");
+    const handle = await SDK3DVerse.engineAPI.findEntitiesByEUID("7b79a430-8aea-4f6a-8c1c-1eb05fe41089");
+    const lightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID("ba406661-7b0e-4436-b059-ecfa590bbb00");
+    const drawerTransform = await drawer[0].getGlobalTransform();
+    const handleTransform = await handle[0].getGlobalTransform();
+    const lightbulbTransform = await lightbulb[0].getGlobalTransform();
+    if(drawerTransform.position && handleTransform.position && lightbulbTransform.position)
+    { if (drawerOpen) {
+      await drawer[0].setGlobalTransform({ "position": [drawerTransform.position[0]+0.2, drawerTransform.position[1], drawerTransform.position[2]] })
+      await handle[0].setGlobalTransform({ "position": [handleTransform.position[0]+0.2, handleTransform.position[1], handleTransform.position[2]] })
+      await lightbulb[0].setGlobalTransform({ "position": [lightbulbTransform.position[0]+0.2, lightbulbTransform.position[1], lightbulbTransform.position[2]] })
+      setDrawerOpen(false);
+    } else {
+      await drawer[0].setGlobalTransform({ "position": [drawerTransform.position[0]-0.2, drawerTransform.position[1], drawerTransform.position[2]] })
+      await handle[0].setGlobalTransform({ "position": [handleTransform.position[0]-0.2, handleTransform.position[1], handleTransform.position[2]] })
+      await lightbulb[0].setGlobalTransform({ "position": [lightbulbTransform.position[0]-0.2, lightbulbTransform.position[1], lightbulbTransform.position[2]] })
+      setDrawerOpen(true);
+    }}
+  };
+
+  const handleLightbulbClick = async () => {
+    const lightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID("ba406661-7b0e-4436-b059-ecfa590bbb00");
+    //commande pour rajouter à l'inventaire
+    await lightbulb[0].setVisibility(false);
+ };
+
   const handleCloseDigicode = () => {
     setDigicodeOpen(false);
   };
@@ -177,7 +205,7 @@ export const Canvas3Dverse = () => {
 
     fetchData();
   }, [totoroRoom]);
-  const list = [handleDigicodeClick,handleCrimeSceneClick];
+  const list = [handleDigicodeClick,handleCrimeSceneClick,handleDrawerClick,handleDrawerClick,handleLightbulbClick];
 
   useEffect(() => {
     if (eventTriggered && countdown > 0) {
