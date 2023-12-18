@@ -22,7 +22,7 @@ export var channel = new Map<pusherChannels, any>();
 declare const SDK3DVerse_VirtualJoystick_Ext: SDK3DVerse_ExtensionInterface;
 export const Canvas3Dverse = () => {
   const audioRef = useRef(new Audio('Boo_house.mp3'));
-  const interactableObjects = ["ee4d6092-4dca-4ace-a55c-3c3d4a468e84","d62610ef-5aa4-473c-b540-3a623e9590b9","a46593ad-794c-4cb1-b0f3-728ec6803859","7b79a430-8aea-4f6a-8c1c-1eb05fe41089","c930d200-ae0a-4467-b106-663ca3dfe0cf"];//pin code / crime Scene / drawer / handle / lightbulb Totoro
+  const interactableObjects = ["ee4d6092-4dca-4ace-a55c-3c3d4a468e84","d62610ef-5aa4-473c-b540-3a623e9590b9","a46593ad-794c-4cb1-b0f3-728ec6803859","7b79a430-8aea-4f6a-8c1c-1eb05fe41089","c930d200-ae0a-4467-b106-663ca3dfe0cf","3900effd-c890-4066-a3ca-64119ebe650e","e8d9cf51-4ff3-4cbc-ab05-38ff66aedf03","963be081-3931-486c-b8fc-da896ce49340"];//pin code / crime Scene / drawer / handle / lightbulb Totoro/ red base/blue base/green base
   const [countdown, setCountdown] = useState(120);
   const [eventTriggered, setEventTriggered] = useState(false);
   const [selectedEntity, setSelectedEntity] = useState(-1);
@@ -33,6 +33,9 @@ export const Canvas3Dverse = () => {
   const [raycastGlobal, setRaycastGlobal] = useState<Raycast>();
   const [code, setCode] = useState("");
   const [codeCrime, setCodeCrime] = useState("");
+  const [redLight, setRedLight] = useState(false);
+  const [blueLight, setBlueLight] = useState(false);
+  const [greenLight, setGreenLight] = useState(false);
   const statusPusher = useScript(
     `https://js.pusher.com/8.2.0/pusher.min.js`,
     {
@@ -74,6 +77,20 @@ export const Canvas3Dverse = () => {
       setTotoroRoom(data.valid);
     });
   }
+  const setLightsOff = async () =>{
+    const redLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID("c8e714d5-bbca-4f8a-b3cd-129ade233c8a");
+    const redLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID("d8a9d815-9682-42cf-b205-f8cc69a6c5d6");
+    const blueLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID("43bb9e8d-2672-4a0a-aa0d-5f3c214ea624");
+    const blueLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID("89ec5c77-4806-4e1d-9ebc-454a85d538d5");
+    const greenLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID("cd8a4b3e-de57-41ba-9151-95e6a016f226");
+    const greenLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID("54145b1f-2b48-4a47-8aa5-68f8e1b37c12");
+    await redLightbulb[0].setVisibility(false);
+    await redLightbulbLight[0].setVisibility(false);
+    await blueLightbulb[0].setVisibility(false);
+    await blueLightbulbLight[0].setVisibility(false);
+    await greenLightbulb[0].setVisibility(false);
+    await greenLightbulbLight[0].setVisibility(false);
+   }
 
   const initApp = useCallback(async () => {
     const character = new Character(SDK3DVerse);
@@ -93,6 +110,7 @@ export const Canvas3Dverse = () => {
     await SDK3DVerse.installExtension(SDK3DVerse_VirtualJoystick_Ext, joysticksElement);
     const raycast = new Raycast(SDK3DVerse,interactableObjects,setSelectedEntity);
     setRaycastGlobal(raycast);
+    setLightsOff();
   }, []);
 
   useEffect(() => {
@@ -152,6 +170,50 @@ export const Canvas3Dverse = () => {
     await lightbulb[0].setVisibility(false);
  };
 
+ const handleRedBaseClick = async () =>{
+  //utiliser l'ampoule selec depuis l'inventaire si aucune selec ne rien faire
+  const redLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID("c8e714d5-bbca-4f8a-b3cd-129ade233c8a");
+  const redLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID("d8a9d815-9682-42cf-b205-f8cc69a6c5d6");
+  if(redLight){
+    await redLightbulb[0].setVisibility(false);
+    await redLightbulbLight[0].setVisibility(false);
+    setRedLight(false);
+  }else{
+    await redLightbulb[0].setVisibility(true);
+    await redLightbulbLight[0].setVisibility(true);
+    setRedLight(true);
+  }
+ }
+
+ const handleBlueBaseClick = async () =>{
+  //utiliser l'ampoule selec depuis l'inventaire si aucune selec ne rien faire
+  const blueLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID("43bb9e8d-2672-4a0a-aa0d-5f3c214ea624");
+  const blueLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID("89ec5c77-4806-4e1d-9ebc-454a85d538d5");
+  if(blueLight){
+    await blueLightbulb[0].setVisibility(false);
+    await blueLightbulbLight[0].setVisibility(false);
+    setBlueLight(false);
+  }else{
+    await blueLightbulb[0].setVisibility(true);
+    await blueLightbulbLight[0].setVisibility(true);
+    setBlueLight(true);
+  }
+ }
+ const handleGreenBaseClick = async () =>{
+  //utiliser l'ampoule selec depuis l'inventaire si aucune selec ne rien faire
+  const greenLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID("cd8a4b3e-de57-41ba-9151-95e6a016f226");
+  const greenLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID("54145b1f-2b48-4a47-8aa5-68f8e1b37c12");
+  if(greenLight){
+    await greenLightbulb[0].setVisibility(false);
+    await greenLightbulbLight[0].setVisibility(false);
+    setGreenLight(false);
+  }else{
+    await greenLightbulb[0].setVisibility(true);
+    await greenLightbulbLight[0].setVisibility(true);
+    setGreenLight(true);
+  }
+ }
+
   const handleCloseDigicode = () => {
     setDigicodeOpen(false);
   };
@@ -205,7 +267,7 @@ export const Canvas3Dverse = () => {
 
     fetchData();
   }, [totoroRoom]);
-  const list = [handleDigicodeClick,handleCrimeSceneClick,handleDrawerClick,handleDrawerClick,handleLightbulbClick];
+  const list = [handleDigicodeClick,handleCrimeSceneClick,handleDrawerClick,handleDrawerClick,handleLightbulbClick,handleRedBaseClick,handleBlueBaseClick,handleGreenBaseClick];
 
   useEffect(() => {
     if (eventTriggered && countdown > 0) {
