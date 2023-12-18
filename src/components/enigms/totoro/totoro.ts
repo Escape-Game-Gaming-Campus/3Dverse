@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { _SDK3DVerse } from "../../../_3dverseEngine/declare";
 import { SDK_Vec3 } from "../../../_3dverseEngine/declareGlobal";
 import Player from "../../../constants/players";
@@ -30,13 +30,15 @@ export class Totoro {
 
     constructor(itemUUID: string) {
         this.itemUUID = itemUUID;
-        var func = (async () => {
-            const element = ((await _SDK3DVerse.engineAPI.findEntitiesByEUID(`${this.itemUUID}`))[0].getGlobalTransform().position as SDK_Vec3)
-            return element;
-        });
-        func().then((res) => {
-            this.item = res;
-        });
+        console.log("uuid", itemUUID)
+        // var func = (async () => {
+        //     console.log("aaabbbccc", await _SDK3DVerse.engineAPI.findEntitiesByEUID(`${this.itemUUID}`))
+        //     var element = (await _SDK3DVerse.engineAPI.findEntitiesByEUID(`${this.itemUUID}`))[0].getGlobalTransform().position as SDK_Vec3
+        //     return element;
+        // });
+        // func().then((res) => {
+        //     this.item = res;
+        // });
         this.playerNear = { "timer": 0, "playerId": 0 };
         this.itemCatch = false;
     };

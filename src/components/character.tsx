@@ -1,7 +1,7 @@
 import { _SDK3DVerse } from '../_3dverseEngine/declare';
 
 export class Character {
-    private playerName : string = "Player" + _SDK3DVerse.getClientUUID();
+    public playerName : string = "Player" + _SDK3DVerse.getClientUUID();
 
     private SDK3DVerse:typeof _SDK3DVerse;
     constructor(SDK3DVerse:typeof _SDK3DVerse){

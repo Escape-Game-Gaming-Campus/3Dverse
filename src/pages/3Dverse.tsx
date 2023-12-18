@@ -12,6 +12,7 @@ import { Entity, SDK3DVerse_ExtensionInterface } from '../_3dverseEngine/declare
 import { BlocNoteReact } from '../components/blocNote';
 import axios from 'axios';
 import { Totoro, setPlayers, player } from '../components/enigms/totoro/totoro';
+import Player from '../constants/players';
 
 declare const SDK3DVerse: typeof _SDK3DVerse;
 declare const Pusher: any;
@@ -22,8 +23,7 @@ export const Canvas3Dverse = () => {
   const [digicodeOpen, setDigicodeOpen] = useState(false);
   const [totoroRoom, setTotoroRoom] = useState(false);
   const [code, setCode] = useState("");
-  const character = new Character(SDK3DVerse);
-  const totoro = new Totoro(`${AppConfig.TOTORO_S_KEY}`);
+  const totoro = new Totoro(AppConfig.TOTORO_S_KEY);
 
   const statusPusher = useScript(
     `https://js.pusher.com/8.2.0/pusher.min.js`,
@@ -65,10 +65,10 @@ export const Canvas3Dverse = () => {
       console.log("PUSHER : ", JSON.stringify(data));
       setTotoroRoom(data.valid);
     });
-
   }
 
   const initApp = useCallback(async () => {
+    const character = new Character(SDK3DVerse);
     await SDK3DVerse.joinOrStartSession({
       userToken: AppConfig.USER_TOKEN,
       sceneUUID: AppConfig.SCENE_UUID,
@@ -83,6 +83,11 @@ export const Canvas3Dverse = () => {
     await character.InitFirstPersonController("92f7e23e-a3e3-48b1-a07c-cf5bff258374");
     const joysticksElement = document.getElementById('joysticks') as HTMLElement;
     await SDK3DVerse.installExtension(SDK3DVerse_VirtualJoystick_Ext, joysticksElement);
+
+    // setPlayers()
+    // totoro.enigmHotAndCold(player as Player[])
+    console.log("azzzzz", (await SDK3DVerse.engineAPI.findEntitiesByEUID(`${AppConfig.TOTORO_S_KEY}`))[0].getGlobalTransform().position)
+
   }, []);
 
   useEffect(() => {
