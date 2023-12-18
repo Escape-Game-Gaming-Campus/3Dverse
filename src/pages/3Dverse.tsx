@@ -12,7 +12,6 @@ import { Entity, SDK3DVerse_ExtensionInterface } from '../_3dverseEngine/declare
 import { BlocNoteReact } from '../components/blocNote';
 import axios from 'axios';
 import { getPlayers, playerList } from '../components/enigms/totoro/totoro';
-import Player from '../constants/players';
 
 declare const SDK3DVerse: typeof _SDK3DVerse;
 declare const Pusher: any;
@@ -53,7 +52,7 @@ export const Canvas3Dverse = () => {
     var pusher = new Pusher('39f939b9f53716caf5d8', {
       cluster: 'eu'
     });
-
+    
     channel.set(pusherChannels.DEV, pusher.subscribe(pusherChannels.DEV));
     channel.set(pusherChannels.INVENTORY, pusher.subscribe(pusherChannels.INVENTORY));
     channel.set(pusherChannels.ENIGMS, pusher.subscribe(pusherChannels.ENIGMS));
@@ -64,6 +63,9 @@ export const Canvas3Dverse = () => {
       console.log("PUSHER : ", JSON.stringify(data));
       setTotoroRoom(data.valid);
     });
+
+    getPlayers()
+    console.log(playerList)
   }
 
   const initApp = useCallback(async () => {
@@ -85,13 +87,6 @@ export const Canvas3Dverse = () => {
 
     const item = (await SDK3DVerse.engineAPI.findEntitiesByEUID("89ecb9f6-c7b9-489d-a872-c733c83b0bc5"))[0].getGlobalTransform().position
 
-    var playerList : Player[] = []
-    // getPlayers()
-    channel.get(pusherChannels.DEV).bind('updatePlayers', function (data: Player[]) {
-      console.log("Player : ", JSON.stringify(data));
-      playerList = data;
-  });
-    setTimeout(() => console.log(playerList), 10000)
 
   }, []);
 
