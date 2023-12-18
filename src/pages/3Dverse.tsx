@@ -11,7 +11,8 @@ import Digicode from '../components/enigms/ddust2/digicode';
 import { Entity, SDK3DVerse_ExtensionInterface } from '../_3dverseEngine/declareGlobal';
 import { BlocNoteReact } from '../components/blocNote';
 import axios from 'axios';
-import Totoro from '../components/enigms/totoro/totoro';
+import { getPlayers, playerList } from '../components/enigms/totoro/totoro';
+import Player from '../constants/players';
 
 declare const SDK3DVerse: typeof _SDK3DVerse;
 declare const Pusher: any;
@@ -83,8 +84,15 @@ export const Canvas3Dverse = () => {
     await SDK3DVerse.installExtension(SDK3DVerse_VirtualJoystick_Ext, joysticksElement);
 
     const item = (await SDK3DVerse.engineAPI.findEntitiesByEUID("89ecb9f6-c7b9-489d-a872-c733c83b0bc5"))[0].getGlobalTransform().position
-    const tt : Totoro = new Totoro(item);
-    tt.hotAndCold();
+
+    var playerList : Player[] = []
+    // getPlayers()
+    channel.get(pusherChannels.DEV).bind('updatePlayers', function (data: Player[]) {
+      console.log("Player : ", JSON.stringify(data));
+      playerList = data;
+  });
+    setTimeout(() => console.log(playerList), 10000)
+
   }, []);
 
   useEffect(() => {

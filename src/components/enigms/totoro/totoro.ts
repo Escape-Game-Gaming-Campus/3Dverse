@@ -1,33 +1,32 @@
+import { useState } from "react";
 import { _SDK3DVerse } from "../../../_3dverseEngine/declare";
 import { SDK_Vec3 } from "../../../_3dverseEngine/declareGlobal";
 import Player from "../../../constants/players";
 import pusherChannels from "../../../constants/pusherChannels";
 import { channel } from "../../../pages/3Dverse";
 
+export var playerList : Player[] = [];
 
-function getPlayers()
+export function getPlayers()
 {
-    let datas : Player[] = [];
-
-    channel.get(pusherChannels.DEV).bind('updatePlayers', function (data: { players: Player }) {
-        console.log("PUSHER : ", JSON.stringify(data));
-        datas.push(data.players);
+    channel.get(pusherChannels.DEV).bind('updatePlayers', function (data: Player[]) {
+        console.log("Player : ", JSON.stringify(data));
+        playerList = data;
     });
-    return datas
 }
 
 
-export default class Totoro {
-    players: Player[];
+export class Totoro {
+    // players: Player[];
     item: SDK_Vec3 | undefined;
     
     constructor(itemPos : SDK_Vec3 | undefined) {
         this.item = itemPos
-        this.players = getPlayers();
+        // this.players = getPlayers();
     };
 
     public hotAndCold(itemPosition?: SDK_Vec3, player?: Player) {
-        console.log({"players" : this.players, "item" : this.item});
+        // console.log({"players" : this.players, "item" : this.item});
 
         // const itemPos = { "x": itemPosition[0], "y": itemPosition[1], "z": itemPosition[2] }
         // const playerPos = { "x": player.position[0], "y": player.position[1], "z": player.position[2] }
