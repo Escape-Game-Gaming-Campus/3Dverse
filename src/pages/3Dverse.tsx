@@ -166,9 +166,18 @@ export const Canvas3Dverse = () => {
 
   const handleLightbulbClick = async () => {
     const lightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID("ba406661-7b0e-4436-b059-ecfa590bbb00");
-    //commande pour rajouter à l'inventaire
+    axios.post(`${AppConfig.API_HOST}:${AppConfig.API_PORT}/inv/add`, {  "objs" : [
+      {"uuid": 3}
+  ] })
     await lightbulb[0].setVisibility(false);
  };
+
+ const handleLightbulbFlash = async () => { // à appeler quand le capteur du casier sera activé
+  axios.post(`${AppConfig.API_HOST}:${AppConfig.API_PORT}/inv/add`, {  "objs" : [
+    {"uuid": 2}
+] })
+};
+
 
  const handleRedBaseClick = async () =>{
   //utiliser l'ampoule selec depuis l'inventaire si aucune selec ne rien faire
@@ -243,11 +252,11 @@ export const Canvas3Dverse = () => {
   }, [code]);
 
 
-  // useEffect(() => {
-  //   axios.post(`${AppConfig.API_HOST}:${AppConfig.API_PORT}/hallway2/tryPsd`, { psd: codeCrime })
-  //     .then((response) => {})
-  //     .catch(error => console.error('Error:', error));
-  // }, [codeCrime]);
+  useEffect(() => {
+    axios.post(`${AppConfig.API_HOST}:${AppConfig.API_PORT}/hallway2/tryPsd`, { psd: codeCrime })
+      .then((response) => {})
+      .catch(error => console.error('Error:', error));
+  }, [codeCrime]);
 //à rajouter dans l'API
   useEffect(() => {
     const fetchData = async () => {
