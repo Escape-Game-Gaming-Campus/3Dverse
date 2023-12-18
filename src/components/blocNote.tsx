@@ -20,7 +20,7 @@ export class BlocNote {
     };
 
     public blocNoteButton = () => {
-        return <div className="blocNoteButton">
+        return <div className="blocNoteButton bluringOff">
             <i className="fa-regular fa-clipboard"
                 onClick={() => {
                     this.setOpened(true);
