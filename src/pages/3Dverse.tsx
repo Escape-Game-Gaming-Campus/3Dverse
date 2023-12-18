@@ -52,9 +52,9 @@ export const Canvas3Dverse = () => {
       cluster: 'eu'
     });
 
-    channel.set(pusherChannels.DEV, pusher.subscribe(pusherChannels.DEV));
-    channel.set(pusherChannels.INVENTORY, pusher.subscribe(pusherChannels.INVENTORY));
-    channel.set(pusherChannels.ENIGMS, pusher.subscribe(pusherChannels.ENIGMS));
+    for (const value in pusherChannels) {
+      channel.set(pusherChannels[value as keyof typeof pusherChannels], pusher.subscribe(pusherChannels[value as keyof typeof pusherChannels]));
+    }
     channel.get(pusherChannels.DEV).bind('helloWorld', function (data: object) {
       console.log("PUSHER : ", JSON.stringify(data));
     });
