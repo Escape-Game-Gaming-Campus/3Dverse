@@ -25,7 +25,7 @@ export class BlocNote {
                 onClick={() => {
                     this.setOpened(true);
                     bluringCanvas(25);
-                }}></i>
+                }} />
         </div>
     }
 
@@ -61,7 +61,7 @@ export const BlocNoteReact = () => {
                     onClick={() => { 
                         setOpened(false);
                         bluringCanvas();
-                    }}></i>
+                    }} />
             </>
             : <>{blocNote.blocNoteButton()}</>
     }</>

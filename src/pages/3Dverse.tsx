@@ -158,30 +158,29 @@ export const Canvas3Dverse = () => {
 
   return (
     <><LoadingBar ready={ready} loadPage={load3Dverse} />
-    {status3Dverse === 'ready' && statusPusher === 'ready' ?
-      <>
-        <canvas id='display-canvas' tabIndex={1} />
-        {console.log(code)}
+      {status3Dverse === 'ready' && statusPusher === 'ready' ?
+        <>
+          <canvas id='display-canvas' tabIndex={1} />
+          {console.log(code)}
 
-        {totoroRoom ? console.log("ouvert :D") : console.log("fermé D:")}
+          {totoroRoom ? console.log("ouvert :D") : console.log("fermé D:")}
 
-        <div className='BlocNoteReact'>
-          <BlocNoteReact />
-        </div>
-
-        <div>
-          <div style={{ position: "absolute", top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
-            {totoroRoom ? <></> : (<button className='bluringOff' onClick={handleDigicodeClick}>Open Digicode</button>)}
-
-            {digicodeOpen && (
-              <Digicode onClose={handleCloseDigicode} setCode={setCode} onDigitPress={handleDigitPress} />
-            )}
+          <div className='BlocNoteReact'>
+            <BlocNoteReact />
           </div>
-        </div>
-        <div className='bluringOff'>
-          <InventoryReact />
-        </div>
-      </>
-      : <></>}</>
+
+          {totoroRoom ? <></> : (<i className='bluringOff digiCodeButton fa-regular fa-file-code' onClick={handleDigicodeClick} />)}
+
+          {digicodeOpen && (
+            <div className='digicodeP'>
+              <i className="fa-solid fa-x" onClick={handleDigicodeClick} />
+              <Digicode onClose={handleCloseDigicode} setCode={setCode} onDigitPress={handleDigitPress} />
+            </div>
+          )}
+          <div className='bluringOff'>
+            <InventoryReact />
+          </div>
+        </>
+        : <></>}</>
   );
 };
