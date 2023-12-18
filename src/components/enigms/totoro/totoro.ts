@@ -8,7 +8,7 @@ import { getInventory } from "../../inventory";
 
 export var player: Player | undefined | Player[] = undefined;
 
-export function getPlayers(name?: string) {
+export function setPlayers(name?: string) {
     channel.get(pusherChannels.DEV).bind('updatePlayers', function (data: Player[]) {
         console.log("Player : ", JSON.stringify(data));
         var playerList: Player[] = data;
@@ -67,7 +67,7 @@ export class Totoro {
 
     public soundNearHotAndCold(players: Player[]) {
         this.setPlayerNear(players);
-        getPlayers("Player" + _SDK3DVerse.getClientUUID());
+        setPlayers("Player" + _SDK3DVerse.getClientUUID());
         if (player && this.playerNear.playerId === (player as Player).ID) {
             setInterval(() => { this.audioRef.current.play() }, this.playerNear.timer)
             console.log(this.playerNear.timer);
