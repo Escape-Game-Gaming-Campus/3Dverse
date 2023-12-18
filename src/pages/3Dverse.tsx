@@ -11,6 +11,7 @@ import Digicode from '../components/enigms/ddust2/digicode';
 import { SDK3DVerse_ExtensionInterface } from '../_3dverseEngine/declareGlobal';
 import { BlocNoteReact } from '../components/blocNote';
 import axios from 'axios';
+import { LoadingBar } from '../components/loadingBar';
 
 declare const SDK3DVerse: typeof _SDK3DVerse;
 declare const Pusher: any;
@@ -21,6 +22,8 @@ export const Canvas3Dverse = () => {
   const [digicodeOpen, setDigicodeOpen] = useState(false);
   const [totoroRoom, setTotoroRoom] = useState(false);
   const [code, setCode] = useState("");
+  const [ready, setReady] = useState(false);
+  const [load3Dverse, setLoad3Dverse] = useState(false);
 
   const statusPusher = useScript(
     `https://js.pusher.com/8.2.0/pusher.min.js`,
@@ -76,15 +79,18 @@ export const Canvas3Dverse = () => {
       createDefaultCamera: false,
       startSimulation: "on-assets-loaded"
     });
-    SDK3DVerse.engineAPI.startSimulation();
+    await SDK3DVerse.engineAPI.startSimulation();
     await character.InitFirstPersonController("92f7e23e-a3e3-48b1-a07c-cf5bff258374");
-    const joysticksElement = document.getElementById('joysticks') as HTMLElement;
+    const joysticksElement = await document.getElementById('joysticks') as HTMLElement;
     await SDK3DVerse.installExtension(SDK3DVerse_VirtualJoystick_Ext, joysticksElement);
-    document.getElementById("virtual-joystick-move")?.className as string;
-    const joyStickLeft : HTMLElement = document.getElementById("virtual-joystick-move") as HTMLElement;
-    joyStickLeft.className = "bluringOff"
-    const joyStickRight : HTMLElement = document.getElementById("virtual-joystick-orientation") as HTMLElement;
-    joyStickRight.className = "bluringOff"
+    await document.getElementById("virtual-joystick-move")?.className as string;
+    const joyStickLeft: HTMLElement = await document.getElementById("virtual-joystick-move") as HTMLElement;
+    joyStickLeft.className = await "bluringOff"
+    const joyStickRight: HTMLElement = await document.getElementById("virtual-joystick-orientation") as HTMLElement;
+    joyStickRight.className = await "bluringOff"
+    setTimeout(() => {
+      setLoad3Dverse(true);
+    }, 1000)
   }, []);
 
   useEffect(() => {
@@ -121,12 +127,13 @@ export const Canvas3Dverse = () => {
   useEffect(() => {
     if (status3Dverse === 'ready' && statusPusher === 'ready') {
       updateClient();
+      setReady(true);
     }
   }, [status3Dverse, statusPusher]);
 
   useEffect(() => {
     axios.post(`${AppConfig.API_HOST}:${AppConfig.API_PORT}/ddust2/tryPsd`, { psd: code })
-      .then((response) => {})
+      .then((response) => { })
       .catch(error => console.error('Error:', error));
   }, [code]);
 
@@ -150,7 +157,8 @@ export const Canvas3Dverse = () => {
   }, [totoroRoom]);
 
   return (
-    status3Dverse === 'ready' && statusPusher === 'ready' ?
+    <><LoadingBar ready={ready} loadPage={load3Dverse} />
+    {status3Dverse === 'ready' && statusPusher === 'ready' ?
       <>
         <canvas id='display-canvas' tabIndex={1} />
         {console.log(code)}
@@ -174,6 +182,6 @@ export const Canvas3Dverse = () => {
           <InventoryReact />
         </div>
       </>
-      : <></>
+      : <></>}</>
   );
 };
