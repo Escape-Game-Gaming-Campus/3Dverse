@@ -11,7 +11,7 @@ import Digicode from '../components/enigms/ddust2/digicode';
 import { Entity, SDK3DVerse_ExtensionInterface } from '../_3dverseEngine/declareGlobal';
 import { BlocNoteReact } from '../components/blocNote';
 import axios from 'axios';
-import { Totoro, getPlayers, player } from '../components/enigms/totoro/totoro';
+import { Totoro, setPlayers, player } from '../components/enigms/totoro/totoro';
 
 declare const SDK3DVerse: typeof _SDK3DVerse;
 declare const Pusher: any;
