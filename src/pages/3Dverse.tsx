@@ -13,6 +13,7 @@ import { BlocNoteReact } from '../components/blocNote';
 import axios from 'axios';
 import { Totoro, setPlayers, player } from '../components/enigms/totoro/totoro';
 import Player from '../constants/players';
+import { LoadingBar } from '../components/loadingBar';
 
 declare const SDK3DVerse: typeof _SDK3DVerse;
 declare const Pusher: any;
@@ -22,7 +23,9 @@ declare const SDK3DVerse_VirtualJoystick_Ext: SDK3DVerse_ExtensionInterface;
 export const Canvas3Dverse = () => {
   const [digicodeOpen, setDigicodeOpen] = useState(false);
   const [totoroRoom, setTotoroRoom] = useState(false);
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState("");  
+  const [ready, setReady] = useState(false);
+  const [load3Dverse, setLoad3Dverse] = useState(false);
   const totoro = new Totoro(AppConfig.TOTORO_S_KEY);
 
   const statusPusher = useScript(
@@ -54,10 +57,10 @@ export const Canvas3Dverse = () => {
     var pusher = new Pusher('39f939b9f53716caf5d8', {
       cluster: 'eu'
     });
-    
-    channel.set(pusherChannels.DEV, pusher.subscribe(pusherChannels.DEV));
-    channel.set(pusherChannels.INVENTORY, pusher.subscribe(pusherChannels.INVENTORY));
-    channel.set(pusherChannels.ENIGMS, pusher.subscribe(pusherChannels.ENIGMS));
+
+    for (const value in pusherChannels) {
+      channel.set(pusherChannels[value as keyof typeof pusherChannels], pusher.subscribe(pusherChannels[value as keyof typeof pusherChannels]));
+    }
     channel.get(pusherChannels.DEV).bind('helloWorld', function (data: object) {
       console.log("PUSHER : ", JSON.stringify(data));
     });
@@ -79,15 +82,23 @@ export const Canvas3Dverse = () => {
       createDefaultCamera: false,
       startSimulation: "on-assets-loaded"
     });
-    SDK3DVerse.engineAPI.startSimulation();
+    await SDK3DVerse.engineAPI.startSimulation();
     await character.InitFirstPersonController("92f7e23e-a3e3-48b1-a07c-cf5bff258374");
-    const joysticksElement = document.getElementById('joysticks') as HTMLElement;
+    const joysticksElement = await document.getElementById('joysticks') as HTMLElement;
     await SDK3DVerse.installExtension(SDK3DVerse_VirtualJoystick_Ext, joysticksElement);
-
+    await document.getElementById("virtual-joystick-move")?.className as string;
+    const joyStickLeft: HTMLElement = await document.getElementById("virtual-joystick-move") as HTMLElement;
+    joyStickLeft.className = await "bluringOff"
+    const joyStickRight: HTMLElement = await document.getElementById("virtual-joystick-orientation") as HTMLElement;
+    joyStickRight.className = await "bluringOff"
+    setTimeout(() => {
+      setLoad3Dverse(true);
+    }, 1000)
+    
+    
     // setPlayers()
     // totoro.enigmHotAndCold(player as Player[])
     console.log("azzzzz", (await SDK3DVerse.engineAPI.findEntitiesByEUID(`${AppConfig.TOTORO_S_KEY}`))[0].getGlobalTransform().position)
-
   }, []);
 
   useEffect(() => {
@@ -124,12 +135,13 @@ export const Canvas3Dverse = () => {
   useEffect(() => {
     if (status3Dverse === 'ready' && statusPusher === 'ready') {
       updateClient();
+      setReady(true);
     }
   }, [status3Dverse, statusPusher]);
 
   useEffect(() => {
     axios.post(`${AppConfig.API_HOST}:${AppConfig.API_PORT}/ddust2/tryPsd`, { psd: code })
-      .then((response) => {})
+      .then((response) => { })
       .catch(error => console.error('Error:', error));
   }, [code]);
 
@@ -153,27 +165,30 @@ export const Canvas3Dverse = () => {
   }, [totoroRoom]);
 
   return (
-    status3Dverse === 'ready' && statusPusher === 'ready' ?
-      <>
-        <canvas id='display-canvas' tabIndex={1} />
-        {console.log(code)}
-        {totoroRoom ? console.log("ouvert :D") : console.log("fermé D:")}
-        <div className='BlocNoteReact'>
-          <BlocNoteReact />
-        </div>
-        <div>
-          <div style={{ position: "absolute", top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
-            {totoroRoom ? <></> : (<button onClick={handleDigicodeClick}>Open Digicode</button>)}
+    <><LoadingBar ready={ready} loadPage={load3Dverse} />
+      {status3Dverse === 'ready' && statusPusher === 'ready' ?
+        <>
+          <canvas id='display-canvas' tabIndex={1} />
+          {console.log(code)}
 
-            {digicodeOpen && (
-              <Digicode onClose={handleCloseDigicode} setCode={setCode} onDigitPress={handleDigitPress} />
-            )}
+          {totoroRoom ? console.log("ouvert :D") : console.log("fermé D:")}
+
+          <div className='BlocNoteReact'>
+            <BlocNoteReact />
           </div>
-        </div>
-        <div>
-          <InventoryReact />
-        </div>
-      </>
-      : <></>
+
+          {totoroRoom ? <></> : (<i className='bluringOff digiCodeButton fa-regular fa-file-code' onClick={handleDigicodeClick} />)}
+
+          {digicodeOpen && (
+            <div className='digicodeP'>
+              <i className="fa-solid fa-x" onClick={handleDigicodeClick} />
+              <Digicode onClose={handleCloseDigicode} setCode={setCode} onDigitPress={handleDigitPress} />
+            </div>
+          )}
+          <div className='bluringOff'>
+            <InventoryReact />
+          </div>
+        </>
+        : <></>}</>
   );
 };

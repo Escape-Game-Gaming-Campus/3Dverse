@@ -1,34 +1,61 @@
-* body, div#root{ 
-    width : 100vw;
-    height : 100vh;
+* body,
+* body div#root {
+    width: 100vw;
+    height: 100vh;
 
-    #display-canvas-3Dverse, #UI {
-        width : 100vw;
-        height : 100vh;
+    div.digicodeP {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        i.fa-solid.fa-x {
+            position: absolute;
+            top: 3vh;
+            right: 3vw;
+            font-size: 6vw;
+        }
+    }
+
+    i.digiCodeButton {
+        position: absolute;
+        top: 3vh;
+        left: 3vw;
+        font-size: 6vw;
+    }
+
+    #display-canvas-3Dverse,
+    #UI {
+        width: 100vw;
+        height: 100vh;
         position: absolute;
         top: 0px;
     }
 
-    .nipple 
-    {
-        .back
-        {
-            background : gray !important;
+    .nipple {
+        .back {
+            background: gray !important;
         }
-        .front
-        {
-            background : black !important;
+        .front {
+            background: black !important;
         }
     }
 
-    #virtual-joystick-height-right, #virtual-joystick-height-left
-    {
-        display: none ;
+    #virtual-joystick-height-right,
+    #virtual-joystick-height-left {
+        display: none;
     }
 
-    .blocNoteReact 
-    {
+    .blocNoteReact {
         top: 0;
         right: 0;
+    }
+
+    .bluringOn {
+        display: none;
     }
 }
