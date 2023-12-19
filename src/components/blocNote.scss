@@ -32,5 +32,13 @@ div.information
         background-color: gray;
         display : flex;
         flex-direction: column;
+
+        textarea {
+            width: 75vw;
+            min-height: 50vh;
+            max-height: 95vh;
+            font-size: 25px;
+            resize: none;
+        }
     }
 }

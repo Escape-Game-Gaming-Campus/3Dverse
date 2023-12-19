@@ -48,7 +48,7 @@ export const Canvas3Dverse = () => {
         .then((response) => response.json())
         .then((data) => { })
         .catch(error => console.error('Error:', error));
-    }, 100);
+    }, 1000);
   }
 
   async function pusherInit() {
@@ -93,7 +93,7 @@ export const Canvas3Dverse = () => {
     joyStickRight.className = await "bluringOff"
     setTimeout(() => {
       setLoad3Dverse(true);
-    }, 1000)
+    }, 750)
     
     
     // setPlayers()

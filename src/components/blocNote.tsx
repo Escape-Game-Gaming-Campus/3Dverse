@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./blocNote.scss"
 import bluringCanvas from "../utils/blur";
 import AppConfig from '../_3dverseEngine/AppConfig.json';
@@ -42,12 +42,19 @@ export const BlocNoteReact = () => {
 
     const blocNote = new BlocNote(opened, setOpened, information);
 
+    useEffect(() => {
+        var element = document.getElementById("allNotes");
+        if (element == null) return;
+        element.style.height = "1px";
+        element.style.height = `${element.scrollHeight}px`;
+    }, [information, blocNote.opened]);
+
     return <>{
         blocNote.opened ?
             <>
                 <div className="information">
                     <form>
-                        <textarea placeholder="Notes" value={blocNote.information}
+                        <textarea id="allNotes" placeholder="Notes" value={blocNote.information}
                             onChange={(event: any) => {
                                 setInformation(event.target.value)
 
