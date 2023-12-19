@@ -48,7 +48,6 @@ export const InventoryReact = () => {
     const inventory : Inventory = new Inventory(`${AppConfig.FRONT.HOST}:${AppConfig.FRONT.PORT}/img/case.png`);
 
     channel.get(pusherChannels.INVENTORY).bind('updateInventory', function (data: Object[]) {
-        console.log("PUSHER : ", JSON.stringify(data));
         inventory.setInv(data, setInvComponent);
     });
 
@@ -63,7 +62,6 @@ export async function getInventory(name : string)
 {
     var inventory : Object | undefined;
     await channel.get(pusherChannels.INVENTORY).bind('updateInventory', function (data: Object[]) {
-        console.log("PUSHER : ", JSON.stringify(data));
         const inventories : Object[] = data
         inventory = inventories.filter((e) => e.name === name)[0]
     });

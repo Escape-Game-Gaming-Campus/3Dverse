@@ -36,7 +36,6 @@ export const BlocNoteReact = () => {
     const [information, setInformation] = useState("");
 
     channel.get(pusherChannels.DEV).bind('notesChange', function (data: {notes : string}) {
-        console.log("PUSHER : ", JSON.stringify(data));
         setInformation(data.notes)
     });
 
@@ -60,7 +59,7 @@ export const BlocNoteReact = () => {
 
                                 axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/notesChanges`, {notes : event.target.value})
                                 .then((response) => { })
-                                .catch(error => console.error('Error:', error));
+                                .catch(err => {});
                             }} />
                     </form>
                 </div>

@@ -10,7 +10,6 @@ export var player: Player | undefined | Player[] = undefined;
 
 export function setPlayers(name?: string) {
     channel.get(pusherChannels.DEV).bind('updatePlayers', function (data: Player[]) {
-        console.log("Player : ", JSON.stringify(data));
         var playerList: Player[] = data;
         if (name) {
             player = playerList.filter((e) => e.name === name)[0]
@@ -30,9 +29,7 @@ export class Totoro {
 
     constructor(itemUUID: string) {
         this.itemUUID = itemUUID;
-        console.log("uuid", itemUUID)
         // var func = (async () => {
-        //     console.log("aaabbbccc", await _SDK3DVerse.engineAPI.findEntitiesByEUID(`${this.itemUUID}`))
         //     var element = (await _SDK3DVerse.engineAPI.findEntitiesByEUID(`${this.itemUUID}`))[0].getGlobalTransform().position as SDK_Vec3
         //     return element;
         // });
@@ -72,7 +69,6 @@ export class Totoro {
         setPlayers("Player" + _SDK3DVerse.getClientUUID());
         if (player && this.playerNear.playerId === (player as Player).ID) {
             setInterval(() => { this.audioRef.current.play() }, this.playerNear.timer)
-            console.log(this.playerNear.timer);
         }
     }
 

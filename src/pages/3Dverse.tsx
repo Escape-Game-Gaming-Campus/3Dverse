@@ -47,12 +47,12 @@ export const Canvas3Dverse = () => {
       fetch(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/update`)
         .then((response) => response.json())
         .then((data) => { })
-        .catch(error => console.error('Error:', error));
+        .catch(err => {});
     }, 1000);
   }
 
   async function pusherInit() {
-    Pusher.logToConsole = true;
+    Pusher.logToConsole = false;
 
     var pusher = new Pusher(AppConfig.PUSHER.KEY, {
       cluster: 'eu'
@@ -62,10 +62,9 @@ export const Canvas3Dverse = () => {
       channel.set(pusherChannels[value as keyof typeof pusherChannels], pusher.subscribe(pusherChannels[value as keyof typeof pusherChannels]));
     }
     channel.get(pusherChannels.DEV).bind('helloWorld', function (data: object) {
-      console.log("PUSHER : ", JSON.stringify(data));
+      console.debug(JSON.stringify(data));
     });
     channel.get(pusherChannels.ENIGMS).bind('ddust2TryPsd', function (data: { valid: boolean }) {
-      console.log("PUSHER : ", JSON.stringify(data));
       setTotoroRoom(data.valid);
     });
   }
@@ -98,7 +97,6 @@ export const Canvas3Dverse = () => {
     
     // setPlayers()
     // totoro.enigmHotAndCold(player as Player[])
-    console.log("azzzzz", (await SDK3DVerse.engineAPI.findEntitiesByEUID(`${AppConfig._3DVERSE.TOTORO_S_KEY}`))[0].getGlobalTransform().position)
   }, []);
 
   useEffect(() => {
@@ -142,36 +140,34 @@ export const Canvas3Dverse = () => {
   useEffect(() => {
     axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/ddust2/tryPsd`, { psd: code })
       .then((response) => { })
-      .catch(error => console.error('Error:', error));
+      .catch(err => {});
   }, [code]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const entities = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.DDUST2_DOOR);
-        console.log(entities);
         if (totoroRoom && entities.length > 0) {
           const firstEntity = entities[0];
           await firstEntity.setGlobalTransform({ "position": [-80, 10, -20] });
           await firstEntity.setVisibility(false)
           // await SDK3DVerse.engineAPI.deleteEntities(entities);
+        } else if (!totoroRoom && entities.length > 0) {
+          const firstEntity = entities[0];
+          await firstEntity.setGlobalTransform({ "position": [-7.309777, -0.600371, -0.220404] });
+          await firstEntity.setVisibility(true)
         }
-      } catch (error) {
-        console.error("Error fetching entities:", error);
-      }
+      } catch (err) {}
     };
 
     fetchData();
-  }, [totoroRoom]);
+  }, [totoroRoom, load3Dverse]);
 
   return (
     <><LoadingBar ready={ready} loadPage={load3Dverse} />
       {status3Dverse === 'ready' && statusPusher === 'ready' ?
         <>
           <canvas id='display-canvas' tabIndex={1} />
-          {console.log(code)}
-
-          {totoroRoom ? console.log("ouvert :D") : console.log("fermé D:")}
 
           <div className='BlocNoteReact'>
             <BlocNoteReact />
