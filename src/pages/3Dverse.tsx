@@ -98,7 +98,7 @@ export const Canvas3Dverse = () => {
 
   const initApp = useCallback(async () => {
     const character = new Character(SDK3DVerse);
-    await SDK3DVerse.joinOrStartSession({
+    await SDK3DVerse.startSession({
       userToken: AppConfig._3DVERSE.USER_TOKEN,
       sceneUUID: AppConfig._3DVERSE.SCENE_UUID,
       canvas: (document.getElementById('display-canvas') as HTMLElement),
@@ -201,10 +201,9 @@ export const Canvas3Dverse = () => {
       if (itemSelected == 1 || itemSelected == 2 || itemSelected == 3) {
         await redLightbulb[0].setVisibility(true);
         setRedBase(itemSelected);
-        axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/inv/remove`, {
-          "objs": [
+        axios.delete(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/inv/remove`, {
+          params:
             { "uuid": itemSelected }
-          ]
         })
         if (itemSelected == 2) {
           await redLightbulbLight[0].setVisibility(true);
@@ -231,10 +230,9 @@ export const Canvas3Dverse = () => {
       if (itemSelected == 1 ||itemSelected == 2 ||itemSelected == 3) {
         await blueLightbulb[0].setVisibility(true);
         setBlueBase(itemSelected);
-        axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/inv/remove`, {
-          "objs": [
+        axios.delete(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/inv/remove`, {
+          params:
             { "uuid": itemSelected }
-          ]
         })
         if (itemSelected == 2) {
           await blueLightbulbLight[0].setVisibility(true);
@@ -259,10 +257,8 @@ export const Canvas3Dverse = () => {
       if (itemSelected == 1 || itemSelected == 2 || itemSelected == 3) {
         await greenLightbulb[0].setVisibility(true);
         setGreenBase(itemSelected);
-        axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/inv/remove`, {
-          "objs": [
-            { "uuid": itemSelected }
-          ]
+        axios.delete(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/inv/remove`, {
+          params:{ "uuid": itemSelected }
         })
         if (itemSelected == 2) {
           await greenLightbulbLight[0].setVisibility(true);
