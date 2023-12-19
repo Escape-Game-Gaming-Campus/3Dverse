@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useScript } from '@uidotdev/usehooks';
 import AppConfig from '../_3dverseEngine/AppConfig.json';
 import { _SDK3DVerse } from '../_3dverseEngine/declare';
@@ -8,11 +8,10 @@ import pusherChannels from '../constants/pusherChannels';
 import bluringCanvas from '../utils/blur';
 import { Character } from "../components/character";
 import Digicode from '../components/enigms/ddust2/digicode';
-import { Entity, SDK3DVerse_ExtensionInterface } from '../_3dverseEngine/declareGlobal';
+import { SDK3DVerse_ExtensionInterface } from '../_3dverseEngine/declareGlobal';
 import { BlocNoteReact } from '../components/blocNote';
 import axios from 'axios';
-import { Totoro, setPlayers, player } from '../components/enigms/totoro/totoro';
-import Player from '../constants/players';
+import { Totoro } from '../components/enigms/totoro/totoro';
 import { LoadingBar } from '../components/loadingBar';
 
 declare const SDK3DVerse: typeof _SDK3DVerse;
@@ -27,6 +26,7 @@ export const Canvas3Dverse = () => {
   const [ready, setReady] = useState(false);
   const [load3Dverse, setLoad3Dverse] = useState(false);
   const totoro = new Totoro(AppConfig._3DVERSE.TOTORO_S_KEY);
+  console.debug(totoro.itemUUID);
 
   const statusPusher = useScript(
     `https://js.pusher.com/8.2.0/pusher.min.js`,
@@ -69,7 +69,7 @@ export const Canvas3Dverse = () => {
     });
   }
 
-  const initApp = useCallback(async () => {
+  const initApp = async () => {
     const character = new Character(SDK3DVerse);
     await SDK3DVerse.startSession({ // TODO: mettre en joinOrStart(params) pour la version final
       userToken: AppConfig._3DVERSE.USER_TOKEN,
@@ -97,7 +97,7 @@ export const Canvas3Dverse = () => {
     
     // setPlayers()
     // totoro.enigmHotAndCold(player as Player[])
-  }, []);
+  };
 
   useEffect(() => {
     if (statusPusher === 'ready') {

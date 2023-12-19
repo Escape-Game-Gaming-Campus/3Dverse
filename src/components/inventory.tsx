@@ -27,14 +27,14 @@ export class Inventory
             <div className='inv'>
                 {
                     this.array.map((e, i) => {
-                        return <img key={`item_${i}`} className='inventory item' src={e.texture} alt={`Image of the item ${e.name} (uuid: ${e.UUID})`} />
+                        return <img key={`item_${i}`} className='inventory item' src={e.texture} alt={`Item ${e.name} (uuid: ${e.UUID})`} />
                     })
                 }
             </div>
             <div className='inv'>
                 {
                     this.array.map((e, i) => {
-                        return <img key={`case_${i}`} className='inventory case' src={this.caseTexture} alt="Image of case of inventory" />
+                        return <img key={`case_${i}`} className='inventory case' src={this.caseTexture} alt="Case of inventory" />
                     })
                 }
             </div>
@@ -42,10 +42,12 @@ export class Inventory
     }
 }
 
+export var inventory: Inventory;
+
 export const InventoryReact = () => {
     const [invComponent, setInvComponent] = useState(<></>);
 
-    const inventory : Inventory = new Inventory(`${AppConfig.FRONT.HOST}:${AppConfig.FRONT.PORT}/img/case.png`);
+    inventory = new Inventory(`${AppConfig.FRONT.HOST}:${AppConfig.FRONT.PORT}/img/case.png`);
 
     channel.get(pusherChannels.INVENTORY).bind('updateInventory', function (data: Object[]) {
         inventory.setInv(data, setInvComponent);

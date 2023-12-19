@@ -55,7 +55,7 @@ export class Totoro {
     public setPlayerNear(players: Player[]) {
         players.forEach((player) => {
             const selectedPlayer = this.hotAndCold(player);
-            if (this.playerNear.timer == 0) {
+            if (this.playerNear.timer === 0) {
                 this.playerNear = selectedPlayer;
             }
             else if (this.playerNear.timer > selectedPlayer.timer) {
