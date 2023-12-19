@@ -138,6 +138,7 @@ export const Canvas3Dverse = () => {
   }, [status3Dverse, statusPusher]);
 
   useEffect(() => {
+    if (code.length !== 4) return;
     axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/ddust2/tryPsd`, { psd: code })
       .then((response) => { })
       .catch(err => {});
