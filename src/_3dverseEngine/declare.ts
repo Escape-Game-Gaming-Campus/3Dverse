@@ -59,7 +59,7 @@ export module _SDK3DVerse {
     onStartingStreamer?: Function,
     onConnectingToEditor?: Function,
     onLoadingAssets?: Function,
-    defaultCameraSpeed?: string | Number,
+    defaultCameraSpeed?: string | number,
     createDefaultCamera?: boolean
   }): void { };
   export function joinSession(params: {
@@ -72,7 +72,7 @@ export module _SDK3DVerse {
     maxDimension?: number,
     onStartingStreamer?: Function,
     onConnectingToEditor?: Function,
-    defaultCameraSpeed?: string | Number
+    defaultCameraSpeed?: string | number
   }): void { };
   export function onConnected(): Promise<object> {
     return Promise.resolve({});

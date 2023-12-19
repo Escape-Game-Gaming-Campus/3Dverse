@@ -45,10 +45,9 @@ export class Inventory
 export const InventoryReact = () => {
     const [invComponent, setInvComponent] = useState(<></>);
 
-    const inventory : Inventory = new Inventory(`${AppConfig.HOST}:${AppConfig.PORT}/img/case.png`);
+    const inventory : Inventory = new Inventory(`${AppConfig.FRONT.HOST}:${AppConfig.FRONT.PORT}/img/case.png`);
 
     channel.get(pusherChannels.INVENTORY).bind('updateInventory', function (data: Object[]) {
-        console.log("PUSHER : ", JSON.stringify(data));
         inventory.setInv(data, setInvComponent);
     });
 
@@ -57,4 +56,14 @@ export const InventoryReact = () => {
     }, []);
 
     return invComponent
+}
+
+export async function getInventory(name : string)
+{
+    var inventory : Object | undefined;
+    await channel.get(pusherChannels.INVENTORY).bind('updateInventory', function (data: Object[]) {
+        const inventories : Object[] = data
+        inventory = inventories.filter((e) => e.name === name)[0]
+    });
+    return inventory
 }

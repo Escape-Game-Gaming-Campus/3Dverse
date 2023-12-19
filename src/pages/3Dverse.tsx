@@ -8,9 +8,11 @@ import pusherChannels from '../constants/pusherChannels';
 import bluringCanvas from '../utils/blur';
 import { Character } from "../components/character";
 import Digicode from '../components/enigms/ddust2/digicode';
-import { SDK3DVerse_ExtensionInterface } from '../_3dverseEngine/declareGlobal';
+import { Entity, SDK3DVerse_ExtensionInterface } from '../_3dverseEngine/declareGlobal';
 import { BlocNoteReact } from '../components/blocNote';
 import axios from 'axios';
+import { Totoro, setPlayers, player } from '../components/enigms/totoro/totoro';
+import Player from '../constants/players';
 import { LoadingBar } from '../components/loadingBar';
 
 declare const SDK3DVerse: typeof _SDK3DVerse;
@@ -21,9 +23,10 @@ declare const SDK3DVerse_VirtualJoystick_Ext: SDK3DVerse_ExtensionInterface;
 export const Canvas3Dverse = () => {
   const [digicodeOpen, setDigicodeOpen] = useState(false);
   const [totoroRoom, setTotoroRoom] = useState(false);
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState("");  
   const [ready, setReady] = useState(false);
   const [load3Dverse, setLoad3Dverse] = useState(false);
+  const totoro = new Totoro(AppConfig._3DVERSE.TOTORO_S_KEY);
 
   const statusPusher = useScript(
     `https://js.pusher.com/8.2.0/pusher.min.js`,
@@ -41,17 +44,17 @@ export const Canvas3Dverse = () => {
 
   function updateClient() {
     setTimeout(() => {
-      fetch(`${AppConfig.API_HOST}:${AppConfig.API_PORT}/update`)
+      fetch(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/update`)
         .then((response) => response.json())
         .then((data) => { })
-        .catch(error => console.error('Error:', error));
-    }, 100);
+        .catch(err => {});
+    }, 1000);
   }
 
   async function pusherInit() {
-    Pusher.logToConsole = true;
+    Pusher.logToConsole = false;
 
-    var pusher = new Pusher('39f939b9f53716caf5d8', {
+    var pusher = new Pusher(AppConfig.PUSHER.KEY, {
       cluster: 'eu'
     });
 
@@ -59,10 +62,9 @@ export const Canvas3Dverse = () => {
       channel.set(pusherChannels[value as keyof typeof pusherChannels], pusher.subscribe(pusherChannels[value as keyof typeof pusherChannels]));
     }
     channel.get(pusherChannels.DEV).bind('helloWorld', function (data: object) {
-      console.log("PUSHER : ", JSON.stringify(data));
+      console.debug(JSON.stringify(data));
     });
     channel.get(pusherChannels.ENIGMS).bind('ddust2TryPsd', function (data: { valid: boolean }) {
-      console.log("PUSHER : ", JSON.stringify(data));
       setTotoroRoom(data.valid);
     });
   }
@@ -70,8 +72,8 @@ export const Canvas3Dverse = () => {
   const initApp = useCallback(async () => {
     const character = new Character(SDK3DVerse);
     await SDK3DVerse.joinOrStartSession({
-      userToken: AppConfig.USER_TOKEN,
-      sceneUUID: AppConfig.SCENE_UUID,
+      userToken: AppConfig._3DVERSE.USER_TOKEN,
+      sceneUUID: AppConfig._3DVERSE.SCENE_UUID,
       canvas: (document.getElementById('display-canvas') as HTMLElement),
       // viewportProperties : {
       //   defaultControllerType : SDK3DVerse.controller_type.none,
@@ -80,7 +82,7 @@ export const Canvas3Dverse = () => {
       startSimulation: "on-assets-loaded"
     });
     await SDK3DVerse.engineAPI.startSimulation();
-    await character.InitFirstPersonController("92f7e23e-a3e3-48b1-a07c-cf5bff258374");
+    await character.InitFirstPersonController(AppConfig._3DVERSE.CHARACTER);
     const joysticksElement = await document.getElementById('joysticks') as HTMLElement;
     await SDK3DVerse.installExtension(SDK3DVerse_VirtualJoystick_Ext, joysticksElement);
     await document.getElementById("virtual-joystick-move")?.className as string;
@@ -90,7 +92,11 @@ export const Canvas3Dverse = () => {
     joyStickRight.className = await "bluringOff"
     setTimeout(() => {
       setLoad3Dverse(true);
-    }, 1000)
+    }, 750)
+    
+    
+    // setPlayers()
+    // totoro.enigmHotAndCold(player as Player[])
   }, []);
 
   useEffect(() => {
@@ -132,38 +138,36 @@ export const Canvas3Dverse = () => {
   }, [status3Dverse, statusPusher]);
 
   useEffect(() => {
-    axios.post(`${AppConfig.API_HOST}:${AppConfig.API_PORT}/ddust2/tryPsd`, { psd: code })
+    axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/ddust2/tryPsd`, { psd: code })
       .then((response) => { })
-      .catch(error => console.error('Error:', error));
+      .catch(err => {});
   }, [code]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const entities = await SDK3DVerse.engineAPI.findEntitiesByEUID("16a525a0-5892-4065-a11b-a94862c153a6");
-        console.log(entities);
+        const entities = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.DDUST2_DOOR);
         if (totoroRoom && entities.length > 0) {
           const firstEntity = entities[0];
           await firstEntity.setGlobalTransform({ "position": [-80, 10, -20] });
           await firstEntity.setVisibility(false)
           // await SDK3DVerse.engineAPI.deleteEntities(entities);
+        } else if (!totoroRoom && entities.length > 0) {
+          const firstEntity = entities[0];
+          await firstEntity.setGlobalTransform({ "position": [-7.309777, -0.600371, -0.220404] });
+          await firstEntity.setVisibility(true)
         }
-      } catch (error) {
-        console.error("Error fetching entities:", error);
-      }
+      } catch (err) {}
     };
 
     fetchData();
-  }, [totoroRoom]);
+  }, [totoroRoom, load3Dverse]);
 
   return (
     <><LoadingBar ready={ready} loadPage={load3Dverse} />
       {status3Dverse === 'ready' && statusPusher === 'ready' ?
         <>
           <canvas id='display-canvas' tabIndex={1} />
-          {console.log(code)}
-
-          {totoroRoom ? console.log("ouvert :D") : console.log("fermé D:")}
 
           <div className='BlocNoteReact'>
             <BlocNoteReact />

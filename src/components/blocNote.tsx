@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./blocNote.scss"
 import bluringCanvas from "../utils/blur";
 import AppConfig from '../_3dverseEngine/AppConfig.json';
@@ -36,24 +36,30 @@ export const BlocNoteReact = () => {
     const [information, setInformation] = useState("");
 
     channel.get(pusherChannels.DEV).bind('notesChange', function (data: {notes : string}) {
-        console.log("PUSHER : ", JSON.stringify(data));
         setInformation(data.notes)
     });
 
     const blocNote = new BlocNote(opened, setOpened, information);
+
+    useEffect(() => {
+        var element = document.getElementById("allNotes");
+        if (element == null) return;
+        element.style.height = "1px";
+        element.style.height = `${element.scrollHeight}px`;
+    }, [information, blocNote.opened]);
 
     return <>{
         blocNote.opened ?
             <>
                 <div className="information">
                     <form>
-                        <textarea placeholder="Notes" value={blocNote.information}
+                        <textarea id="allNotes" placeholder="Notes" value={blocNote.information}
                             onChange={(event: any) => {
                                 setInformation(event.target.value)
 
-                                axios.post(`${AppConfig.API_HOST}:${AppConfig.API_PORT}/notesChanges`, {notes : event.target.value})
+                                axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/notesChanges`, {notes : event.target.value})
                                 .then((response) => { })
-                                .catch(error => console.error('Error:', error));
+                                .catch(err => {});
                             }} />
                     </form>
                 </div>
