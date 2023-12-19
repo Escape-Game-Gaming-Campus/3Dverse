@@ -83,7 +83,7 @@ export const Canvas3Dverse = () => {
       startSimulation: "on-assets-loaded"
     });
     await SDK3DVerse.engineAPI.startSimulation();
-    await character.InitFirstPersonController("92f7e23e-a3e3-48b1-a07c-cf5bff258374");
+    await character.InitFirstPersonController(AppConfig.CHARACTER);
     const joysticksElement = await document.getElementById('joysticks') as HTMLElement;
     await SDK3DVerse.installExtension(SDK3DVerse_VirtualJoystick_Ext, joysticksElement);
     await document.getElementById("virtual-joystick-move")?.className as string;
