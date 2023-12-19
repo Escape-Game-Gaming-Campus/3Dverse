@@ -45,7 +45,7 @@ export class Inventory
 export const InventoryReact = () => {
     const [invComponent, setInvComponent] = useState(<></>);
 
-    const inventory : Inventory = new Inventory(`${AppConfig.HOST}:${AppConfig.PORT}/img/case.png`);
+    const inventory : Inventory = new Inventory(`${AppConfig.FRONT.HOST}:${AppConfig.FRONT.PORT}/img/case.png`);
 
     channel.get(pusherChannels.INVENTORY).bind('updateInventory', function (data: Object[]) {
         console.log("PUSHER : ", JSON.stringify(data));

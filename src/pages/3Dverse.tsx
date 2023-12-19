@@ -26,7 +26,7 @@ export const Canvas3Dverse = () => {
   const [code, setCode] = useState("");  
   const [ready, setReady] = useState(false);
   const [load3Dverse, setLoad3Dverse] = useState(false);
-  const totoro = new Totoro(AppConfig.TOTORO_S_KEY);
+  const totoro = new Totoro(AppConfig._3DVERSE.TOTORO_S_KEY);
 
   const statusPusher = useScript(
     `https://js.pusher.com/8.2.0/pusher.min.js`,
@@ -44,7 +44,7 @@ export const Canvas3Dverse = () => {
 
   function updateClient() {
     setTimeout(() => {
-      fetch(`${AppConfig.API_HOST}:${AppConfig.API_PORT}/update`)
+      fetch(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/update`)
         .then((response) => response.json())
         .then((data) => { })
         .catch(error => console.error('Error:', error));
@@ -54,7 +54,7 @@ export const Canvas3Dverse = () => {
   async function pusherInit() {
     Pusher.logToConsole = true;
 
-    var pusher = new Pusher('39f939b9f53716caf5d8', {
+    var pusher = new Pusher(AppConfig.PUSHER.KEY, {
       cluster: 'eu'
     });
 
@@ -73,8 +73,8 @@ export const Canvas3Dverse = () => {
   const initApp = useCallback(async () => {
     const character = new Character(SDK3DVerse);
     await SDK3DVerse.joinOrStartSession({
-      userToken: AppConfig.USER_TOKEN,
-      sceneUUID: AppConfig.SCENE_UUID,
+      userToken: AppConfig._3DVERSE.USER_TOKEN,
+      sceneUUID: AppConfig._3DVERSE.SCENE_UUID,
       canvas: (document.getElementById('display-canvas') as HTMLElement),
       // viewportProperties : {
       //   defaultControllerType : SDK3DVerse.controller_type.none,
@@ -83,7 +83,7 @@ export const Canvas3Dverse = () => {
       startSimulation: "on-assets-loaded"
     });
     await SDK3DVerse.engineAPI.startSimulation();
-    await character.InitFirstPersonController(AppConfig.CHARACTER);
+    await character.InitFirstPersonController(AppConfig._3DVERSE.CHARACTER);
     const joysticksElement = await document.getElementById('joysticks') as HTMLElement;
     await SDK3DVerse.installExtension(SDK3DVerse_VirtualJoystick_Ext, joysticksElement);
     await document.getElementById("virtual-joystick-move")?.className as string;
@@ -98,7 +98,7 @@ export const Canvas3Dverse = () => {
     
     // setPlayers()
     // totoro.enigmHotAndCold(player as Player[])
-    console.log("azzzzz", (await SDK3DVerse.engineAPI.findEntitiesByEUID(`${AppConfig.TOTORO_S_KEY}`))[0].getGlobalTransform().position)
+    console.log("azzzzz", (await SDK3DVerse.engineAPI.findEntitiesByEUID(`${AppConfig._3DVERSE.TOTORO_S_KEY}`))[0].getGlobalTransform().position)
   }, []);
 
   useEffect(() => {
@@ -140,7 +140,7 @@ export const Canvas3Dverse = () => {
   }, [status3Dverse, statusPusher]);
 
   useEffect(() => {
-    axios.post(`${AppConfig.API_HOST}:${AppConfig.API_PORT}/ddust2/tryPsd`, { psd: code })
+    axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/ddust2/tryPsd`, { psd: code })
       .then((response) => { })
       .catch(error => console.error('Error:', error));
   }, [code]);
