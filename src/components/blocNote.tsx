@@ -51,7 +51,7 @@ export const BlocNoteReact = () => {
                             onChange={(event: any) => {
                                 setInformation(event.target.value)
 
-                                axios.post(`${AppConfig.API_HOST}:${AppConfig.API_PORT}/notesChanges`, {notes : event.target.value})
+                                axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/notesChanges`, {notes : event.target.value})
                                 .then((response) => { })
                                 .catch(error => console.error('Error:', error));
                             }} />

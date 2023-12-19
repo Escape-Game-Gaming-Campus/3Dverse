@@ -100,7 +100,8 @@ export module _SDK3DVerse {
     onStartingStreamer?: Function,
     onConnectingToEditor?: Function,
     onLoadingAssets?: Function,
-    defaultCameraSpeed?: string | Number
+    defaultCameraSpeed?: string | Number,
+    createDefaultCamera: boolean,
   }): void { };
   export function startStreamer(connectionInfo: object, hardwareDecoding: boolean, hevcSupport: boolean): void { };
   export function updateControllerSetting(controllerSettings: object): void { };

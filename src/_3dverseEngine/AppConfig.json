@@ -1,12 +1,30 @@
 {
-    "USER_TOKEN": "public_BQu_i8IdJABS79mV",
-    "SCENE_UUID": "4dd77691-e9b5-46f0-bf3f-cb8b1dab66ce",
+    "_3DVERSE": {
+        "USER_TOKEN": "public_BQu_i8IdJABS79mV",
+        "SCENE_UUID": "4dd77691-e9b5-46f0-bf3f-cb8b1dab66ce",
 
-    "PORT": "3000",
-    "HOST": "http://localhost",
+        "DDUST2_DOOR": "16a525a0-5892-4065-a11b-a94862c153a6",
+        "TOTORO_S_KEY": "0277b0a4-6059-4908-a67f-aace11ef761b",
+        "CHARACTER": "92f7e23e-a3e3-48b1-a07c-cf5bff258374"
+    },
 
-    "API_PORT": "3001",
-    "API_HOST": "http://localhost",
+    "FRONT": {
+        "HOST": "http://localhost",
+        "PORT": "3000"
+    },
+
+    "API": {
+        "HOST": "http://localhost",
+        "PORT": "3001"
+    },
+
+    "PUSHER": {
+        "APP_ID": "1720823",
+        "KEY": "39f939b9f53716caf5d8",
+        "SECRET": "201eb1f9e95745623191",
+        "CLUSTER": "eu",
+        "USE_TLS": true
+    },
 
     "DetailLogs": true
 }
