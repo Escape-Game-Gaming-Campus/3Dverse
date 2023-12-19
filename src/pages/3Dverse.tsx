@@ -71,7 +71,7 @@ export const Canvas3Dverse = () => {
 
   const initApp = useCallback(async () => {
     const character = new Character(SDK3DVerse);
-    await SDK3DVerse.joinOrStartSession({
+    await SDK3DVerse.startSession({ // TODO: mettre en joinOrStart(params) pour la version final
       userToken: AppConfig._3DVERSE.USER_TOKEN,
       sceneUUID: AppConfig._3DVERSE.SCENE_UUID,
       canvas: (document.getElementById('display-canvas') as HTMLElement),
