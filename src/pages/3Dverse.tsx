@@ -148,7 +148,7 @@ export const Canvas3Dverse = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const entities = await SDK3DVerse.engineAPI.findEntitiesByEUID("16a525a0-5892-4065-a11b-a94862c153a6");
+        const entities = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.DDUST2_DOOR);
         console.log(entities);
         if (totoroRoom && entities.length > 0) {
           const firstEntity = entities[0];
