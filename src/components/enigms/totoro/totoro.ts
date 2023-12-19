@@ -2,23 +2,8 @@ import { useRef } from "react";
 import { _SDK3DVerse } from "../../../_3dverseEngine/declare";
 import { SDK_Vec3 } from "../../../_3dverseEngine/declareGlobal";
 import Player from "../../../constants/players";
-import pusherChannels from "../../../constants/pusherChannels";
-import { channel } from "../../../pages/3Dverse";
 import { getInventory } from "../../inventory";
-
-export var player: Player | undefined | Player[] = undefined;
-
-export function setPlayers(name?: string) {
-    channel.get(pusherChannels.DEV).bind('updatePlayers', function (data: Player[]) {
-        var playerList: Player[] = data;
-        if (name) {
-            player = playerList.filter((e) => e.name === name)[0]
-        } else {
-            player = playerList;
-        }
-    });
-}
-
+import { player, setPlayers } from "../../player";
 
 export class Totoro {
     public itemUUID: string;

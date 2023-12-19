@@ -11,20 +11,22 @@ import Digicode from '../components/enigms/ddust2/digicode';
 import { Entity, SDK3DVerse_ExtensionInterface } from '../_3dverseEngine/declareGlobal';
 import { BlocNoteReact } from '../components/blocNote';
 import axios from 'axios';
-import { Totoro, setPlayers, player } from '../components/enigms/totoro/totoro';
-import Player from '../constants/players';
+import { Totoro } from '../components/enigms/totoro/totoro';
 import { LoadingBar } from '../components/loadingBar';
+import { initPlayerAPI, player, removePlayerApi, setPlayers } from '../components/player';
 
 declare const SDK3DVerse: typeof _SDK3DVerse;
 declare const Pusher: any;
 export var channel = new Map<pusherChannels, any>();
 declare const SDK3DVerse_VirtualJoystick_Ext: SDK3DVerse_ExtensionInterface;
+export var character: Character;
 
 export const Canvas3Dverse = () => {
   const [digicodeOpen, setDigicodeOpen] = useState(false);
   const [totoroRoom, setTotoroRoom] = useState(false);
   const [code, setCode] = useState("");  
   const [ready, setReady] = useState(false);
+  const [unload, setUnload] = useState(false);
   const [load3Dverse, setLoad3Dverse] = useState(false);
   const totoro = new Totoro(AppConfig._3DVERSE.TOTORO_S_KEY);
 
@@ -67,10 +69,11 @@ export const Canvas3Dverse = () => {
     channel.get(pusherChannels.ENIGMS).bind('ddust2TryPsd', function (data: { valid: boolean }) {
       setTotoroRoom(data.valid);
     });
+    setPlayers();
   }
 
   const initApp = useCallback(async () => {
-    const character = new Character(SDK3DVerse);
+    character = new Character(SDK3DVerse);
     await SDK3DVerse.joinOrStartSession({
       userToken: AppConfig._3DVERSE.USER_TOKEN,
       sceneUUID: AppConfig._3DVERSE.SCENE_UUID,
@@ -82,7 +85,11 @@ export const Canvas3Dverse = () => {
       startSimulation: "on-assets-loaded"
     });
     await SDK3DVerse.engineAPI.startSimulation();
+
+    // Init character
     await character.InitFirstPersonController(AppConfig._3DVERSE.CHARACTER);
+    initPlayerAPI(character.playerName, character.camPos);
+
     const joysticksElement = await document.getElementById('joysticks') as HTMLElement;
     await SDK3DVerse.installExtension(SDK3DVerse_VirtualJoystick_Ext, joysticksElement);
     await document.getElementById("virtual-joystick-move")?.className as string;
@@ -94,10 +101,21 @@ export const Canvas3Dverse = () => {
       setLoad3Dverse(true);
     }, 750)
     
-    
-    // setPlayers()
-    // totoro.enigmHotAndCold(player as Player[])
   }, []);
+
+  window.onunload = (event) => {
+    console.log("unload", 'The page is unloaded');
+    setUnload(true);
+  };
+
+  useEffect(() => {
+    if (unload && character)
+    {
+      removePlayerApi(character.playerName);
+      setUnload(false)
+      console.log("remove")
+    }
+  }, [unload])
 
   useEffect(() => {
     if (statusPusher === 'ready') {
@@ -162,6 +180,15 @@ export const Canvas3Dverse = () => {
 
     fetchData();
   }, [totoroRoom, load3Dverse]);
+
+  useEffect(() => {
+    if (ready && load3Dverse)
+    {
+      console.log("fps", player)
+      // totoro.enigmHotAndCold(player as Player[])
+    }
+  }, [ready, load3Dverse])
+  
 
   return (
     <><LoadingBar ready={ready} loadPage={load3Dverse} />
