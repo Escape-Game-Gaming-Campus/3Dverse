@@ -24,10 +24,11 @@ export var character: Character;
 export const Canvas3Dverse = () => {
   const [digicodeOpen, setDigicodeOpen] = useState(false);
   const [totoroRoom, setTotoroRoom] = useState(false);
-  const [code, setCode] = useState("");  
+  const [code, setCode] = useState("");
   const [ready, setReady] = useState(false);
   const [unload, setUnload] = useState(false);
   const [load3Dverse, setLoad3Dverse] = useState(false);
+  const [characterName, setCharacterName] = useState("");
   const totoro = new Totoro(AppConfig._3DVERSE.TOTORO_S_KEY);
 
   const statusPusher = useScript(
@@ -49,7 +50,7 @@ export const Canvas3Dverse = () => {
       fetch(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/update`)
         .then((response) => response.json())
         .then((data) => { })
-        .catch(err => {});
+        .catch(err => { });
     }, 1000);
   }
 
@@ -89,6 +90,7 @@ export const Canvas3Dverse = () => {
     // Init character
     await character.InitFirstPersonController(AppConfig._3DVERSE.CHARACTER);
     initPlayerAPI(character.playerName, character.camPos);
+    setCharacterName(character.playerName)
 
     const joysticksElement = await document.getElementById('joysticks') as HTMLElement;
     await SDK3DVerse.installExtension(SDK3DVerse_VirtualJoystick_Ext, joysticksElement);
@@ -100,22 +102,14 @@ export const Canvas3Dverse = () => {
     setTimeout(() => {
       setLoad3Dverse(true);
     }, 750)
-    
+
   }, []);
 
   window.onunload = (event) => {
-    console.log("unload", 'The page is unloaded');
-    setUnload(true);
+    console.log("characterName", characterName)
+    removePlayerApi(characterName);
+    setUnload(false)
   };
-
-  useEffect(() => {
-    if (unload && character)
-    {
-      removePlayerApi(character.playerName);
-      setUnload(false)
-      console.log("remove")
-    }
-  }, [unload])
 
   useEffect(() => {
     if (statusPusher === 'ready') {
@@ -158,7 +152,7 @@ export const Canvas3Dverse = () => {
   useEffect(() => {
     axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/ddust2/tryPsd`, { psd: code })
       .then((response) => { })
-      .catch(err => {});
+      .catch(err => { });
   }, [code]);
 
   useEffect(() => {
@@ -175,20 +169,19 @@ export const Canvas3Dverse = () => {
           await firstEntity.setGlobalTransform({ "position": [-7.309777, -0.600371, -0.220404] });
           await firstEntity.setVisibility(true)
         }
-      } catch (err) {}
+      } catch (err) { }
     };
 
     fetchData();
   }, [totoroRoom, load3Dverse]);
 
   useEffect(() => {
-    if (ready && load3Dverse)
-    {
+    if (ready && load3Dverse) {
       console.log("fps", player)
       // totoro.enigmHotAndCold(player as Player[])
     }
   }, [ready, load3Dverse])
-  
+
 
   return (
     <><LoadingBar ready={ready} loadPage={load3Dverse} />
