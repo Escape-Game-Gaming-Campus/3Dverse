@@ -8,7 +8,7 @@ import pusherChannels from '../constants/pusherChannels';
 import bluringCanvas from '../utils/blur';
 import { Character } from "../components/character";
 import Digicode from '../components/enigms/ddust2/digicode';
-import { SDK3DVerse_ExtensionInterface, Viewport } from '../_3dverseEngine/declareGlobal';
+import { Entities, SDK3DVerse_ExtensionInterface, SDK_Vec3, Viewport } from '../_3dverseEngine/declareGlobal';
 import { BlocNoteReact } from '../components/blocNote';
 import axios from 'axios';
 import { Totoro } from '../components/enigms/totoro/totoro';
@@ -32,6 +32,7 @@ export const Canvas3Dverse = () => {
   const [load3Dverse, setLoad3Dverse] = useState(false);
   const [characterName, setCharacterName] = useState("");
   const totoro = new Totoro(AppConfig._3DVERSE.TOTORO_S_KEY);
+
 
   const statusPusher = useScript(
     `https://js.pusher.com/8.2.0/pusher.min.js`,
@@ -102,11 +103,16 @@ export const Canvas3Dverse = () => {
     joyStickLeft.className = await "bluringOff"
     const joyStickRight: HTMLElement = await document.getElementById("virtual-joystick-orientation") as HTMLElement;
     joyStickRight.className = await "bluringOff"
+
+    totoro.SDK3dverse = SDK3DVerse;
+    
     setTimeout(() => {
       setLoad3Dverse(true);
     }, 750)
 
     camViewport = SDK3DVerse.engineAPI.cameraAPI.getActiveViewports()[0]
+    console.log((await SDK3DVerse.engineAPI.findEntitiesByEUID(`${AppConfig._3DVERSE.TOTORO_S_KEY}`))[0].getGlobalTransform().position)
+    totoro.Item = (await SDK3DVerse.engineAPI.findEntitiesByEUID(`${AppConfig._3DVERSE.TOTORO_S_KEY}`))[0].getGlobalTransform().position as SDK_Vec3;
   }, []);
 
   //delete player
@@ -190,11 +196,10 @@ export const Canvas3Dverse = () => {
 
   useEffect(() => {
     if (ready && load3Dverse) {
-      // totoro.enigmHotAndCold(player as Player[])
+      totoro.enigmHotAndCold(player as Player[]) 
     }
   }, [ready, load3Dverse])
 
-  totoro.enigmHotAndCold(player as Player[]) 
 
   return (
     <><LoadingBar ready={ready} loadPage={load3Dverse} />
