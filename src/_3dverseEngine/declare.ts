@@ -106,15 +106,14 @@ export module _SDK3DVerse {
   export function startStreamer(connectionInfo: object, hardwareDecoding: boolean, hevcSupport: boolean): void { };
   export function updateControllerSetting(controllerSettings: object): void { };
   export class EntityTemplate {
-    constructor() { };
     public attachComponent(componentType: string, componentValue: object): EntityTemplate {
-      return new EntityTemplate
+      return new EntityTemplate()
     };
     public instantiateEntity(name: string = "unnamed entity", parent: Entity | null = null): Entity {
-      return new Entity
+      return new Entity()
     };
     public instantiateTransientEntity(name: string = "unnamed entity", parent: Entity | null = null, deleteOnClientDisconnection: boolean = false): Entity {
-      return new Entity
+      return new Entity()
     };
   }
 
@@ -191,7 +190,7 @@ export module _SDK3DVerse {
       return {}
     };
     export function getEntity(entityRTID: string): Entity {
-      return new Entity
+      return new Entity()
     };
     export function getRootEntities(): Entities {
       return []
