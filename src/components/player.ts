@@ -41,7 +41,7 @@ export function removePlayerApi(playerName : string)
 {
   setPlayers(playerName)
   console.log("fpss", player)
-  axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/players/delete`, { players: [player] })
-  .then((response) => {})
-  .catch(err => {});
+//   axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/players/delete`, { players: [player] })
+//   .then((response) => {})
+//   .catch(err => {});
 }

@@ -8,7 +8,7 @@ import pusherChannels from '../constants/pusherChannels';
 import bluringCanvas from '../utils/blur';
 import { Character } from "../components/character";
 import Digicode from '../components/enigms/ddust2/digicode';
-import { Entity, SDK3DVerse_ExtensionInterface } from '../_3dverseEngine/declareGlobal';
+import { SDK3DVerse_ExtensionInterface } from '../_3dverseEngine/declareGlobal';
 import { BlocNoteReact } from '../components/blocNote';
 import axios from 'axios';
 import { Totoro } from '../components/enigms/totoro/totoro';
@@ -26,7 +26,6 @@ export const Canvas3Dverse = () => {
   const [totoroRoom, setTotoroRoom] = useState(false);
   const [code, setCode] = useState("");
   const [ready, setReady] = useState(false);
-  const [unload, setUnload] = useState(false);
   const [load3Dverse, setLoad3Dverse] = useState(false);
   const [characterName, setCharacterName] = useState("");
   const totoro = new Totoro(AppConfig._3DVERSE.TOTORO_S_KEY);
@@ -70,6 +69,7 @@ export const Canvas3Dverse = () => {
     channel.get(pusherChannels.ENIGMS).bind('ddust2TryPsd', function (data: { valid: boolean }) {
       setTotoroRoom(data.valid);
     });
+
     setPlayers();
   }
 
@@ -107,8 +107,8 @@ export const Canvas3Dverse = () => {
 
   window.onunload = (event) => {
     console.log("characterName", characterName)
-    removePlayerApi(characterName);
-    setUnload(false)
+    console.log("fps", player)
+    // removePlayerApi(characterName);
   };
 
   useEffect(() => {
@@ -160,14 +160,14 @@ export const Canvas3Dverse = () => {
       try {
         const entities = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.DDUST2_DOOR);
         if (totoroRoom && entities.length > 0) {
-          const firstEntity = entities[0];
-          await firstEntity.setGlobalTransform({ "position": [-80, 10, -20] });
-          await firstEntity.setVisibility(false)
+          const firstDoor = entities[0];
+          await firstDoor.setGlobalTransform({ "position": [-80, 10, -20] });
+          await firstDoor.setVisibility(false)
           // await SDK3DVerse.engineAPI.deleteEntities(entities);
         } else if (!totoroRoom && entities.length > 0) {
-          const firstEntity = entities[0];
-          await firstEntity.setGlobalTransform({ "position": [-7.309777, -0.600371, -0.220404] });
-          await firstEntity.setVisibility(true)
+          const firstDoor = entities[0];
+          await firstDoor.setGlobalTransform({ "position": [-7.309777, -0.600371, -0.220404] });
+          await firstDoor.setVisibility(true)
         }
       } catch (err) { }
     };
@@ -177,7 +177,6 @@ export const Canvas3Dverse = () => {
 
   useEffect(() => {
     if (ready && load3Dverse) {
-      console.log("fps", player)
       // totoro.enigmHotAndCold(player as Player[])
     }
   }, [ready, load3Dverse])
