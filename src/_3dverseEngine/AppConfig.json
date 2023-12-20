@@ -14,7 +14,13 @@
         "KEY": "39f939b9f53716caf5d8",
         "SECRET": "201eb1f9e95745623191",
         "CLUSTER": "eu",
-        "USE_TLS": true
+        "USE_TLS": true,
+
+        "IS_ACTIVE": false
+    },
+
+    "LIFX": {
+        "TOKEN_ACCESS": "c95ba8384d244425e9fbf21951ab16801b8e88aa5224831a16f720793b282470"
     },
 
     "_3DVERSE": {
