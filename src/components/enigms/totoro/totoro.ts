@@ -14,19 +14,21 @@ export class Totoro {
 
     constructor(itemUUID: string) {
         this.itemUUID = itemUUID;
-        // var func = (async () => {
-        //     var element = (await _SDK3DVerse.engineAPI.findEntitiesByEUID(`${this.itemUUID}`))[0].getGlobalTransform().position as SDK_Vec3
-        //     return element;
-        // });
-        // func().then((res) => {
-        //     this.item = res;
-        // });
+        var func = (async () => {
+            var element = (_SDK3DVerse.engineAPI.findEntitiesByEUID(`${this.itemUUID}`))[0].getGlobalTransform().position as SDK_Vec3
+            return element;
+        });
+        func().then((res) => {
+            this.item = res;
+        });
         this.playerNear = { "timer": 0, "playerId": 0 };
         this.itemCatch = false;
     };
 
     public hotAndCold(player: Player) {
         const playerPos = { "x": player.position[0], "y": player.position[1], "z": player.position[2] }
+        console.log("hac item", this.item)
+        console.log("hac player", playerPos)
 
         const vector = { "x": playerPos.x - this.item[0], "y": playerPos.y - this.item[1] }
         const distance = Math.sqrt((vector.x * vector.x) + (vector.y * vector.y))

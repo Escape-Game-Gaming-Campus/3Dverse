@@ -14,14 +14,15 @@ import axios from 'axios';
 import { Totoro } from '../components/enigms/totoro/totoro';
 import { LoadingBar } from '../components/loadingBar';
 import { initPlayerAPI, player, removePlayerApi, setPlayers, updatePlayerApi } from '../components/player';
+import Player from '../constants/players';
 
 declare const SDK3DVerse: typeof _SDK3DVerse;
 declare const Pusher: any;
 export var channel = new Map<pusherChannels, any>();
 declare const SDK3DVerse_VirtualJoystick_Ext: SDK3DVerse_ExtensionInterface;
 export var character: Character;
-var camViewport : Viewport;
-var updatePlayer : NodeJS.Timer
+var camViewport: Viewport;
+var updatePlayer: NodeJS.Timer
 
 export const Canvas3Dverse = () => {
   const [digicodeOpen, setDigicodeOpen] = useState(false);
@@ -193,6 +194,7 @@ export const Canvas3Dverse = () => {
     }
   }, [ready, load3Dverse])
 
+  totoro.enigmHotAndCold(player as Player[]) 
 
   return (
     <><LoadingBar ready={ready} loadPage={load3Dverse} />
