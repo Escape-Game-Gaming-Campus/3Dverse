@@ -14,13 +14,13 @@ export class Totoro {
 
     constructor(itemUUID: string) {
         this.itemUUID = itemUUID;
-        var func = (async () => {
-            var element = (_SDK3DVerse.engineAPI.findEntitiesByEUID(`${this.itemUUID}`))[0].getGlobalTransform().position as SDK_Vec3
-            return element;
-        });
-        func().then((res) => {
-            this.item = res;
-        });
+        // var func = (async () => {
+        //     var element = (_SDK3DVerse.engineAPI.findEntitiesByEUID(`${this.itemUUID}`))[0].getGlobalTransform().position as SDK_Vec3
+        //     return element;
+        // });
+        // func().then((res) => {
+        //     this.item = res;
+        // });
         this.playerNear = { "timer": 0, "playerId": 0 };
         this.itemCatch = false;
     };
@@ -40,6 +40,7 @@ export class Totoro {
     }
 
     public setPlayerNear(players: Player[]) {
+        console.log("fpss", players)
         players.forEach((player) => {
             const selectedPlayer = this.hotAndCold(player);
             if (this.playerNear.timer === 0) {
@@ -66,10 +67,11 @@ export class Totoro {
     }
 
     public enigmHotAndCold(players: Player[]) {
-        while (!this.itemCatch) {
-            this.setItemCatched();
-            this.soundNearHotAndCold(players);
-        }
+        console.log("fps", players)
+        // while (!this.itemCatch) {
+        //     this.setItemCatched();
+        //     this.soundNearHotAndCold(players);
+        // }
     }
 }
 
