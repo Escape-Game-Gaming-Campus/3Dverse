@@ -76,6 +76,7 @@ export const Canvas3Dverse = () => {
     channel.set(pusherChannels.DEV, pusher.subscribe(pusherChannels.DEV));
     channel.set(pusherChannels.INVENTORY, pusher.subscribe(pusherChannels.INVENTORY));
     channel.set(pusherChannels.ENIGMS, pusher.subscribe(pusherChannels.ENIGMS));
+    // channel.set(pusherChannels.INVENTORY, pusher.subscribe(pusherChannels.INVENTORY)); mettre le channel lightbulbs
     channel.get(pusherChannels.DEV).bind('helloWorld', function (data: object) {
       console.log("PUSHER : ", JSON.stringify(data));
     });
@@ -200,33 +201,47 @@ export const Canvas3Dverse = () => {
     //utiliser l'ampoule selec depuis l'inventaire si aucune selec ne rien faire
     const redLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID("c8e714d5-bbca-4f8a-b3cd-129ade233c8a");
     const redLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID("d8a9d815-9682-42cf-b205-f8cc69a6c5d6");
-    if(!redLock)
-    {if (!redLight) {
-      if (itemSelected == 1 || itemSelected == 2 || itemSelected == 3) {
-        await redLightbulb[0].setVisibility(true);
-        setRedBase(itemSelected);
-        axios.delete(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/inv/remove`, {
-          data:{
-          "objs":[
-            { "uuid": itemSelected }
-          ]
-        }})
-        if (itemSelected == 1) {
-          await redLightbulbLight[0].setVisibility(true);
-          setRedLock(true);
+    if (!redLock) {
+      if (!redLight) {
+        if (itemSelected == 1 || itemSelected == 2 || itemSelected == 3) {
+          await redLightbulb[0].setVisibility(true);
+          setRedBase(itemSelected);
+          axios.delete(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/inv/remove`, {
+            data: {
+              "objs": [
+                { "uuid": itemSelected }
+              ]
+            }
+          })
+          axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/lightbulbs/add`, {
+            "objs": [
+              { "uuid": redBase }, { "base": 1 }
+            ]
+          })
+          if (itemSelected == 1) {
+            await redLightbulbLight[0].setVisibility(true);
+            setRedLock(true);
+          }
+          setRedLight(true);
         }
+      } else {
+        await redLightbulb[0].setVisibility(false);
+        await redLightbulbLight[0].setVisibility(false);
+        axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/inv/add`, {
+          "objs": [
+            { "uuid": redBase }
+          ]
+        })
+        axios.delete(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/lightbulbs/remove`, {
+          data: {
+            "objs": [
+              { "base": 1 }
+            ]
+          }
+        })
         setRedLight(true);
       }
-    } else {
-      await redLightbulb[0].setVisibility(false);
-      await redLightbulbLight[0].setVisibility(false);
-      axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/inv/add`, {
-        "objs": [
-          { "uuid": redBase }
-        ]
-      })
-      setRedLight(true);
-    }}
+    }
     setItemSelected(-1);
   }
 
@@ -234,65 +249,93 @@ export const Canvas3Dverse = () => {
     //utiliser l'ampoule selec depuis l'inventaire si aucune selec ne rien faire
     const blueLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID("43bb9e8d-2672-4a0a-aa0d-5f3c214ea624");
     const blueLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID("89ec5c77-4806-4e1d-9ebc-454a85d538d5");
-    if(!blueLock)
-    {if (!blueLight) {
-      if (itemSelected == 1 ||itemSelected == 2 ||itemSelected == 3) {
-        await blueLightbulb[0].setVisibility(true);
-        setBlueBase(itemSelected);
-        axios.delete(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/inv/remove`, {
-          data:{
-          "objs":[
-            { "uuid": itemSelected }
-          ]
-        }})
-        if (itemSelected == 3) {
-          await blueLightbulbLight[0].setVisibility(true);
-          setBlueLock(true);
+    if (!blueLock) {
+      if (!blueLight) {
+        if (itemSelected == 1 || itemSelected == 2 || itemSelected == 3) {
+          await blueLightbulb[0].setVisibility(true);
+          setBlueBase(itemSelected);
+          axios.delete(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/inv/remove`, {
+            data: {
+              "objs": [
+                { "uuid": itemSelected }
+              ]
+            }
+          })
+          axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/lightbulbs/add`, {
+            "objs": [
+              { "uuid": redBase }, { "base": 3 }
+            ]
+          })
+          if (itemSelected == 3) {
+            await blueLightbulbLight[0].setVisibility(true);
+            setBlueLock(true);
+          }
+          setBlueLight(true);
         }
+      } else {
+        await blueLightbulb[0].setVisibility(false);
+        await blueLightbulbLight[0].setVisibility(false);
+        axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/inv/add`, {
+          "objs": [
+            { "uuid": blueBase }
+          ]
+        })
+        axios.delete(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/lightbulbs/remove`, {
+          data: {
+            "objs": [
+              { "base": 3 }
+            ]
+          }
+        })
         setBlueLight(true);
       }
-    } else {
-      await blueLightbulb[0].setVisibility(false);
-      await blueLightbulbLight[0].setVisibility(false);
-      axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/inv/add`, {
-        "objs": [
-          { "uuid": blueBase }
-        ]
-      })
-      setBlueLight(true);
-    }}
+    }
     setItemSelected(-1);
   }
   const handleGreenBaseClick = async () => {
     const greenLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID("cd8a4b3e-de57-41ba-9151-95e6a016f226");
     const greenLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID("54145b1f-2b48-4a47-8aa5-68f8e1b37c12");
-    if(!greenLock)
-    {if (!greenLight) {
-      if (itemSelected == 1 || itemSelected == 2 || itemSelected == 3) {
-        await greenLightbulb[0].setVisibility(true);
-        setGreenBase(itemSelected);
-        axios.delete(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/inv/remove`, {
-          data:{
-          "objs":[
-            { "uuid": itemSelected }
-          ]
-        }})
-        if (itemSelected == 2) {
-          await greenLightbulbLight[0].setVisibility(true);
-          setGreenLock(true);
+    if (!greenLock) {
+      if (!greenLight) {
+        if (itemSelected == 1 || itemSelected == 2 || itemSelected == 3) {
+          await greenLightbulb[0].setVisibility(true);
+          setGreenBase(itemSelected);
+          axios.delete(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/inv/remove`, {
+            data: {
+              "objs": [
+                { "uuid": itemSelected }
+              ]
+            }
+          })
+          axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/lightbulbs/add`, {
+            "objs": [
+              { "uuid": redBase }, { "base": 2 }
+            ]
+          })
+          if (itemSelected == 2) {
+            await greenLightbulbLight[0].setVisibility(true);
+            setGreenLock(true);
+          }
+          setGreenLight(true);
         }
+      } else {
+        await greenLightbulb[0].setVisibility(false);
+        await greenLightbulbLight[0].setVisibility(false);
+        axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/inv/add`, {
+          "objs": [
+            { "uuid": greenBase }
+          ]
+        })
+        axios.delete(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/lightbulbs/remove`, {
+          data: {
+            "objs": [
+              { "base": 2 }
+            ]
+          }
+        })
         setGreenLight(true);
       }
-    } else {
-      await greenLightbulb[0].setVisibility(false);
-      await greenLightbulbLight[0].setVisibility(false);
-      axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/inv/add`, {
-        "objs": [
-          { "uuid": greenBase }
-        ]
-      })
-      setGreenLight(true);
-    }}
+    }
     setItemSelected(-1);
   }
 
@@ -311,6 +354,7 @@ export const Canvas3Dverse = () => {
     const x = event.clientX;
     const y = event.clientY;
     raycastGlobal?.fireRay(x, y);
+    axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/lightbulbs/switchon`);
   };
   useEffect(() => {
     if (status3Dverse === 'ready' && statusPusher === 'ready') {
@@ -362,6 +406,19 @@ export const Canvas3Dverse = () => {
       playAlarm();
     }
   }, [eventTriggered, countdown]);
+  const baseList = [setRedBase,setBlueBase,setGreenBase];
+  useEffect(()=>{
+    const array = [{UUID:1,base: 1}];
+    array.map((l,i)=>{
+      baseList[l.base](l.UUID);
+
+    });
+    if(redLock && blueLock && greenLock)
+    {
+      // call api allumer lampe
+      console.log("allumer lampe");
+    }}
+    ,[itemSelected])
 
   const playAlarm = () => {
     audioRef.current.loop = true;
@@ -398,7 +455,6 @@ export const Canvas3Dverse = () => {
         <div>
           <InventoryReact setItemSelected={setItemSelected} />
         </div>
-
       </>
       : <></>
   );
