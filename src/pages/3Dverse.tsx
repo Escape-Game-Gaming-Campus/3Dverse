@@ -8,18 +8,20 @@ import pusherChannels from '../constants/pusherChannels';
 import bluringCanvas from '../utils/blur';
 import { Character } from "../components/character";
 import Digicode from '../components/enigms/ddust2/digicode';
-import { SDK3DVerse_ExtensionInterface } from '../_3dverseEngine/declareGlobal';
+import { SDK3DVerse_ExtensionInterface, Viewport } from '../_3dverseEngine/declareGlobal';
 import { BlocNoteReact } from '../components/blocNote';
 import axios from 'axios';
 import { Totoro } from '../components/enigms/totoro/totoro';
 import { LoadingBar } from '../components/loadingBar';
-import { initPlayerAPI, player, removePlayerApi, setPlayers } from '../components/player';
+import { initPlayerAPI, player, removePlayerApi, setPlayers, updatePlayerApi } from '../components/player';
 
 declare const SDK3DVerse: typeof _SDK3DVerse;
 declare const Pusher: any;
 export var channel = new Map<pusherChannels, any>();
 declare const SDK3DVerse_VirtualJoystick_Ext: SDK3DVerse_ExtensionInterface;
 export var character: Character;
+var camViewport : Viewport;
+var updatePlayer : NodeJS.Timer
 
 export const Canvas3Dverse = () => {
   const [digicodeOpen, setDigicodeOpen] = useState(false);
@@ -103,13 +105,23 @@ export const Canvas3Dverse = () => {
       setLoad3Dverse(true);
     }, 750)
 
+    camViewport = SDK3DVerse.engineAPI.cameraAPI.getActiveViewports()[0]
   }, []);
 
-  window.onunload = (event) => {
-    console.log("characterName", characterName)
-    console.log("fps", player)
-    // removePlayerApi(characterName);
-  };
+  //delete player
+  window.addEventListener('beforeunload', () => {
+    // a modifier car trop d'appels à l'api
+    removePlayerApi(characterName);
+  });
+
+  useEffect(() => {
+    // update player
+    if (characterName && ready && !updatePlayer) {
+      updatePlayer = setInterval(() => {
+        updatePlayerApi(characterName, camViewport.getTransform().position)
+      }, 3000)
+    }
+  }, [ready, characterName])
 
   useEffect(() => {
     if (statusPusher === 'ready') {
