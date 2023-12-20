@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useScript } from '@uidotdev/usehooks';
 import AppConfig from '../_3dverseEngine/AppConfig.json';
 import { _SDK3DVerse } from '../_3dverseEngine/declare';
@@ -31,7 +31,6 @@ export const Canvas3Dverse = () => {
   const [load3Dverse, setLoad3Dverse] = useState(false);
   const [characterName, setCharacterName] = useState("");
   const totoro = new Totoro(AppConfig._3DVERSE.TOTORO_S_KEY);
-  console.debug(totoro.itemUUID);
 
   const statusPusher = useScript(
     `https://js.pusher.com/8.2.0/pusher.min.js`,
@@ -105,6 +104,7 @@ export const Canvas3Dverse = () => {
     setTimeout(() => {
       setLoad3Dverse(true);
     }, 750)
+
     camViewport = SDK3DVerse.engineAPI.cameraAPI.getActiveViewports()[0]
   }, []);
 
@@ -162,7 +162,6 @@ export const Canvas3Dverse = () => {
   }, [status3Dverse, statusPusher]);
 
   useEffect(() => {
-    if (code.length !== 4) return;
     axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/ddust2/tryPsd`, { psd: code })
       .then((response) => { })
       .catch(err => { });
