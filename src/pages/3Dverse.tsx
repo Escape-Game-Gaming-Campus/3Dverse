@@ -39,6 +39,9 @@ export const Canvas3Dverse = () => {
   const [redBase, setRedBase] = useState(-1);
   const [blueBase, setBlueBase] = useState(-1);
   const [greenBase, setGreenBase] = useState(-1);
+  const [redLock, setRedLock] = useState(false);
+  const [blueLock, setBlueLock] = useState(false);
+  const [greenLock, setGreenLock] = useState(false);
   const [itemSelected, setItemSelected] = useState(-1);
   const statusPusher = useScript(
     `https://js.pusher.com/8.2.0/pusher.min.js`,
@@ -98,7 +101,7 @@ export const Canvas3Dverse = () => {
 
   const initApp = useCallback(async () => {
     const character = new Character(SDK3DVerse);
-    await SDK3DVerse.startSession({
+    await SDK3DVerse.joinOrStartSession({
       userToken: AppConfig._3DVERSE.USER_TOKEN,
       sceneUUID: AppConfig._3DVERSE.SCENE_UUID,
       canvas: (document.getElementById('display-canvas') as HTMLElement),
@@ -197,16 +200,20 @@ export const Canvas3Dverse = () => {
     //utiliser l'ampoule selec depuis l'inventaire si aucune selec ne rien faire
     const redLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID("c8e714d5-bbca-4f8a-b3cd-129ade233c8a");
     const redLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID("d8a9d815-9682-42cf-b205-f8cc69a6c5d6");
-    if (!redLight) {
+    if(!redLock)
+    {if (!redLight) {
       if (itemSelected == 1 || itemSelected == 2 || itemSelected == 3) {
         await redLightbulb[0].setVisibility(true);
         setRedBase(itemSelected);
         axios.delete(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/inv/remove`, {
-          params:
+          data:{
+          "objs":[
             { "uuid": itemSelected }
-        })
-        if (itemSelected == 2) {
+          ]
+        }})
+        if (itemSelected == 1) {
           await redLightbulbLight[0].setVisibility(true);
+          setRedLock(true);
         }
         setRedLight(true);
       }
@@ -219,23 +226,28 @@ export const Canvas3Dverse = () => {
         ]
       })
       setRedLight(true);
-    }
+    }}
+    setItemSelected(-1);
   }
 
   const handleBlueBaseClick = async () => {
     //utiliser l'ampoule selec depuis l'inventaire si aucune selec ne rien faire
     const blueLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID("43bb9e8d-2672-4a0a-aa0d-5f3c214ea624");
     const blueLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID("89ec5c77-4806-4e1d-9ebc-454a85d538d5");
-    if (!blueLight) {
+    if(!blueLock)
+    {if (!blueLight) {
       if (itemSelected == 1 ||itemSelected == 2 ||itemSelected == 3) {
         await blueLightbulb[0].setVisibility(true);
         setBlueBase(itemSelected);
         axios.delete(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/inv/remove`, {
-          params:
+          data:{
+          "objs":[
             { "uuid": itemSelected }
-        })
-        if (itemSelected == 2) {
+          ]
+        }})
+        if (itemSelected == 3) {
           await blueLightbulbLight[0].setVisibility(true);
+          setBlueLock(true);
         }
         setBlueLight(true);
       }
@@ -248,20 +260,26 @@ export const Canvas3Dverse = () => {
         ]
       })
       setBlueLight(true);
-    }
+    }}
+    setItemSelected(-1);
   }
   const handleGreenBaseClick = async () => {
     const greenLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID("cd8a4b3e-de57-41ba-9151-95e6a016f226");
     const greenLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID("54145b1f-2b48-4a47-8aa5-68f8e1b37c12");
-    if (!greenLight) {
+    if(!greenLock)
+    {if (!greenLight) {
       if (itemSelected == 1 || itemSelected == 2 || itemSelected == 3) {
         await greenLightbulb[0].setVisibility(true);
         setGreenBase(itemSelected);
         axios.delete(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/inv/remove`, {
-          params:{ "uuid": itemSelected }
-        })
+          data:{
+          "objs":[
+            { "uuid": itemSelected }
+          ]
+        }})
         if (itemSelected == 2) {
           await greenLightbulbLight[0].setVisibility(true);
+          setGreenLock(true);
         }
         setGreenLight(true);
       }
@@ -274,7 +292,8 @@ export const Canvas3Dverse = () => {
         ]
       })
       setGreenLight(true);
-    }
+    }}
+    setItemSelected(-1);
   }
 
   const handleCloseDigicode = () => {
