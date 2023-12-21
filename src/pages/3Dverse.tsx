@@ -74,7 +74,7 @@ export const Canvas3Dverse = () => {
       console.log("PUSHER : ", JSON.stringify(data));
       setTotoroRoom(data.valid);
     });
-    channel.get(pusherChannels.LIGHTBULBS).bind('updateLightbulbs', async function (data: [{place: boolean, lightColor: SDK_Vec3, valid: boolean}, {place: boolean, lightColor: SDK_Vec3, valid: boolean}, {place: boolean, lightColor: SDK_Vec3, valid: boolean}, {place: boolean, lightColor: SDK_Vec3, valid: boolean}]) {
+    channel.get(pusherChannels.LIGHTBULBS).bind('updateLightbulbs', async function (data: [{ place: boolean, lightColor: SDK_Vec3, valid: boolean }, { place: boolean, lightColor: SDK_Vec3, valid: boolean }, { place: boolean, lightColor: SDK_Vec3, valid: boolean }, { place: boolean, lightColor: SDK_Vec3, valid: boolean }]) {
       const redLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.RED.BULB);
       const redLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.RED.LIGHT);
       const blueLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.BLUE.BULB);
@@ -84,7 +84,7 @@ export const Canvas3Dverse = () => {
       const yellowLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.YELLOW.BULB);
       const yellowLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.YELLOW.LIGHT);
 
-      var LightConfig: {color: SDK_Vec3, intensity: number, range: number} = {color: [0, 0, 0], intensity: 0.1, range: 0.4};
+      var LightConfig: { color: SDK_Vec3, intensity: number, range: number } = { color: [0, 0, 0], intensity: 0.1, range: 0.4 };
       if (data[0].lightColor) {
         LightConfig.color = data[0].lightColor;
         await redLightbulbLight[0].setComponent("point_light", LightConfig);
@@ -247,12 +247,14 @@ export const Canvas3Dverse = () => {
       lightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.YELLOW.LIGHT);
     }
     if (inventory.hasItem(itemSelected) && (itemSelected == 0 || itemSelected == 1 || itemSelected == 2 || itemSelected == 3)) {
-        axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/lightbulbs/add`, {
-          "objs": [
-            { "uuid": itemSelected, base: baseId - 5 }
-          ]
-        })
+      axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/lightbulbs/add`, {
+        "objs": [
+          { "uuid": itemSelected, base: baseId - 5 }
+        ]
+      })
+      await lightbulb[0].setVisibility(true);
     } else {
+      await lightbulb[0].setVisibility(false);
       await lightbulbLight[0].setVisibility(false);
       axios.delete(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/lightbulbs/remove`, {
         data: {
