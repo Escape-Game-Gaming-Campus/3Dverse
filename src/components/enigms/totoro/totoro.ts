@@ -2,7 +2,6 @@ import { useRef } from "react";
 import { SDK_Vec3 } from "../../../_3dverseEngine/declareGlobal";
 import Player from "../../../constants/players";
 import { getInventory } from "../../inventory";
-import { player } from "../../player";
 import { _SDK3DVerse } from "../../../_3dverseEngine/declare";
 
 export class Totoro {
@@ -27,7 +26,7 @@ export class Totoro {
         const gapTimer = 100 // in ms for 1 meters
         const playerPos = { "x": player.position[0], "y": player.position[1], "z": player.position[2] }
 
-        const vector = { "x":  itemPos[0] - playerPos.x , "z": itemPos[2] - playerPos.z }
+        const vector = { "x": itemPos[0] - playerPos.x, "z": itemPos[2] - playerPos.z }
         const distance = Math.sqrt((vector.x * vector.x) + (vector.z * vector.z))
 
         const factor = 5;
@@ -48,7 +47,7 @@ export class Totoro {
         if (this.playerNear.playerName === currentPlayerName) {
             this.timerEnd = false;
             setTimeout(() => {
-                this.audioRef.current.play();
+                this.audioRef.current.play().then(() => {}).catch(() => {});
                 this.timerEnd = true;
             }, this.playerNear.timer)
         }

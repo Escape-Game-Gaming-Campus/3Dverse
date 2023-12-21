@@ -396,7 +396,7 @@ export const Canvas3Dverse = () => {
 
   const playAlarm = () => {
     audioRef.current.loop = true;
-    audioRef.current.play();
+    audioRef.current.play().then(() => {}).catch(() => {});
   };
 
   // const stopAlarm = () => {
