@@ -10,7 +10,7 @@ import { Character } from "../components/character";
 import Digicode from '../components/enigms/ddust2/digicode';
 import CrimeScene from '../components/enigms/hallway/crimeScene';
 import { Raycast } from '../components/raycast';
-import { Entities, SDK3DVerse_ExtensionInterface, SDK_Vec3, Viewport } from '../_3dverseEngine/declareGlobal';
+import { SDK3DVerse_ExtensionInterface, SDK_Vec3, Viewport } from '../_3dverseEngine/declareGlobal';
 import { BlocNoteReact } from '../components/blocNote';
 import axios from 'axios';
 import { Totoro } from '../components/enigms/totoro/totoro';
@@ -28,12 +28,13 @@ var camViewport: Viewport;
 var totoroSKey: SDK_Vec3;
 var updatePlayer: NodeJS.Timer
 var currentPlayerName: string
+var list: Function[] = [];
+const totoro = new Totoro(AppConfig._3DVERSE.TOTORO_S_KEY);
 
 export const Canvas3Dverse = () => {
   const audioRef = useRef(new Audio('Boo_house.mp3'));
-  const interactableObjects = AppConfig._3DVERSE.INTERACTIBLE_OBJECTS;//pin code / crime Scene / drawer / handle / lightbulb Totoro/ red base/blue base/green base
+  const interactableObjects = AppConfig._3DVERSE.INTERACTIBLE_OBJECTS; //pin code / crime Scene / drawer / handle / lightbulb Totoro/ red base/blue base/green base
   const [countdown, setCountdown] = useState(10);
-  const [eventTriggered, setEventTriggered] = useState(false);
   const [selectedEntity, setSelectedEntity] = useState(-1);
   const [digicodeOpen, setDigicodeOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -45,7 +46,8 @@ export const Canvas3Dverse = () => {
   const [itemSelected, setItemSelected] = useState(-1);
   const [ready, setReady] = useState(false);
   const [load3Dverse, setLoad3Dverse] = useState(false);
-  const totoro = new Totoro(AppConfig._3DVERSE.TOTORO_S_KEY);
+  const [currentPlayerNameState, setCurrentPlayerNameState] = useState("")
+  const [totoroState, setTotoroState] = useState<Totoro>();
 
   const statusPusher = useScript(
     `https://js.pusher.com/8.2.0/pusher.min.js`,
@@ -178,6 +180,7 @@ export const Canvas3Dverse = () => {
     currentPlayerName = "Player_" + SDK3DVerse.getClientUUID()
     await character.InitFirstPersonController(AppConfig._3DVERSE.CHARACTER, currentPlayerName);
     initPlayerAPI(currentPlayerName, character.camPos);
+    setCurrentPlayerNameState(currentPlayerName)
 
     const joysticksElement = await document.getElementById('joysticks') as HTMLElement;
     await SDK3DVerse.installExtension(SDK3DVerse_VirtualJoystick_Ext, joysticksElement);
@@ -191,12 +194,15 @@ export const Canvas3Dverse = () => {
 
     totoro.SDK3dverse = SDK3DVerse;
     totoroSKey = (await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.TOTORO_S_KEY))[0].getGlobalTransform().position as SDK_Vec3
+    if (!totoroState) {
+      setTotoroState(totoro)
+    }
     camViewport = SDK3DVerse.engineAPI.cameraAPI.getActiveViewports()[0]
 
     setTimeout(() => {
       setLoad3Dverse(true);
     }, 750)
-  }, []);
+  }, [interactableObjects, totoroState]);
 
   //delete player
   window.addEventListener('beforeunload', () => {
@@ -209,9 +215,10 @@ export const Canvas3Dverse = () => {
     if (currentPlayerName && ready && !updatePlayer) {
       updatePlayer = setInterval(() => {
         updatePlayerApi(currentPlayerName, camViewport.getTransform().position)
+        setCurrentPlayerNameState(currentPlayerName)
       }, 750)
     }
-  }, [ready, currentPlayerName])
+  }, [ready, currentPlayerNameState])
 
   useEffect(() => {
     if (statusPusher === 'ready') {
@@ -224,7 +231,7 @@ export const Canvas3Dverse = () => {
       initApp();
       bluringCanvas();
     }
-  }, [status3Dverse]);
+  }, [status3Dverse, initApp]);
 
   useEffect(() => {
     console.log(itemSelected);
@@ -283,17 +290,17 @@ export const Canvas3Dverse = () => {
   const handleBaseClick = async (baseId: 5 | 6 | 7 | 8) => {
     var lightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.RED.BULB);
     var lightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.RED.LIGHT);
-    if (baseId == 6) {
+    if (baseId === 6) {
       lightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.BLUE.BULB);
       lightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.BLUE.LIGHT);
-    } else if (baseId == 7) {
+    } else if (baseId === 7) {
       lightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.GREEN.BULB);
       lightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.GREEN.LIGHT);
-    } else if (baseId == 8) {
+    } else if (baseId === 8) {
       lightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.YELLOW.BULB);
       lightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.YELLOW.LIGHT);
     }
-    if (inventory.hasItem(itemSelected) && (itemSelected == 0 || itemSelected == 1 || itemSelected == 2 || itemSelected == 3)) {
+    if (inventory.hasItem(itemSelected) && (itemSelected === 0 || itemSelected === 1 || itemSelected === 2 || itemSelected === 3)) {
       axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/lightbulbs/add`, {
         "objs": [
           { "uuid": itemSelected, base: baseId - 5 }
@@ -366,7 +373,7 @@ export const Canvas3Dverse = () => {
 
     fetchData();
   }, [totoroRoom, load3Dverse]);
-  const list = [handleDigicodeClick, handleCrimeSceneClick, handleDrawerClick, handleDrawerClick, handleLightbulbClick, handleBaseClick, handleBaseClick, handleBaseClick, handleBaseClick];
+  list = [handleDigicodeClick, handleCrimeSceneClick, handleDrawerClick, handleDrawerClick, handleLightbulbClick, handleBaseClick, handleBaseClick, handleBaseClick, handleBaseClick];
 
   useEffect(() => {
     if (ready && load3Dverse) {
@@ -376,33 +383,33 @@ export const Canvas3Dverse = () => {
         }
       }, 50)
     }
-  }, [ready, load3Dverse])
+  }, [ready, load3Dverse, totoroState])
 
   useEffect(() => {
-    if (eventTriggered && countdown > 0) {
+    if (countdown > 0) {
       const intervalId = setInterval(() => {
         setCountdown((prevCountdown) => prevCountdown - 1);
       }, 1000);
       console.log(countdown);
       return () => clearInterval(intervalId);
-    } else if (eventTriggered && countdown == 0) {
+    } else if (countdown === 0) {
       playAlarm();
       //setState chaud froid
     }
-  }, [eventTriggered, countdown]);
+  }, [countdown]);
 
   const playAlarm = () => {
     audioRef.current.loop = true;
     audioRef.current.play();
   };
 
-  const stopAlarm = () => {
-    audioRef.current.pause();
-    audioRef.current.currentTime = 0;
-  }
+  // const stopAlarm = () => {
+  //   audioRef.current.pause();
+  //   audioRef.current.currentTime = 0;
+  // }
 
   useEffect(() => {
-    if (selectedEntity != -1) { list[selectedEntity](selectedEntity as any); console.log("selectedEntity ", selectedEntity); }
+    if (selectedEntity !== -1) { list[selectedEntity](selectedEntity as any); console.log("selectedEntity ", selectedEntity); }
     console.log("SelectedEntity", selectedEntity);
     setSelectedEntity(-1);
   }, [selectedEntity]);
