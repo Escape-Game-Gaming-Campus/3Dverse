@@ -225,7 +225,6 @@ export const Canvas3Dverse = () => {
 
   const handleLightbulbClick = async () => {
     const lightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.DRAWER_BULB);
-    handleLightbulbFlash();
     axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/inv/add`, {
       "objs": [
         { "uuid": 3 }
