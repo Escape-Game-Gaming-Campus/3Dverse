@@ -16,31 +16,25 @@ export function setPlayers(name?: string) {
     } else {
       player = playerList;
     }
-    console.log("updated Player", player)
+    // console.log("updated Player", player)
   });
 }
 
 export function initPlayerAPI(playerName: string, camPos: Array<number> | undefined) {
   if (!camPos) return
   axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/players/add`, { players: [{ "name": playerName, "position": camPos }] })
-    .then((response) => { })
+    .then((response) => { setPlayers() })
     .catch(err => { });
-
-    setPlayers()
 }
 
 export function updatePlayerApi(playerName: string, position : Array<number>) {
   axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/players/update`, { players: [{ "name": playerName, "position": position }] })
-    .then((response) => { })
+    .then((response) => { setPlayers() })
     .catch(err => { });
-
-    setPlayers()
 }
 
 export function removePlayerApi(playerName: string) {
   axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/players/delete`, { players: [{ "name": playerName }] })
-    .then((response) => { })
+    .then((response) => { setPlayers() })
     .catch(err => { });
-
-    setPlayers()
 }

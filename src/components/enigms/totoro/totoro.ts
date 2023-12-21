@@ -24,13 +24,14 @@ export class Totoro {
     }
 
     public hotAndCold(player: Player, itemPos: SDK_Vec3) {
-        const gapTimer = 1000 // in ms for 1 meters
+        const gapTimer = 100 // in ms for 1 meters
         const playerPos = { "x": player.position[0], "y": player.position[1], "z": player.position[2] }
 
-        const vector = { "x": playerPos.x - itemPos[0], "y": playerPos.y - itemPos[1], "z": playerPos.y - itemPos[2] }
-        const distance = Math.sqrt((vector.x * vector.x) + (vector.y * vector.y) + (vector.z * vector.z))
+        const vector = { "x":  itemPos[0] - playerPos.x , "z": itemPos[2] - playerPos.z }
+        const distance = Math.sqrt((vector.x * vector.x) + (vector.z * vector.z))
 
-        const timer = gapTimer * distance
+        const factor = 5;
+        const timer = (gapTimer * (distance * factor))// - 475 * factor //duréee
 
         return { "timer": timer, "playerName": player.name }
     }
@@ -38,12 +39,7 @@ export class Totoro {
     public setPlayerNear(players: Player[], itemPos: SDK_Vec3) {
         players.forEach((player) => {
             const selectedPlayer = this.hotAndCold(player, itemPos);
-            if (this.playerNear.timer === 0) {
-                this.playerNear = selectedPlayer;
-            }
-            else if (this.playerNear.timer > selectedPlayer.timer) {
-                this.playerNear = selectedPlayer;
-            }
+            this.playerNear = selectedPlayer;
         })
     }
 
@@ -53,8 +49,6 @@ export class Totoro {
             this.timerEnd = false;
             setTimeout(() => {
                 this.audioRef.current.play();
-                console.log("hac bip");
-                console.log("hac timer", this.playerNear.timer);
                 this.timerEnd = true;
             }, this.playerNear.timer)
         }
