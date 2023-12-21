@@ -10,10 +10,9 @@ import { Character } from "../components/character";
 import Digicode from '../components/enigms/ddust2/digicode';
 import CrimeScene from '../components/enigms/hallway/crimeScene';
 import { Raycast } from '../components/raycast';
-import { Entity, SDK3DVerse_ExtensionInterface } from '../_3dverseEngine/declareGlobal';
+import { SDK3DVerse_ExtensionInterface, SDK_Vec3 } from '../_3dverseEngine/declareGlobal';
 import { BlocNoteReact } from '../components/blocNote';
 import axios from 'axios';
-import { count } from 'console';
 
 
 declare const SDK3DVerse: typeof _SDK3DVerse;
@@ -75,50 +74,76 @@ export const Canvas3Dverse = () => {
       console.log("PUSHER : ", JSON.stringify(data));
       setTotoroRoom(data.valid);
     });
-    channel.get(pusherChannels.LIGHTBULBS).bind('updateLightbulbs', async function (data: [boolean, boolean, boolean, boolean]) {
+    channel.get(pusherChannels.LIGHTBULBS).bind('updateLightbulbs', async function (data: [{place: boolean, lightColor: SDK_Vec3, valid: boolean}, {place: boolean, lightColor: SDK_Vec3, valid: boolean}, {place: boolean, lightColor: SDK_Vec3, valid: boolean}, {place: boolean, lightColor: SDK_Vec3, valid: boolean}]) {
+      const redLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.RED.BULB);
       const redLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.RED.LIGHT);
+      const blueLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.BLUE.BULB);
       const blueLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.BLUE.LIGHT);
+      const greenLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.GREEN.BULB);
       const greenLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.GREEN.LIGHT);
+      const yellowLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.YELLOW.BULB);
       const yellowLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.YELLOW.LIGHT);
-      if (data[0]) {
+
+      var LightConfig: {color: SDK_Vec3, intensity: number, range: number} = {color: [0, 0, 0], intensity: 0.1, range: 0.4};
+      if (data[0].lightColor) {
+        LightConfig.color = data[0].lightColor;
+        await redLightbulbLight[0].setComponent("point_light", LightConfig);
+      }
+      if (data[1].lightColor) {
+        LightConfig.color = data[1].lightColor;
+        await blueLightbulbLight[0].setComponent("point_light", LightConfig);
+      }
+      if (data[2].lightColor) {
+        LightConfig.color = data[2].lightColor;
+        await greenLightbulbLight[0].setComponent("point_light", LightConfig);
+      }
+      if (data[3].lightColor) {
+        LightConfig.color = data[3].lightColor;
+        await yellowLightbulbLight[0].setComponent("point_light", LightConfig);
+      }
+
+      if (data[0].valid) {
         await redLightbulbLight[0].setVisibility(true);
       } else {
         await redLightbulbLight[0].setVisibility(false);
       }
-      if (data[1]) {
+      if (data[1].valid) {
         await blueLightbulbLight[0].setVisibility(true);
       } else {
         await blueLightbulbLight[0].setVisibility(false);
       }
-      if (data[2]) {
+      if (data[2].valid) {
         await greenLightbulbLight[0].setVisibility(true);
       } else {
         await greenLightbulbLight[0].setVisibility(false);
       }
-      if (data[3]) {
+      if (data[3].valid) {
         await yellowLightbulbLight[0].setVisibility(true);
       } else {
         await yellowLightbulbLight[0].setVisibility(false);
       }
+
+      if (data[0].place) {
+        await redLightbulb[0].setVisibility(true);
+      } else {
+        await redLightbulb[0].setVisibility(false);
+      }
+      if (data[1].place) {
+        await blueLightbulb[0].setVisibility(true);
+      } else {
+        await blueLightbulb[0].setVisibility(false);
+      }
+      if (data[2].place) {
+        await greenLightbulb[0].setVisibility(true);
+      } else {
+        await greenLightbulb[0].setVisibility(false);
+      }
+      if (data[3].place) {
+        await yellowLightbulb[0].setVisibility(true);
+      } else {
+        await yellowLightbulb[0].setVisibility(false);
+      }
     });
-  }
-  const setLightsOff = async () => {
-    const redLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.RED.BULB);
-    const redLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.RED.LIGHT);
-    const blueLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.BLUE.BULB);
-    const blueLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.BLUE.LIGHT);
-    const greenLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.GREEN.BULB);
-    const greenLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.GREEN.LIGHT);
-    const yellowLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.YELLOW.BULB);
-    const yellowLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.YELLOW.LIGHT);
-    await redLightbulb[0].setVisibility(false);
-    await redLightbulbLight[0].setVisibility(false);
-    await blueLightbulb[0].setVisibility(false);
-    await blueLightbulbLight[0].setVisibility(false);
-    await greenLightbulb[0].setVisibility(false);
-    await greenLightbulbLight[0].setVisibility(false);
-    await yellowLightbulb[0].setVisibility(true);
-    await yellowLightbulbLight[0].setVisibility(true);
   }
 
   const initApp = useCallback(async () => {
@@ -139,7 +164,6 @@ export const Canvas3Dverse = () => {
     await SDK3DVerse.installExtension(SDK3DVerse_VirtualJoystick_Ext, joysticksElement);
     const raycast = new Raycast(SDK3DVerse, interactableObjects, setSelectedEntity);
     setRaycastGlobal(raycast);
-    setLightsOff();
   }, []);
 
   useEffect(() => {
@@ -209,15 +233,6 @@ export const Canvas3Dverse = () => {
     await lightbulb[0].setVisibility(false);
   };
 
-  const handleLightbulbFlash = async () => { // à appeler quand le capteur du casier sera activé
-    axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/inv/add`, {
-      "objs": [
-        { "uuid": 2 }
-      ]
-    })
-  };
-
-
   const handleBaseClick = async (baseId: 5 | 6 | 7 | 8) => {
     var lightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.RED.BULB);
     var lightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.RED.LIGHT);
@@ -232,14 +247,12 @@ export const Canvas3Dverse = () => {
       lightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.YELLOW.LIGHT);
     }
     if (inventory.hasItem(itemSelected) && (itemSelected == 0 || itemSelected == 1 || itemSelected == 2 || itemSelected == 3)) {
-        await lightbulb[0].setVisibility(true);
         axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/lightbulbs/add`, {
           "objs": [
             { "uuid": itemSelected, base: baseId - 5 }
           ]
         })
     } else {
-      await lightbulb[0].setVisibility(false);
       await lightbulbLight[0].setVisibility(false);
       axios.delete(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/lightbulbs/remove`, {
         data: {
