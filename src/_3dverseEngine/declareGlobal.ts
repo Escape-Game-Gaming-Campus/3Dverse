@@ -240,7 +240,7 @@ export class Entity {
                 0,0,1,0,
                 0,0,0,1]
     } ;
-    public getGlobalTransform(stopAtParen ? : Entity | null) : Transform {
+    public getGlobalTransform(stopAtParent ? : Entity | null) : Transform {
         return {}
     } ;
     public getID() : string {

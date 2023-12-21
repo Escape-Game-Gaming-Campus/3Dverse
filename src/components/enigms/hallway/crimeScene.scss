@@ -1,0 +1,22 @@
+.crimeScene {
+    display: flex;
+    justify-content: space-between;  // Adjust this to change the spacing between images
+    align-items: center;
+  
+    div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    img {
+      width: 100px;
+      height: 100px;
+      cursor: pointer;
+      // Add any other styling you want for the images
+    }
+    
+    div > div {
+      margin-top: 8px;  // Adjust this to change the spacing between the image and the number
+    }
+  }

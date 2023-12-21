@@ -15,7 +15,7 @@ root.render(
     <Router>
         <Routes>
 
-          <Route path="/inventory" element={<InventoryReact />} />
+          <Route path="/inventory" element={<></>} />
           <Route path="*" element={<Canvas3Dverse />} />
 
         </Routes>
