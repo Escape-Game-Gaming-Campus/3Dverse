@@ -13,9 +13,8 @@ export class Character {
     playerTemplate.attachComponent("local_transform", { position: [-10, 1, -10] });
     const parentEntity = null;
     const deleteOnClientDisconnection = true;
-    playerName += this.SDK3DVerse.getClientUUID()
     const playerSceneEntity = await playerTemplate.instantiateTransientEntity(
-      "Player" + this.SDK3DVerse.getClientUUID(),
+      playerName,
       parentEntity,
       deleteOnClientDisconnection
     );
