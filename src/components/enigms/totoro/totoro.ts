@@ -58,7 +58,7 @@ export class Totoro {
         console.log("hac currentPlayer", currentPlayerName)
         if (this.playerNear.playerName === currentPlayerName) {
             setTimeout(() => {
-                this.audioRef.current.play();
+                // this.audioRef.current.play();
                 console.log("hac bip");
             }, this.playerNear.timer)
         }

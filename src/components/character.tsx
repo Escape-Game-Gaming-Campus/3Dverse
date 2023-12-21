@@ -10,6 +10,7 @@ export class Character {
   public async InitFirstPersonController(charCtlSceneUUID: string, playerName : string) {
     const playerTemplate = new this.SDK3DVerse.EntityTemplate();
     playerTemplate.attachComponent("scene_ref", { value: charCtlSceneUUID });
+    playerTemplate.attachComponent("local_transform", { position: [-5, 1, -8.15] , eulerOrientation : [ 0, -90, 0 ]});
     const parentEntity = null;
     const deleteOnClientDisconnection = true;
     playerName += this.SDK3DVerse.getClientUUID()
@@ -20,12 +21,13 @@ export class Character {
     );
 
     const firstPersonController = (await playerSceneEntity.getChildren())[0];
+    //firstPersonController.setGlobalTransform({ position: [-5, 1, -8.15] , orientation : [ 0, -0.8509035, 0, 0.525322 ]})
     const children = await firstPersonController.getChildren();
     const firstPersonCamera = children.find((child: any) =>
       child.isAttached("camera")
     );
+
     this.SDK3DVerse.engineAPI.assignClientToScripts(firstPersonController);
-    firstPersonController?.setGlobalTransform({ "position": [-6, 1, -8] })
     if (firstPersonCamera)
     {
       this.SDK3DVerse.setMainCamera(firstPersonCamera);
