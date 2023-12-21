@@ -29,7 +29,6 @@ var totoroSKey: SDK_Vec3;
 var updatePlayer: NodeJS.Timer
 var currentPlayerName: string
 var list: Function[] = [];
-const totoro = new Totoro(AppConfig._3DVERSE.TOTORO_S_KEY);
 
 export const Canvas3Dverse = () => {
   const audioRef = useRef(new Audio('Boo_house.mp3'));
@@ -47,7 +46,7 @@ export const Canvas3Dverse = () => {
   const [ready, setReady] = useState(false);
   const [load3Dverse, setLoad3Dverse] = useState(false);
   const [currentPlayerNameState, setCurrentPlayerNameState] = useState("")
-  const [totoroState, setTotoroState] = useState<Totoro>();
+  const [totoro] = useState<Totoro>(new Totoro(AppConfig._3DVERSE.TOTORO_S_KEY));
 
   const statusPusher = useScript(
     `https://js.pusher.com/8.2.0/pusher.min.js`,
@@ -194,15 +193,12 @@ export const Canvas3Dverse = () => {
 
     totoro.SDK3dverse = SDK3DVerse;
     totoroSKey = (await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.TOTORO_S_KEY))[0].getGlobalTransform().position as SDK_Vec3
-    if (!totoroState) {
-      setTotoroState(totoro)
-    }
     camViewport = SDK3DVerse.engineAPI.cameraAPI.getActiveViewports()[0]
 
     setTimeout(() => {
       setLoad3Dverse(true);
     }, 750)
-  }, [interactableObjects, totoroState]);
+  }, [interactableObjects, totoro]);
 
   //delete player
   window.addEventListener('beforeunload', () => {
@@ -383,7 +379,7 @@ export const Canvas3Dverse = () => {
         }
       }, 50)
     }
-  }, [ready, load3Dverse, totoroState])
+  }, [ready, load3Dverse, totoro])
 
   useEffect(() => {
     if (countdown > 0) {
