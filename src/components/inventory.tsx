@@ -5,19 +5,27 @@ import pusherChannels from '../constants/pusherChannels';
 import { channel } from '../pages/3Dverse';
 import { useEffect, useState } from 'react';
 interface InventoryProps {
+    itemSelected: number;
     setItemSelected: React.Dispatch<React.SetStateAction<number>>;
   }
 
 export class Inventory 
 {
-    array : Object[] = [];
+    private array : Object[] = [];
     caseTexture : string;
-    setItemSelected : React.Dispatch<React.SetStateAction<number>>;
+    selectedCaseTexture : string;
+    setItemSelected ?: React.Dispatch<React.SetStateAction<number>>;
+    itemSelected : number = -1;
 
-    constructor(texture : string, setItemSelected : React.Dispatch<React.SetStateAction<number>>) 
+    constructor(texture : string, selectedTexture: string) 
     {
         this.caseTexture = texture;
+        this.selectedCaseTexture = selectedTexture;
+    }
+
+    public setItemSelectedProps(setItemSelected : React.Dispatch<React.SetStateAction<number>>, itemSelected : number) {
         this.setItemSelected = setItemSelected;
+        this.itemSelected = itemSelected;
     }
     
     public setInv(array : Object[], setComponent: React.Dispatch<React.SetStateAction<JSX.Element>>)
@@ -26,8 +34,9 @@ export class Inventory
         setComponent(this.display());
     }
 
-    private display()
+    public display(itemSelected: number = this.itemSelected)
     {
+        console.log("array: ", this.array)
         return <>
             <div className='inv'>
                 {
@@ -39,7 +48,7 @@ export class Inventory
             <div className='inv'>
                 {
                     this.array.map((e, i) => {
-                        return <img key={`case_${i}`} className='inventory case' src={this.caseTexture} alt="Image of case of inventory" onClick={()=>{this.setItemSelected(e.UUID)}} />
+                        return <img key={`case_${i}`} className='inventory case' src={itemSelected == e.UUID ? this.selectedCaseTexture : this.caseTexture} alt="Image of case of inventory" onClick={()=>{if (this.setItemSelected) this.setItemSelected(e.UUID)}} />
                     })
                 }
             </div>
@@ -47,10 +56,12 @@ export class Inventory
     }
 }
 
-export const InventoryReact: React.FC<InventoryProps> = ({setItemSelected}) =>{
+export const inventory : Inventory = new Inventory(`${AppConfig.FRONT.HOST}:${AppConfig.FRONT.PORT}/img/case.png`, `${AppConfig.FRONT.HOST}:${AppConfig.FRONT.PORT}/img/selectedCase.png`);
+
+export const InventoryReact: React.FC<InventoryProps> = ({itemSelected, setItemSelected}) =>{
     const [invComponent, setInvComponent] = useState(<></>);
 
-    const inventory : Inventory = new Inventory(`${AppConfig.FRONT.HOST}:${AppConfig.FRONT.PORT}/img/case.png`, setItemSelected);
+    inventory.setItemSelectedProps(setItemSelected, itemSelected);
 
     channel.get(pusherChannels.INVENTORY).bind('updateInventory', function (data: Object[]) {
         console.log("PUSHER : ", JSON.stringify(data));
@@ -60,6 +71,11 @@ export const InventoryReact: React.FC<InventoryProps> = ({setItemSelected}) =>{
     useEffect(() => {
         inventory.setInv([], setInvComponent);
     }, []);
+
+    useEffect(() => {
+        setInvComponent(inventory.display(itemSelected));
+        console.log("itemSelected : ", invComponent)
+    }, [itemSelected]);
 
     return invComponent
 }

@@ -446,7 +446,7 @@ export const Canvas3Dverse = () => {
           </div>
         </div>
         <div>
-          <InventoryReact setItemSelected={setItemSelected} />
+          <InventoryReact setItemSelected={setItemSelected} itemSelected={itemSelected} />
         </div>
       </>
       : <></>
