@@ -354,7 +354,6 @@ export const Canvas3Dverse = () => {
     const x = event.clientX;
     const y = event.clientY;
     raycastGlobal?.fireRay(x, y);
-    axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/lightbulbs/switchon`);
   };
   useEffect(() => {
     if (status3Dverse === 'ready' && statusPusher === 'ready') {
