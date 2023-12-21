@@ -86,12 +86,12 @@ export const Canvas3Dverse = () => {
     });
   }
   const setLightsOff = async () => {
-    const redLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID("c8e714d5-bbca-4f8a-b3cd-129ade233c8a");
-    const redLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID("d8a9d815-9682-42cf-b205-f8cc69a6c5d6");
-    const blueLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID("43bb9e8d-2672-4a0a-aa0d-5f3c214ea624");
-    const blueLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID("89ec5c77-4806-4e1d-9ebc-454a85d538d5");
-    const greenLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID("cd8a4b3e-de57-41ba-9151-95e6a016f226");
-    const greenLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID("54145b1f-2b48-4a47-8aa5-68f8e1b37c12");
+    const redLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.RED.BULB);
+    const redLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.RED.LIGHT);
+    const blueLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.BLUE.BULB);
+    const blueLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.BLUE.LIGHT);
+    const greenLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.GREEN.BULB);
+    const greenLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.GREEN.LIGHT);
     await redLightbulb[0].setVisibility(false);
     await redLightbulbLight[0].setVisibility(false);
     await blueLightbulb[0].setVisibility(false);
@@ -157,9 +157,9 @@ export const Canvas3Dverse = () => {
   };
 
   const handleDrawerClick = async () => {
-    const drawer = await SDK3DVerse.engineAPI.findEntitiesByEUID("162ca7cb-089b-4a0a-8114-ce7dec2fb977");
-    const handle = await SDK3DVerse.engineAPI.findEntitiesByEUID("7b79a430-8aea-4f6a-8c1c-1eb05fe41089");
-    const lightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID("ba406661-7b0e-4436-b059-ecfa590bbb00");
+    const drawer = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.DRAWER);
+    const handle = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.HANDLE);
+    const lightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.DRAWER_BULB);
     const drawerTransform = await drawer[0].getGlobalTransform();
     const handleTransform = await handle[0].getGlobalTransform();
     const lightbulbTransform = await lightbulb[0].getGlobalTransform();
@@ -179,7 +179,7 @@ export const Canvas3Dverse = () => {
   };
 
   const handleLightbulbClick = async () => {
-    const lightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID("ba406661-7b0e-4436-b059-ecfa590bbb00");
+    const lightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.DRAWER_BULB);
     axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/inv/add`, {
       "objs": [
         { "uuid": 3 }
@@ -199,8 +199,8 @@ export const Canvas3Dverse = () => {
 
   const handleRedBaseClick = async () => {
     //utiliser l'ampoule selec depuis l'inventaire si aucune selec ne rien faire
-    const redLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID("c8e714d5-bbca-4f8a-b3cd-129ade233c8a");
-    const redLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID("d8a9d815-9682-42cf-b205-f8cc69a6c5d6");
+    const redLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.RED.BULB);
+    const redLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.RED.LIGHT);
     if (!redLock) {
       if (!redLight) {
         if (itemSelected == 1 || itemSelected == 2 || itemSelected == 3) {
@@ -247,8 +247,8 @@ export const Canvas3Dverse = () => {
 
   const handleBlueBaseClick = async () => {
     //utiliser l'ampoule selec depuis l'inventaire si aucune selec ne rien faire
-    const blueLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID("43bb9e8d-2672-4a0a-aa0d-5f3c214ea624");
-    const blueLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID("89ec5c77-4806-4e1d-9ebc-454a85d538d5");
+    const blueLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.BLUE.BULB);
+    const blueLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.BLUE.LIGHT);
     if (!blueLock) {
       if (!blueLight) {
         if (itemSelected == 1 || itemSelected == 2 || itemSelected == 3) {
@@ -293,8 +293,8 @@ export const Canvas3Dverse = () => {
     setItemSelected(-1);
   }
   const handleGreenBaseClick = async () => {
-    const greenLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID("cd8a4b3e-de57-41ba-9151-95e6a016f226");
-    const greenLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID("54145b1f-2b48-4a47-8aa5-68f8e1b37c12");
+    const greenLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.GREEN.BULB);
+    const greenLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.GREEN.LIGHT);
     if (!greenLock) {
       if (!greenLight) {
         if (itemSelected == 1 || itemSelected == 2 || itemSelected == 3) {
