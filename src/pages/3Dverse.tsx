@@ -199,7 +199,10 @@ export const Canvas3Dverse = () => {
 
   useEffect(() => {
     if (ready && load3Dverse) {
-      totoro.enigmHotAndCold(player as Player[], totoroSKey, currentPlayerName) 
+      while (!totoro.itemCatch)
+      {
+        totoro.enigmHotAndCold(player as Player[], totoroSKey, currentPlayerName) 
+      }
     }
   }, [ready, load3Dverse])
 

@@ -7,29 +7,28 @@ import { _SDK3DVerse } from "../../../_3dverseEngine/declare";
 
 export class Totoro {
     private itemUUID: string;
-    private itemCatch: boolean;
+    public itemCatch: boolean;
     private playerNear: { "timer": number, "playerName": string };
     private audioRef = useRef(new Audio("bip.mp3"));
-    private SDK3Dverse ?: typeof _SDK3DVerse;
+    private SDK3Dverse?: typeof _SDK3DVerse;
 
     constructor(itemUUID: string) {
         this.itemUUID = itemUUID;
-        this.playerNear = { "timer": 0, "playerName": ""};
+        this.playerNear = { "timer": 0, "playerName": "" };
         this.itemCatch = false;
     };
 
-    set SDK3dverse (SDK3Dverse : typeof _SDK3DVerse)
-    {
+    set SDK3dverse(SDK3Dverse: typeof _SDK3DVerse) {
         this.SDK3Dverse = SDK3Dverse;
     }
 
-    public hotAndCold(player: Player, itemPos : SDK_Vec3) {
+    public hotAndCold(player: Player, itemPos: SDK_Vec3) {
         const gapTimer = 1000 // in ms for 1 meters
         const playerPos = { "x": player.position[0], "y": player.position[1], "z": player.position[2] }
         console.log("hac item", itemPos)
         console.log("hac player", playerPos)
 
-        const vector = { "x": playerPos.x - itemPos[0], "y": playerPos.y - itemPos[1], "z": playerPos.y - itemPos[2]}
+        const vector = { "x": playerPos.x - itemPos[0], "y": playerPos.y - itemPos[1], "z": playerPos.y - itemPos[2] }
         const distance = Math.sqrt((vector.x * vector.x) + (vector.y * vector.y) + (vector.z * vector.z))
 
         console.log("hac vector", vector)
@@ -41,7 +40,7 @@ export class Totoro {
         return { "timer": timer, "playerName": player.name }
     }
 
-    public setPlayerNear(players: Player[], itemPos : SDK_Vec3) {
+    public setPlayerNear(players: Player[], itemPos: SDK_Vec3) {
         console.log("fpss", players)
         players.forEach((player) => {
             const selectedPlayer = this.hotAndCold(player, itemPos);
@@ -54,12 +53,14 @@ export class Totoro {
         })
     }
 
-    public soundNearHotAndCold(players: Player[], itemPos : SDK_Vec3, currentPlayerName : string) {
+    public soundNearHotAndCold(players: Player[], itemPos: SDK_Vec3, currentPlayerName: string) {
         this.setPlayerNear(players, itemPos);
         console.log("hac currentPlayer", currentPlayerName)
         if (this.playerNear.playerName === currentPlayerName) {
-            setInterval(() => { this.audioRef.current.play() 
-            console.log("hac bip")}, this.playerNear.timer)
+            setTimeout(() => {
+                this.audioRef.current.play();
+                console.log("hac bip");
+            }, this.playerNear.timer)
         }
     }
 
@@ -69,14 +70,15 @@ export class Totoro {
         }
     }
 
-    public enigmHotAndCold(players: Player[], itemPos : SDK_Vec3,  currentPlayerName : string) {
+    public enigmHotAndCold(players: Player[], itemPos: SDK_Vec3, currentPlayerName: string) {
         console.log("fps", players)
         console.log("itemsPos", itemPos)
         if (!players) return
-        while (!this.itemCatch) {
-            this.setItemCatched();
-            this.soundNearHotAndCold(players, itemPos, currentPlayerName);
-        }
+
+        this.setItemCatched();
+        this.soundNearHotAndCold(players, itemPos, currentPlayerName);
+        console.log("hac itemCatched", this.itemCatch)
+
     }
 }
 
