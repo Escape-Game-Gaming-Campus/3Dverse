@@ -3,7 +3,7 @@ enum pusherChannels { // les tokens de channel pusher sont des string de 50 cara
     INVENTORY =           "9GWL1MyLU96yFhAgthdjNphYUi51ADSsJfy77eBoLEGdpQvYIX",
     ENIGMS =              "yRD2nbBLw3AjpS3ZQ8yLEgP5Mx557AISImcj6ZM35gvzEHG0Jt",
     PLAYERS =             "vGQJaxTMQdj7J1DI7wPLHq10bk301Gq1EbwYpfVqKySywaXZDp",
-    LIGHTBULBS =          "9GWL1MyLU96yFhAgthdjNphYUi51ADSsJfy77eBoLEGdpQvYIX",
+    LIGHTBULBS =          "iN9uAePufLeThWmxLbQBCj0YK6QWrJN4a1YAZf31vNmCYitDcR",
 }
 
 export default pusherChannels;

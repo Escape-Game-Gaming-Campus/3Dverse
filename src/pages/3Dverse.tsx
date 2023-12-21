@@ -22,7 +22,7 @@ export var channel = new Map<pusherChannels, any>();
 declare const SDK3DVerse_VirtualJoystick_Ext: SDK3DVerse_ExtensionInterface;
 export const Canvas3Dverse = () => {
   const audioRef = useRef(new Audio('Boo_house.mp3'));
-  const interactableObjects = ["ee4d6092-4dca-4ace-a55c-3c3d4a468e84", "d62610ef-5aa4-473c-b540-3a623e9590b9", "a46593ad-794c-4cb1-b0f3-728ec6803859", "7b79a430-8aea-4f6a-8c1c-1eb05fe41089", "c930d200-ae0a-4467-b106-663ca3dfe0cf", "3900effd-c890-4066-a3ca-64119ebe650e", "e8d9cf51-4ff3-4cbc-ab05-38ff66aedf03", "963be081-3931-486c-b8fc-da896ce49340"];//pin code / crime Scene / drawer / handle / lightbulb Totoro/ red base/blue base/green base
+  const interactableObjects = AppConfig._3DVERSE.INTERACTIBLE_OBJECTS;//pin code / crime Scene / drawer / handle / lightbulb Totoro/ red base/blue base/green base
   const [countdown, setCountdown] = useState(120);
   const [eventTriggered, setEventTriggered] = useState(false);
   const [selectedEntity, setSelectedEntity] = useState(-1);
@@ -76,7 +76,7 @@ export const Canvas3Dverse = () => {
     channel.set(pusherChannels.DEV, pusher.subscribe(pusherChannels.DEV));
     channel.set(pusherChannels.INVENTORY, pusher.subscribe(pusherChannels.INVENTORY));
     channel.set(pusherChannels.ENIGMS, pusher.subscribe(pusherChannels.ENIGMS));
-    // channel.set(pusherChannels.INVENTORY, pusher.subscribe(pusherChannels.INVENTORY)); mettre le channel lightbulbs
+    channel.set(pusherChannels.LIGHTBULBS, pusher.subscribe(pusherChannels.LIGHTBULBS));
     channel.get(pusherChannels.DEV).bind('helloWorld', function (data: object) {
       console.log("PUSHER : ", JSON.stringify(data));
     });
@@ -215,7 +215,7 @@ export const Canvas3Dverse = () => {
           })
           axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/lightbulbs/add`, {
             "objs": [
-              { "uuid": redBase }, { "base": 1 }
+              { "uuid": itemSelected, base: 0 }
             ]
           })
           if (itemSelected == 1) {
@@ -234,9 +234,7 @@ export const Canvas3Dverse = () => {
         })
         axios.delete(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/lightbulbs/remove`, {
           data: {
-            "objs": [
-              { "base": 1 }
-            ]
+            "bases": [0]
           }
         })
         setRedLight(true);
@@ -263,7 +261,7 @@ export const Canvas3Dverse = () => {
           })
           axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/lightbulbs/add`, {
             "objs": [
-              { "uuid": redBase }, { "base": 3 }
+              { "uuid": itemSelected, base: 1 }
             ]
           })
           if (itemSelected == 3) {
@@ -282,9 +280,7 @@ export const Canvas3Dverse = () => {
         })
         axios.delete(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/lightbulbs/remove`, {
           data: {
-            "objs": [
-              { "base": 3 }
-            ]
+            "bases": [1]
           }
         })
         setBlueLight(true);
@@ -309,7 +305,7 @@ export const Canvas3Dverse = () => {
           })
           axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/lightbulbs/add`, {
             "objs": [
-              { "uuid": redBase }, { "base": 2 }
+              { "uuid": itemSelected, base: 2 }
             ]
           })
           if (itemSelected == 2) {
@@ -328,9 +324,7 @@ export const Canvas3Dverse = () => {
         })
         axios.delete(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/lightbulbs/remove`, {
           data: {
-            "objs": [
-              { "base": 2 }
-            ]
+            "bases": [2]
           }
         })
         setGreenLight(true);

@@ -3,57 +3,57 @@
         "HOST": "http://localhost",
         "PORT": "3000"
     },
-    
     "API": {
         "HOST": "http://localhost",
         "PORT": "3001"
     },
-
     "PUSHER": {
         "APP_ID": "1720823",
         "KEY": "39f939b9f53716caf5d8",
         "SECRET": "201eb1f9e95745623191",
         "CLUSTER": "eu",
         "USE_TLS": true,
-
         "IS_ACTIVE": true
     },
-
     "LIFX": {
         "TOKEN_ACCESS": "c95ba8384d244425e9fbf21951ab16801b8e88aa5224831a16f720793b282470"
     },
-
     "_3DVERSE": {
         "USER_TOKEN": "public_BQu_i8IdJABS79mV",
         "SCENE_UUID": "4dd77691-e9b5-46f0-bf3f-cb8b1dab66ce",
-
         "DDUST2_DOOR": "16a525a0-5892-4065-a11b-a94862c153a6",
         "TOTORO_S_KEY": "0277b0a4-6059-4908-a67f-aace11ef761b",
         "CHARACTER": "92f7e23e-a3e3-48b1-a07c-cf5bff258374",
-
         "BULB_ENIGM": {
             "DRAWER": "162ca7cb-089b-4a0a-8114-ce7dec2fb977",
             "HANDLE": "7b79a430-8aea-4f6a-8c1c-1eb05fe41089",
             "DRAWER_BULB": "ba406661-7b0e-4436-b059-ecfa590bbb00",
-
             "LIGHTS_BULBS": {
                 "RED": {
                     "BULB": "c8e714d5-bbca-4f8a-b3cd-129ade233c8a",
                     "LIGHT": "d8a9d815-9682-42cf-b205-f8cc69a6c5d6"
                 },
-                
                 "GREEN": {
                     "BULB": "cd8a4b3e-de57-41ba-9151-95e6a016f226",
                     "LIGHT": "54145b1f-2b48-4a47-8aa5-68f8e1b37c12"
                 },
-                
                 "BLUE": {
                     "BULB": "43bb9e8d-2672-4a0a-aa0d-5f3c214ea624",
                     "LIGHT": "89ec5c77-4806-4e1d-9ebc-454a85d538d5"
                 }
             }
-        }
+        },
+        
+        "INTERACTIBLE_OBJECTS": [
+            "ee4d6092-4dca-4ace-a55c-3c3d4a468e84",
+            "d62610ef-5aa4-473c-b540-3a623e9590b9",
+            "a46593ad-794c-4cb1-b0f3-728ec6803859",
+            "7b79a430-8aea-4f6a-8c1c-1eb05fe41089",
+            "c930d200-ae0a-4467-b106-663ca3dfe0cf",
+            "3900effd-c890-4066-a3ca-64119ebe650e",
+            "e8d9cf51-4ff3-4cbc-ab05-38ff66aedf03",
+            "963be081-3931-486c-b8fc-da896ce49340"
+        ]
     },
-
     "DetailLogs": true
 }
