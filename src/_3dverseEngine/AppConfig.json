@@ -16,7 +16,7 @@
         "CLUSTER": "eu",
         "USE_TLS": true,
 
-        "IS_ACTIVE": false
+        "IS_ACTIVE": true
     },
 
     "LIFX": {
