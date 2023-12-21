@@ -54,6 +54,10 @@ export class Inventory
             </div>
         </>
     }
+
+    public hasItem(uuid : number) : boolean {
+        return this.array.filter(e => e.UUID == uuid).length > 0;
+    }
 }
 
 export const inventory : Inventory = new Inventory(`${AppConfig.FRONT.HOST}:${AppConfig.FRONT.PORT}/img/case.png`, `${AppConfig.FRONT.HOST}:${AppConfig.FRONT.PORT}/img/selectedCase.png`);

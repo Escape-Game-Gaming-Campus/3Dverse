@@ -34,16 +34,16 @@
                     "LIGHT": "d8a9d815-9682-42cf-b205-f8cc69a6c5d6"
                 },
                 "GREEN": {
-                    "BULB": "cd8a4b3e-de57-41ba-9151-95e6a016f226",
+                    "BULB": "43bb9e8d-2672-4a0a-aa0d-5f3c214ea624",
                     "LIGHT": "54145b1f-2b48-4a47-8aa5-68f8e1b37c12"
                 },
                 "BLUE": {
-                    "BULB": "43bb9e8d-2672-4a0a-aa0d-5f3c214ea624",
+                    "BULB": "cd8a4b3e-de57-41ba-9151-95e6a016f226",
                     "LIGHT": "89ec5c77-4806-4e1d-9ebc-454a85d538d5"
                 }
             }
         },
-        
+
         "INTERACTIBLE_OBJECTS": [
             "ee4d6092-4dca-4ace-a55c-3c3d4a468e84",
             "d62610ef-5aa4-473c-b540-3a623e9590b9",
