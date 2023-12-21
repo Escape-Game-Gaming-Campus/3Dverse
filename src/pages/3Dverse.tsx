@@ -378,16 +378,16 @@ export const Canvas3Dverse = () => {
   }, [ready, load3Dverse, totoro])
 
   useEffect(() => {
-    if (countdown > 0) {
+    if (countdown > 0 && totoroRoom) {
       const intervalId = setInterval(() => {
         setCountdown((prevCountdown) => prevCountdown - 1);
       }, 1000);
       return () => clearInterval(intervalId);
-    } else if (countdown === 0) {
+    } else if (countdown === 0 && totoroRoom) {
       playAlarm();
       //setState chaud froid
     }
-  }, [countdown]);
+  }, [countdown, totoroRoom]);
 
   const playAlarm = () => {
     audioRef.current.loop = true;
