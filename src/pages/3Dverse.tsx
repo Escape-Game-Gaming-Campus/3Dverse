@@ -405,10 +405,11 @@ export const Canvas3Dverse = () => {
   // }
 
   useEffect(() => {
+    if (!load3Dverse) return;
     if (selectedEntity !== -1) { list[selectedEntity](selectedEntity as any); console.log("selectedEntity ", selectedEntity); }
     console.log("SelectedEntity", selectedEntity);
     setSelectedEntity(-1);
-  }, [selectedEntity]);
+  }, [selectedEntity, load3Dverse]);
   return (
     <><LoadingBar ready={ready} loadPage={load3Dverse} />
       {status3Dverse === 'ready' && statusPusher === 'ready' ?
