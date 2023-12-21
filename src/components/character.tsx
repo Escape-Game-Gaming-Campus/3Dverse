@@ -25,7 +25,7 @@ export class Character {
       child.isAttached("camera")
     );
     this.SDK3DVerse.engineAPI.assignClientToScripts(firstPersonController);
-    firstPersonController?.setGlobalTransform({ "position": [-8, 1, -2] })
+    firstPersonController?.setGlobalTransform({ "position": [-6, 1, -8] })
     if (firstPersonCamera)
     {
       this.SDK3DVerse.setMainCamera(firstPersonCamera);
