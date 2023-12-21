@@ -229,10 +229,6 @@ export const Canvas3Dverse = () => {
     }
   }, [status3Dverse, initApp]);
 
-  useEffect(() => {
-    console.log(itemSelected);
-  }, [itemSelected]);
-
   const handleDigicodeClick = () => {
     if (!totoroRoom) {
       if (digicodeOpen) {
@@ -386,7 +382,6 @@ export const Canvas3Dverse = () => {
       const intervalId = setInterval(() => {
         setCountdown((prevCountdown) => prevCountdown - 1);
       }, 1000);
-      console.log(countdown);
       return () => clearInterval(intervalId);
     } else if (countdown === 0) {
       playAlarm();
@@ -406,8 +401,7 @@ export const Canvas3Dverse = () => {
 
   useEffect(() => {
     if (!load3Dverse) return;
-    if (selectedEntity !== -1) { list[selectedEntity](selectedEntity as any); console.log("selectedEntity ", selectedEntity); }
-    console.log("SelectedEntity", selectedEntity);
+    if (selectedEntity !== -1) list[selectedEntity](selectedEntity as any);
     setSelectedEntity(-1);
   }, [selectedEntity, load3Dverse]);
   return (

@@ -1,10 +1,8 @@
 import axios from 'axios';
 import AppConfig from '../_3dverseEngine/AppConfig.json';
-import { _SDK3DVerse } from '../_3dverseEngine/declare';
 import { channel } from '../pages/3Dverse';
 import pusherChannels from '../constants/pusherChannels';
 import Player from '../constants/players';
-import { Viewport } from '../_3dverseEngine/declareGlobal';
 
 export var player: Player | undefined | Player[] = undefined;
 
@@ -16,7 +14,6 @@ export function setPlayers(name?: string) {
     } else {
       player = playerList;
     }
-    // console.log("updated Player", player)
   });
 }
 

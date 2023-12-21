@@ -36,7 +36,6 @@ export class Inventory
 
     public display(itemSelected: number = this.itemSelected)
     {
-        console.log("array: ", this.array)
         return <>
             <div className='inv'>
                 {
@@ -77,7 +76,6 @@ export const InventoryReact: React.FC<InventoryProps> = ({itemSelected, setItemS
 
     useEffect(() => {
         setInvComponent(inventory.display(itemSelected));
-        console.log("itemSelected : ", invComponent)
     }, [itemSelected]);
 
     return invComponent
