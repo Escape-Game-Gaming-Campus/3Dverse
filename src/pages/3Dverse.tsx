@@ -23,7 +23,7 @@ declare const SDK3DVerse_VirtualJoystick_Ext: SDK3DVerse_ExtensionInterface;
 export const Canvas3Dverse = () => {
   const audioRef = useRef(new Audio('Boo_house.mp3'));
   const interactableObjects = AppConfig._3DVERSE.INTERACTIBLE_OBJECTS;//pin code / crime Scene / drawer / handle / lightbulb Totoro/ red base/blue base/green base
-  const [countdown, setCountdown] = useState(120);
+  const [countdown, setCountdown] = useState(10);
   const [eventTriggered, setEventTriggered] = useState(false);
   const [selectedEntity, setSelectedEntity] = useState(-1);
   const [digicodeOpen, setDigicodeOpen] = useState(false);
@@ -201,6 +201,7 @@ export const Canvas3Dverse = () => {
 
   const handleLightbulbClick = async () => {
     const lightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.DRAWER_BULB);
+    handleLightbulbFlash();
     axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/inv/add`, {
       "objs": [
         { "uuid": 3 }
@@ -314,6 +315,7 @@ export const Canvas3Dverse = () => {
       return () => clearInterval(intervalId);
     } else if (eventTriggered && countdown == 0) {
       playAlarm();
+      //setState chaud froid
     }
   }, [eventTriggered, countdown]);
 
