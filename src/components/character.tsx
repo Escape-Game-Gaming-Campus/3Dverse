@@ -10,7 +10,7 @@ export class Character {
   public async InitFirstPersonController(charCtlSceneUUID: string, playerName : string) {
     const playerTemplate = new this.SDK3DVerse.EntityTemplate();
     playerTemplate.attachComponent("scene_ref", { value: charCtlSceneUUID });
-    playerTemplate.attachComponent("local_transform", { position: [-5, 1, -8.15] , eulerOrientation : [ 0, -90, 0 ]});
+    playerTemplate.attachComponent("local_transform", { position: [-10, 1, -10] });
     const parentEntity = null;
     const deleteOnClientDisconnection = true;
     playerName += this.SDK3DVerse.getClientUUID()
