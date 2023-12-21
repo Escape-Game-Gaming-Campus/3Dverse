@@ -21,7 +21,6 @@ export class Character {
     );
 
     const firstPersonController = (await playerSceneEntity.getChildren())[0];
-    //firstPersonController.setGlobalTransform({ position: [-5, 1, -8.15] , orientation : [ 0, -0.8509035, 0, 0.525322 ]})
     const children = await firstPersonController.getChildren();
     const firstPersonCamera = children.find((child: any) =>
       child.isAttached("camera")
