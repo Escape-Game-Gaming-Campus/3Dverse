@@ -46,7 +46,7 @@ export type viewport_info = {
     onCameraCreation ? : Function
 }
 
-export type SDK_Vec3 = [number, number, number]
+export type SDK_Vec3 = [number, number, number] // [x, y, z]
 
 export type AABB = {
     min ? : SDK_Vec3,
@@ -59,9 +59,9 @@ export type ComponentFilter = {
 }
 
 export type SceneSettings = {
-    clearColor ? : [Number, Number, Number],
-    ambientColorTop ? : [Number, Number, Number],
-    ambientColorBottom ? : [Number, Number, Number]
+    clearColor ? : [number, number, number],
+    ambientColorTop ? : [number, number, number],
+    ambientColorBottom ? : [number, number, number]
 }
 
 export type PhysicsRayHit = {
@@ -147,7 +147,7 @@ export type SceneSettingsMapStreaming = {
     streamingUnloadingRadius : number
 }
 export type SceneSettingsMapVoxel = {
-    maxNumberAlbedoValues : number
+    maxnumberAlbedoValues : number
 }
 
 export type SceneSettingsMap = {
@@ -256,7 +256,7 @@ export class Entity {
         return ""
     } ;
     public getParent() : Entity {
-        return new Entity
+        return new Entity()
     } ;
     public hasChildren() : boolean {
         return false
@@ -310,7 +310,7 @@ export class Viewport {
         return []
     };
     public getCamera() : Entity {
-        return new Entity
+        return new Entity()
     };
     public getId() : number {
         return 0
@@ -339,8 +339,8 @@ export class Viewport {
                 0,0,1,0,
                 0,0,0,1]
     } ;
-    public getWorldMatrix() : Array<number> {
-        return []
+    public getWorldMatrix() : Entity {
+        return new Entity()
     };
     public getZoomFactor() : number {
         return 0

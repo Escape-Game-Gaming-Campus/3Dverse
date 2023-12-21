@@ -12,10 +12,8 @@ const Digicode: React.FC<DigicodeProps> = ({ onClose, onDigitPress, setCode }) =
 
   const handleDigitPress = (digit: string) => {
     if (enteredCode === 'CODE') {
-      {
         setEnteredCode(digit);
         onDigitPress(digit);
-      }
     }
     else if (enteredCode.length < 4) {
       setEnteredCode(enteredCode + digit);

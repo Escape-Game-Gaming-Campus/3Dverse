@@ -41,14 +41,14 @@ export class Inventory
             <div className='inv'>
                 {
                     this.array.map((e, i) => {
-                        return <img key={`item_${i}`} className='inventory item' src={e.texture} alt={`Image of the item ${e.name} (uuid: ${e.UUID})`} />
+                        return <img key={`item_${i}`} className='inventory item' src={e.texture} alt={`Item ${e.name} (uuid: ${e.UUID})`} />
                     })
                 }
             </div>
             <div className='inv'>
                 {
                     this.array.map((e, i) => {
-                        return <img key={`case_${i}`} className='inventory case' src={itemSelected == e.UUID ? this.selectedCaseTexture : this.caseTexture} alt="Image of case of inventory" onClick={()=>{if (this.setItemSelected) this.setItemSelected(e.UUID)}} />
+                        return <img key={`case_${i}`} className='inventory case' src={itemSelected == e.UUID ? this.selectedCaseTexture : this.caseTexture} alt="Case of inventory" onClick={()=>{if (this.setItemSelected) this.setItemSelected(e.UUID)}} />
                     })
                 }
             </div>
@@ -68,7 +68,6 @@ export const InventoryReact: React.FC<InventoryProps> = ({itemSelected, setItemS
     inventory.setItemSelectedProps(setItemSelected, itemSelected);
 
     channel.get(pusherChannels.INVENTORY).bind('updateInventory', function (data: Object[]) {
-        console.log("PUSHER : ", JSON.stringify(data));
         inventory.setInv(data, setInvComponent);
     });
 
@@ -82,4 +81,9 @@ export const InventoryReact: React.FC<InventoryProps> = ({itemSelected, setItemS
     }, [itemSelected]);
 
     return invComponent
+}
+
+export function getInventory(name : string)
+{
+    return inventory.array.filter((e) => e.name === name)[0]
 }
