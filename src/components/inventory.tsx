@@ -48,7 +48,7 @@ export class Inventory
             <div className='inv'>
                 {
                     this.array.map((e, i) => {
-                        return <img key={`case_${i}`} className='inventory case' src={itemSelected == e.UUID ? this.selectedCaseTexture : this.caseTexture} alt="Case of inventory" onClick={()=>{if (this.setItemSelected) this.setItemSelected(e.UUID)}} />
+                        return <img key={`case_${i}`} className='inventory case' src={itemSelected === e.UUID ? this.selectedCaseTexture : this.caseTexture} alt="Case of inventory" onClick={()=>{if (this.setItemSelected) this.setItemSelected(e.UUID)}} />
                     })
                 }
             </div>
@@ -56,7 +56,7 @@ export class Inventory
     }
 
     public hasItem(uuid : number) : boolean {
-        return this.array.filter(e => e.UUID == uuid).length > 0;
+        return this.array.filter(e => e.UUID === uuid).length > 0;
     }
 }
 

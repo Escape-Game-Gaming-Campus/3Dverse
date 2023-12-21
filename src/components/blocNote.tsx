@@ -43,7 +43,7 @@ export const BlocNoteReact = () => {
 
     useEffect(() => {
         var element = document.getElementById("allNotes");
-        if (element == null) return;
+        if (element === null) return;
         element.style.height = "1px";
         element.style.height = `${element.scrollHeight}px`;
     }, [information, blocNote.opened]);
