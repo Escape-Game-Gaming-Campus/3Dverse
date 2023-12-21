@@ -1,21 +1,20 @@
 import { _SDK3DVerse } from '../_3dverseEngine/declare';
 
 export class Character {
-  public playerName: string = "Player_";
   public camPos?: Array<number>;
 
   private SDK3DVerse: typeof _SDK3DVerse;
   constructor(SDK3DVerse: typeof _SDK3DVerse) {
     this.SDK3DVerse = SDK3DVerse;
   };
-  public async InitFirstPersonController(charCtlSceneUUID: string) {
+  public async InitFirstPersonController(charCtlSceneUUID: string, playerName : string) {
     const playerTemplate = new this.SDK3DVerse.EntityTemplate();
     playerTemplate.attachComponent("scene_ref", { value: charCtlSceneUUID });
     const parentEntity = null;
     const deleteOnClientDisconnection = true;
-    this.playerName += this.SDK3DVerse.getClientUUID()
+    playerName += this.SDK3DVerse.getClientUUID()
     const playerSceneEntity = await playerTemplate.instantiateTransientEntity(
-      this.playerName,
+      playerName,
       parentEntity,
       deleteOnClientDisconnection
     );

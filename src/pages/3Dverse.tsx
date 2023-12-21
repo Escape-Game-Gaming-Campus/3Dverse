@@ -24,6 +24,7 @@ export var character: Character;
 var camViewport: Viewport;
 var totoroSKey: SDK_Vec3;
 var updatePlayer: NodeJS.Timer
+var currentPlayerName: string
 
 export const Canvas3Dverse = () => {
   const [digicodeOpen, setDigicodeOpen] = useState(false);
@@ -31,7 +32,6 @@ export const Canvas3Dverse = () => {
   const [code, setCode] = useState("");
   const [ready, setReady] = useState(false);
   const [load3Dverse, setLoad3Dverse] = useState(false);
-  const [characterName, setCharacterName] = useState("");
   const totoro = new Totoro(AppConfig._3DVERSE.TOTORO_S_KEY);
 
 
@@ -93,9 +93,9 @@ export const Canvas3Dverse = () => {
     await SDK3DVerse.engineAPI.startSimulation();
 
     // Init character
-    await character.InitFirstPersonController(AppConfig._3DVERSE.CHARACTER);
-    initPlayerAPI(character.playerName, character.camPos);
-    setCharacterName(character.playerName)
+    currentPlayerName = "Player_" + SDK3DVerse.getClientUUID()
+    await character.InitFirstPersonController(AppConfig._3DVERSE.CHARACTER, currentPlayerName);
+    initPlayerAPI(currentPlayerName, character.camPos);
 
     const joysticksElement = await document.getElementById('joysticks') as HTMLElement;
     await SDK3DVerse.installExtension(SDK3DVerse_VirtualJoystick_Ext, joysticksElement);
@@ -107,8 +107,9 @@ export const Canvas3Dverse = () => {
 
     totoro.SDK3dverse = SDK3DVerse;
     totoroSKey = (await SDK3DVerse.engineAPI.findEntitiesByEUID(`${AppConfig._3DVERSE.TOTORO_S_KEY}`))[0].getGlobalTransform().position as SDK_Vec3
-
     camViewport = SDK3DVerse.engineAPI.cameraAPI.getActiveViewports()[0]
+
+    console.log("hac uuid" , currentPlayerName)
     
     setTimeout(() => {
       setLoad3Dverse(true);
@@ -120,17 +121,17 @@ export const Canvas3Dverse = () => {
   //delete player
   window.addEventListener('beforeunload', () => {
     // a modifier car trop d'appels à l'api
-    removePlayerApi(characterName);
+    removePlayerApi(currentPlayerName);
   });
 
   useEffect(() => {
     // update player
-    if (characterName && ready && !updatePlayer) {
+    if (currentPlayerName && ready && !updatePlayer) {
       updatePlayer = setInterval(() => {
-        updatePlayerApi(characterName, camViewport.getTransform().position)
+        updatePlayerApi(currentPlayerName, camViewport.getTransform().position)
       }, 3000)
     }
-  }, [ready, characterName])
+  }, [ready, currentPlayerName])
 
   useEffect(() => {
     if (statusPusher === 'ready') {
@@ -198,7 +199,7 @@ export const Canvas3Dverse = () => {
 
   useEffect(() => {
     if (ready && load3Dverse) {
-      totoro.enigmHotAndCold(player as Player[], totoroSKey) 
+      totoro.enigmHotAndCold(player as Player[], totoroSKey, currentPlayerName) 
     }
   }, [ready, load3Dverse])
 

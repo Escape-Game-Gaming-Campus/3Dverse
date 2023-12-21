@@ -54,11 +54,12 @@ export class Totoro {
         })
     }
 
-    public soundNearHotAndCold(players: Player[], itemPos : SDK_Vec3) {
+    public soundNearHotAndCold(players: Player[], itemPos : SDK_Vec3, currentPlayerName : string) {
         this.setPlayerNear(players, itemPos);
-        const currentPlayer = "Player" + this.SDK3Dverse?.getClientUUID()
-        if (currentPlayer && this.playerNear.playerName === (player as Player).name) {
-            setInterval(() => { this.audioRef.current.play() }, this.playerNear.timer)
+        console.log("hac currentPlayer", currentPlayerName)
+        if (this.playerNear.playerName === currentPlayerName) {
+            setInterval(() => { this.audioRef.current.play() 
+            console.log("hac bip")}, this.playerNear.timer)
         }
     }
 
@@ -68,13 +69,13 @@ export class Totoro {
         }
     }
 
-    public enigmHotAndCold(players: Player[], itemPos : SDK_Vec3) {
+    public enigmHotAndCold(players: Player[], itemPos : SDK_Vec3,  currentPlayerName : string) {
         console.log("fps", players)
         console.log("itemsPos", itemPos)
         if (!players) return
         while (!this.itemCatch) {
             this.setItemCatched();
-            this.soundNearHotAndCold(players, itemPos);
+            this.soundNearHotAndCold(players, itemPos, currentPlayerName);
         }
     }
 }
