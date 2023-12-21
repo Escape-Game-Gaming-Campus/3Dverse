@@ -40,6 +40,10 @@
                 "BLUE": {
                     "BULB": "cd8a4b3e-de57-41ba-9151-95e6a016f226",
                     "LIGHT": "89ec5c77-4806-4e1d-9ebc-454a85d538d5"
+                },
+                "YELLOW": {
+                    "BULB": "d00d5d42-dc9a-4d9e-99f7-e5a4073273a6",
+                    "LIGHT": "2fdd8c52-caf7-4d7e-a829-f398859e8862"
                 }
             }
         },
@@ -52,7 +56,8 @@
             "c930d200-ae0a-4467-b106-663ca3dfe0cf",
             "3900effd-c890-4066-a3ca-64119ebe650e",
             "e8d9cf51-4ff3-4cbc-ab05-38ff66aedf03",
-            "963be081-3931-486c-b8fc-da896ce49340"
+            "963be081-3931-486c-b8fc-da896ce49340",
+            "915cefae-5e8e-4ebc-b9c7-ea90a54259fd"
         ]
     },
     "DetailLogs": true

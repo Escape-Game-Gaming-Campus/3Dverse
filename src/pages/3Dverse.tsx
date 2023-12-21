@@ -79,6 +79,7 @@ export const Canvas3Dverse = () => {
       const redLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.RED.LIGHT);
       const blueLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.BLUE.LIGHT);
       const greenLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.GREEN.LIGHT);
+      const yellowLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.YELLOW.LIGHT);
       if (data[0]) {
         await redLightbulbLight[0].setVisibility(true);
       } else {
@@ -94,6 +95,11 @@ export const Canvas3Dverse = () => {
       } else {
         await greenLightbulbLight[0].setVisibility(false);
       }
+      if (data[3]) {
+        await yellowLightbulbLight[0].setVisibility(true);
+      } else {
+        await yellowLightbulbLight[0].setVisibility(false);
+      }
     });
   }
   const setLightsOff = async () => {
@@ -103,12 +109,16 @@ export const Canvas3Dverse = () => {
     const blueLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.BLUE.LIGHT);
     const greenLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.GREEN.BULB);
     const greenLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.GREEN.LIGHT);
+    const yellowLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.YELLOW.BULB);
+    const yellowLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.YELLOW.LIGHT);
     await redLightbulb[0].setVisibility(false);
     await redLightbulbLight[0].setVisibility(false);
     await blueLightbulb[0].setVisibility(false);
     await blueLightbulbLight[0].setVisibility(false);
     await greenLightbulb[0].setVisibility(false);
     await greenLightbulbLight[0].setVisibility(false);
+    await yellowLightbulb[0].setVisibility(true);
+    await yellowLightbulbLight[0].setVisibility(true);
   }
 
   const initApp = useCallback(async () => {
@@ -208,8 +218,7 @@ export const Canvas3Dverse = () => {
   };
 
 
-  const handleBaseClick = async (baseId: 5 | 6 | 7) => {
-    //utiliser l'ampoule selec depuis l'inventaire si aucune selec ne rien faire
+  const handleBaseClick = async (baseId: 5 | 6 | 7 | 8) => {
     var lightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.RED.BULB);
     var lightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.RED.LIGHT);
     if (baseId == 6) {
@@ -218,8 +227,11 @@ export const Canvas3Dverse = () => {
     } else if (baseId == 7) {
       lightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.BLUE.BULB);
       lightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.BLUE.LIGHT);
+    } else if (baseId == 8) {
+      lightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.YELLOW.BULB);
+      lightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.YELLOW.LIGHT);
     }
-    if (inventory.hasItem(itemSelected) && (itemSelected == 1 || itemSelected == 2 || itemSelected == 3)) {
+    if (inventory.hasItem(itemSelected) && (itemSelected == 0 || itemSelected == 1 || itemSelected == 2 || itemSelected == 3)) {
         await lightbulb[0].setVisibility(true);
         axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/lightbulbs/add`, {
           "objs": [
@@ -291,7 +303,7 @@ export const Canvas3Dverse = () => {
 
     fetchData();
   }, [totoroRoom]);
-  const list = [handleDigicodeClick, handleCrimeSceneClick, handleDrawerClick, handleDrawerClick, handleLightbulbClick, handleBaseClick, handleBaseClick, handleBaseClick];
+  const list = [handleDigicodeClick, handleCrimeSceneClick, handleDrawerClick, handleDrawerClick, handleLightbulbClick, handleBaseClick, handleBaseClick, handleBaseClick, handleBaseClick];
 
   useEffect(() => {
     if (eventTriggered && countdown > 0) {
@@ -316,7 +328,7 @@ export const Canvas3Dverse = () => {
   }
 
   useEffect(() => {
-    if (selectedEntity != -1) { list[selectedEntity](selectedEntity as any); }
+    if (selectedEntity != -1) { list[selectedEntity](selectedEntity as any); console.log("selectedEntity ", selectedEntity); }
     console.log("SelectedEntity", selectedEntity);
     setSelectedEntity(-1);
   }, [selectedEntity]);
