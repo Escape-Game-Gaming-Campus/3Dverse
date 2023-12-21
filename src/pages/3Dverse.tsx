@@ -106,11 +106,9 @@ export const Canvas3Dverse = () => {
     joyStickRight.className = await "bluringOff"
 
     totoro.SDK3dverse = SDK3DVerse;
-    totoroSKey = (await SDK3DVerse.engineAPI.findEntitiesByEUID(`${AppConfig._3DVERSE.TOTORO_S_KEY}`))[0].getGlobalTransform().position as SDK_Vec3
+    totoroSKey = (await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.TOTORO_S_KEY))[0].getGlobalTransform().position as SDK_Vec3
     camViewport = SDK3DVerse.engineAPI.cameraAPI.getActiveViewports()[0]
 
-    console.log("hac uuid" , currentPlayerName)
-    
     setTimeout(() => {
       setLoad3Dverse(true);
     }, 750)
@@ -129,7 +127,7 @@ export const Canvas3Dverse = () => {
     if (currentPlayerName && ready && !updatePlayer) {
       updatePlayer = setInterval(() => {
         updatePlayerApi(currentPlayerName, camViewport.getTransform().position)
-      }, 3000)
+      }, 750)
     }
   }, [ready, currentPlayerName])
 
@@ -199,10 +197,12 @@ export const Canvas3Dverse = () => {
 
   useEffect(() => {
     if (ready && load3Dverse) {
-      while (!totoro.itemCatch)
-      {
-        totoro.enigmHotAndCold(player as Player[], totoroSKey, currentPlayerName) 
-      }
+      setInterval(() => {
+        if (totoro.timerEnd)
+        {
+          totoro.enigmHotAndCold(player as Player[], totoroSKey, currentPlayerName) 
+        }
+      }, 50)
     }
   }, [ready, load3Dverse])
 

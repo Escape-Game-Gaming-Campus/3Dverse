@@ -60,12 +60,7 @@ export const InventoryReact = () => {
     return invComponent
 }
 
-export async function getInventory(name : string)
+export function getInventory(name : string)
 {
-    var inventory : Object | undefined;
-    await channel.get(pusherChannels.INVENTORY).bind('updateInventory', function (data: Object[]) {
-        const inventories : Object[] = data
-        inventory = inventories.filter((e) => e.name === name)[0]
-    });
-    return inventory
+    return inventory.array.filter((e) => e.name === name)[0]
 }

@@ -16,6 +16,7 @@ export function setPlayers(name?: string) {
     } else {
       player = playerList;
     }
+    console.log("updated Player", player)
   });
 }
 
