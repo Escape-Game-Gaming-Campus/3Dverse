@@ -2,12 +2,11 @@ import { useRef } from "react";
 import { SDK_Vec3 } from "../../../_3dverseEngine/declareGlobal";
 import Player from "../../../constants/players";
 import { getInventory } from "../../inventory";
-import { player, setPlayers } from "../../player";
+import { player } from "../../player";
 import { _SDK3DVerse } from "../../../_3dverseEngine/declare";
 
 export class Totoro {
     private itemUUID: string;
-    private item: SDK_Vec3 = [0, 0, 0];
     private itemCatch: boolean;
     private playerNear: { "timer": number, "playerName": string };
     private audioRef = useRef(new Audio("bip.mp3"));
@@ -24,31 +23,28 @@ export class Totoro {
         this.SDK3Dverse = SDK3Dverse;
     }
 
-    set Item (item : SDK_Vec3)
-    {
-        this.item = item
-        console.log("items", this.item)
-    }
-   
-
-    public hotAndCold(player: Player) {
+    public hotAndCold(player: Player, itemPos : SDK_Vec3) {
+        const gapTimer = 1000 // in ms for 1 meters
         const playerPos = { "x": player.position[0], "y": player.position[1], "z": player.position[2] }
-        console.log("hac item", this.item)
+        console.log("hac item", itemPos)
         console.log("hac player", playerPos)
 
-        const vector = { "x": playerPos.x - this.item[0], "y": playerPos.y - this.item[1] }
-        const distance = Math.sqrt((vector.x * vector.x) + (vector.y * vector.y))
-        const gapTimer = 2000 // in ms for 1 meters
+        const vector = { "x": playerPos.x - itemPos[0], "y": playerPos.y - itemPos[1], "z": playerPos.y - itemPos[2]}
+        const distance = Math.sqrt((vector.x * vector.x) + (vector.y * vector.y) + (vector.z * vector.z))
+
+        console.log("hac vector", vector)
+        console.log("hac distance", distance)
 
         const timer = gapTimer * distance
+        console.log("hac timer", timer)
 
         return { "timer": timer, "playerName": player.name }
     }
 
-    public setPlayerNear(players: Player[]) {
+    public setPlayerNear(players: Player[], itemPos : SDK_Vec3) {
         console.log("fpss", players)
         players.forEach((player) => {
-            const selectedPlayer = this.hotAndCold(player);
+            const selectedPlayer = this.hotAndCold(player, itemPos);
             if (this.playerNear.timer === 0) {
                 this.playerNear = selectedPlayer;
             }
@@ -58,8 +54,8 @@ export class Totoro {
         })
     }
 
-    public soundNearHotAndCold(players: Player[]) {
-        this.setPlayerNear(players);
+    public soundNearHotAndCold(players: Player[], itemPos : SDK_Vec3) {
+        this.setPlayerNear(players, itemPos);
         const currentPlayer = "Player" + this.SDK3Dverse?.getClientUUID()
         if (currentPlayer && this.playerNear.playerName === (player as Player).name) {
             setInterval(() => { this.audioRef.current.play() }, this.playerNear.timer)
@@ -72,13 +68,13 @@ export class Totoro {
         }
     }
 
-    public enigmHotAndCold(players: Player[]) {
+    public enigmHotAndCold(players: Player[], itemPos : SDK_Vec3) {
         console.log("fps", players)
-        console.log("items", this.item)
+        console.log("itemsPos", itemPos)
         if (!players) return
         while (!this.itemCatch) {
             this.setItemCatched();
-            this.soundNearHotAndCold(players);
+            this.soundNearHotAndCold(players, itemPos);
         }
     }
 }

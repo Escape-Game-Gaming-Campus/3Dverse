@@ -22,6 +22,7 @@ export var channel = new Map<pusherChannels, any>();
 declare const SDK3DVerse_VirtualJoystick_Ext: SDK3DVerse_ExtensionInterface;
 export var character: Character;
 var camViewport: Viewport;
+var totoroSKey: SDK_Vec3;
 var updatePlayer: NodeJS.Timer
 
 export const Canvas3Dverse = () => {
@@ -105,14 +106,15 @@ export const Canvas3Dverse = () => {
     joyStickRight.className = await "bluringOff"
 
     totoro.SDK3dverse = SDK3DVerse;
+    totoroSKey = (await SDK3DVerse.engineAPI.findEntitiesByEUID(`${AppConfig._3DVERSE.TOTORO_S_KEY}`))[0].getGlobalTransform().position as SDK_Vec3
+
+    camViewport = SDK3DVerse.engineAPI.cameraAPI.getActiveViewports()[0]
     
     setTimeout(() => {
       setLoad3Dverse(true);
     }, 750)
 
-    camViewport = SDK3DVerse.engineAPI.cameraAPI.getActiveViewports()[0]
-    console.log((await SDK3DVerse.engineAPI.findEntitiesByEUID(`${AppConfig._3DVERSE.TOTORO_S_KEY}`))[0].getGlobalTransform().position)
-    totoro.Item = (await SDK3DVerse.engineAPI.findEntitiesByEUID(`${AppConfig._3DVERSE.TOTORO_S_KEY}`))[0].getGlobalTransform().position as SDK_Vec3;
+
   }, []);
 
   //delete player
@@ -196,7 +198,7 @@ export const Canvas3Dverse = () => {
 
   useEffect(() => {
     if (ready && load3Dverse) {
-      totoro.enigmHotAndCold(player as Player[]) 
+      totoro.enigmHotAndCold(player as Player[], totoroSKey) 
     }
   }, [ready, load3Dverse])
 
