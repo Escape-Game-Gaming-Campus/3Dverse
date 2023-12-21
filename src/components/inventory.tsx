@@ -11,11 +11,11 @@ interface InventoryProps {
 
 export class Inventory 
 {
-    private array : Object[] = [];
-    caseTexture : string;
-    selectedCaseTexture : string;
-    setItemSelected ?: React.Dispatch<React.SetStateAction<number>>;
-    itemSelected : number = -1;
+    public array : Object[] = [];
+    private caseTexture : string;
+    private selectedCaseTexture : string;
+    private setItemSelected ?: React.Dispatch<React.SetStateAction<number>>;
+    private itemSelected : number = -1;
 
     constructor(texture : string, selectedTexture: string) 
     {

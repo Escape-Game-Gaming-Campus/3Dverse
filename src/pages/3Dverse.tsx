@@ -371,9 +371,8 @@ export const Canvas3Dverse = () => {
   useEffect(() => {
     if (ready && load3Dverse) {
       setInterval(() => {
-        if (totoro.timerEnd)
-        {
-          totoro.enigmHotAndCold(player as Player[], totoroSKey, currentPlayerName) 
+        if (totoro.timerEnd) {
+          totoro.enigmHotAndCold(player as Player[], totoroSKey, currentPlayerName)
         }
       }, 50)
     }
@@ -410,25 +409,25 @@ export const Canvas3Dverse = () => {
   return (
     <><LoadingBar ready={ready} loadPage={load3Dverse} />
       {status3Dverse === 'ready' && statusPusher === 'ready' ?
-      <>
-        <canvas id='display-canvas' tabIndex={1} onClick={handleClick} />
-        <div className='BlocNoteReact'>
-          <BlocNoteReact />
-        </div>
-        <div>
-          <div style={{ position: "absolute", top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
-            {/* {totoroRoom ? <></> : (<button onClick={handleDigicodeClick}>Open Digicode</button>)} */}
-            {digicodeOpen && (
-              <Digicode onClose={handleCloseDigicode} setCode={setCode} onDigitPress={handleDigitPress} />
-            )}
-            {crimeSceneOpen && (
-              <CrimeScene onClose={handleCloseCrimeScene} setCodeCrime={setCodeCrime} onPicturePress={handlePicturePress} />
-            )}
+        <>
+          <canvas id='display-canvas' tabIndex={1} onClick={handleClick} />
+          <div className='BlocNoteReact'>
+            <BlocNoteReact />
           </div>
-        </div>
-        <div className='bluringOff'>
-          <InventoryReact setItemSelected={setItemSelected} itemSelected={itemSelected} />
-        </div>
+          <div>
+            <div style={{ position: "absolute", top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+              {/* {totoroRoom ? <></> : (<button onClick={handleDigicodeClick}>Open Digicode</button>)} */}
+              {digicodeOpen && (
+                <Digicode onClose={handleCloseDigicode} setCode={setCode} onDigitPress={handleDigitPress} />
+              )}
+              {crimeSceneOpen && (
+                <CrimeScene onClose={handleCloseCrimeScene} setCodeCrime={setCodeCrime} onPicturePress={handlePicturePress} />
+              )}
+            </div>
+          </div>
+          <div className='bluringOff'>
+            <InventoryReact setItemSelected={setItemSelected} itemSelected={itemSelected} />
+          </div>
         </>
         : <></>}</>
   );
