@@ -11,7 +11,7 @@ export class Totoro {
     private audioRef = useRef(new Audio("bip.mp3"));
     private SDK3Dverse?: typeof _SDK3DVerse;
     public timerEnd: boolean = true;
-
+    public keyPickedUp:boolean = false;
     constructor(itemUUID: string) {
         this.itemUUID = itemUUID;
         this.playerNear = { "timer": 0, "playerName": "" };

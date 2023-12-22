@@ -17,6 +17,7 @@ import { Totoro } from '../components/enigms/totoro/totoro';
 import { LoadingBar } from '../components/loadingBar';
 import { initPlayerAPI, player, removePlayerApi, setPlayers, updatePlayerApi } from '../components/player';
 import Player from '../constants/players';
+import { start } from 'repl';
 
 
 declare const SDK3DVerse: typeof _SDK3DVerse;
@@ -34,11 +35,16 @@ export const Canvas3Dverse = () => {
   const audioRef = useRef(new Audio('Boo_house.mp3'));
   const interactableObjects = AppConfig._3DVERSE.INTERACTIBLE_OBJECTS; //pin code / crime Scene / drawer / handle / lightbulb Totoro/ red base/blue base/green base
   const [countdown, setCountdown] = useState(10);
+  const [countdown1, setCountdown1] = useState(10);
+  const [secondalarm, setsecondAlarm] = useState(false);
+  const [startHAD, setStartHAD] = useState(false);
   const [selectedEntity, setSelectedEntity] = useState(-1);
   const [digicodeOpen, setDigicodeOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [crimeSceneOpen, setCrimeSceneOpen] = useState(false);
   const [totoroRoom, setTotoroRoom] = useState(false);
+  const [lightbulbs, setLightbulbs] = useState(false);
+  const [stopTheCount, setStopTheCount] = useState(false);
   const [raycastGlobal, setRaycastGlobal] = useState<Raycast>();
   const [code, setCode] = useState("");
   const [codeCrime, setCodeCrime] = useState("");
@@ -85,8 +91,11 @@ export const Canvas3Dverse = () => {
       console.debug(JSON.stringify(data));
     });
     channel.get(pusherChannels.ENIGMS).bind('ddust2TryPsd', function (data: { valid: boolean }) {
-      setTotoroRoom(data.valid);
+      setTotoroRoom(data.valid);  
     });
+    channel.get(pusherChannels.LIGHTBULBS).bind('lightsPowerOn', function (data: { status: string }) {
+      setLightbulbs(true);
+  });
     channel.get(pusherChannels.LIGHTBULBS).bind('updateLightbulbs', async function (data: [{ place: boolean, lightColor: SDK_Vec3, valid: boolean }, { place: boolean, lightColor: SDK_Vec3, valid: boolean }, { place: boolean, lightColor: SDK_Vec3, valid: boolean }, { place: boolean, lightColor: SDK_Vec3, valid: boolean }]) {
       const redLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.RED.BULB);
       const redLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.RED.LIGHT);
@@ -96,7 +105,6 @@ export const Canvas3Dverse = () => {
       const greenLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.GREEN.LIGHT);
       const yellowLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.YELLOW.BULB);
       const yellowLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.YELLOW.LIGHT);
-
       var LightConfig: { color: SDK_Vec3, intensity: number, range: number } = { color: [0, 0, 0], intensity: 0.1, range: 0.4 };
       if (data[0].lightColor) {
         LightConfig.color = data[0].lightColor;
@@ -193,12 +201,12 @@ export const Canvas3Dverse = () => {
 
     totoro.SDK3dverse = SDK3DVerse;
     totoroSKey = (await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.TOTORO_S_KEY))[0].getGlobalTransform().position as SDK_Vec3
-    camViewport = SDK3DVerse.engineAPI.cameraAPI.getActiveViewports()[0]
-
+    camViewport = SDK3DVerse.engineAPI.cameraAPI.getActiveViewports()[0];
+    updateClient();
     setTimeout(() => {
       setLoad3Dverse(true);
     }, 750)
-  }, [interactableObjects, totoro]);
+  }, []);
 
   //delete player
   window.addEventListener('beforeunload', () => {
@@ -267,6 +275,15 @@ export const Canvas3Dverse = () => {
         setDrawerOpen(true);
       }
     }
+  };
+
+  const handleKeyClick = async () => {
+    const key = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.TOTORO_S_KEY);
+    const door = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.TOTORO_DOOR);
+    await door[0].setGlobalTransform({ "position": [-80, 10, -20] });
+    await door[0].setVisibility(false);
+    await key[0].setVisibility(false);
+    totoro.keyPickedUp = true;
   };
 
   const handleLightbulbClick = async () => {
@@ -355,27 +372,56 @@ export const Canvas3Dverse = () => {
           await firstDoor.setGlobalTransform({ "position": [-80, 10, -20] });
           await firstDoor.setVisibility(false)
           // await SDK3DVerse.engineAPI.deleteEntities(entities);
-        } else if (!totoroRoom && entities.length > 0) {
-          const firstDoor = entities[0];
-          await firstDoor.setGlobalTransform({ "position": [-7.309777, -0.600371, -0.220404] });
-          await firstDoor.setVisibility(true)
-        }
+        } 
+        // else if (!totoroRoom && entities.length > 0) {
+        //   const firstDoor = entities[0];
+        //   await firstDoor.setGlobalTransform({ "position": [-7.309777, -0.600371, -0.220404] });
+        //   await firstDoor.setVisibility(true)
+        // }
       } catch (err) { }
     };
 
     fetchData();
   }, [totoroRoom, load3Dverse]);
-  list = [handleDigicodeClick, handleCrimeSceneClick, handleDrawerClick, handleDrawerClick, handleLightbulbClick, handleBaseClick, handleBaseClick, handleBaseClick, handleBaseClick];
+  list = [handleDigicodeClick, handleCrimeSceneClick, handleDrawerClick, handleDrawerClick, handleLightbulbClick, handleBaseClick, handleBaseClick, handleBaseClick, handleBaseClick ,handleKeyClick];
 
   useEffect(() => {
     if (ready && load3Dverse) {
-      setInterval(() => {
-        if (totoro.timerEnd) {
-          totoro.enigmHotAndCold(player as Player[], totoroSKey, currentPlayerName)
-        }
-      }, 50)
+      if (startHAD) {
+        const intervalId = setInterval(() => {
+          if (totoro.timerEnd) {
+            totoro.enigmHotAndCold(player as Player[], totoroSKey, currentPlayerName);
+          }
+          if(totoro.keyPickedUp)
+          {clearInterval(intervalId);}
+        }, 50);
+      }
     }
-  }, [ready, load3Dverse, totoro])
+  
+  }, [ready, load3Dverse, totoro, startHAD]);
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const entities = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.CORVO_DOOR);
+        if (lightbulbs && entities.length > 0) {
+          const firstDoor = entities[0];
+          await firstDoor.setGlobalTransform({ "position": [-80, 10, -20] });
+          await firstDoor.setVisibility(false)
+          // await SDK3DVerse.engineAPI.deleteEntities(entities);
+        } 
+        // else if (!lightbulbs && entities.length > 0) {
+        //   const firstDoor = entities[0];
+        //   await firstDoor.setGlobalTransform({ "position": [-7.309777, -0.600371, -0.220404] });
+        //   await firstDoor.setVisibility(true)
+        // }
+      } catch (err) { }
+    };
+
+    fetchData();
+  }, [lightbulbs, load3Dverse]);
+
 
   useEffect(() => {
     if (countdown > 0 && totoroRoom) {
@@ -385,19 +431,31 @@ export const Canvas3Dverse = () => {
       return () => clearInterval(intervalId);
     } else if (countdown === 0 && totoroRoom) {
       playAlarm();
-      //setState chaud froid
+      setsecondAlarm(true);
     }
   }, [countdown, totoroRoom]);
+
+  useEffect(() => {
+    if (countdown1 > 0 && secondalarm ) {
+      const intervalId = setInterval(() => {
+        setCountdown1((prevCountdown) => prevCountdown - 1);
+      }, 1000);
+      return () => clearInterval(intervalId);
+    } else if (countdown1 === 0 && secondalarm) {
+      stopAlarm();
+      setStartHAD(true);
+    }
+  }, [countdown1, secondalarm]);
 
   const playAlarm = () => {
     audioRef.current.loop = true;
     audioRef.current.play().then(() => {}).catch(() => {});
   };
 
-  // const stopAlarm = () => {
-  //   audioRef.current.pause();
-  //   audioRef.current.currentTime = 0;
-  // }
+  const stopAlarm = () => {
+    audioRef.current.pause();
+    audioRef.current.currentTime = 0;
+  }
 
   useEffect(() => {
     if (!load3Dverse) return;
