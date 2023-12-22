@@ -17,7 +17,6 @@ import { Totoro } from '../components/enigms/totoro/totoro';
 import { LoadingBar } from '../components/loadingBar';
 import { initPlayerAPI, player, removePlayerApi, setPlayers, updatePlayerApi } from '../components/player';
 import Player from '../constants/players';
-import { start } from 'repl';
 
 
 declare const SDK3DVerse: typeof _SDK3DVerse;
@@ -44,7 +43,6 @@ export const Canvas3Dverse = () => {
   const [crimeSceneOpen, setCrimeSceneOpen] = useState(false);
   const [totoroRoom, setTotoroRoom] = useState(false);
   const [lightbulbs, setLightbulbs] = useState(false);
-  const [stopTheCount, setStopTheCount] = useState(false);
   const [raycastGlobal, setRaycastGlobal] = useState<Raycast>();
   const [code, setCode] = useState("");
   const [codeCrime, setCodeCrime] = useState("");
@@ -206,7 +204,7 @@ export const Canvas3Dverse = () => {
     setTimeout(() => {
       setLoad3Dverse(true);
     }, 750)
-  }, []);
+  }, [interactableObjects, totoro]);
 
   //delete player
   window.addEventListener('beforeunload', () => {
