@@ -12,10 +12,8 @@ const Digicode: React.FC<DigicodeProps> = ({ onClose, onDigitPress, setCode }) =
 
   const handleDigitPress = (digit: string) => {
     if (enteredCode === 'CODE') {
-      {
         setEnteredCode(digit);
         onDigitPress(digit);
-      }
     }
     else if (enteredCode.length < 4) {
       setEnteredCode(enteredCode + digit);
@@ -35,6 +33,7 @@ const Digicode: React.FC<DigicodeProps> = ({ onClose, onDigitPress, setCode }) =
 
   return (
     <div className="digicode">
+      <button className="digicode-button" onClick={()=>{onClose();bluringCanvas()}}>X</button>
       <div className="code-display">{enteredCode}</div>
       <div className="button-container">
         <div className="row">

@@ -1,5 +1,5 @@
 import { ComponentType } from "react";
-import { AABB, ComponentFilter, Entities, Entity, GetSceneSessions_Session, PhysicsRaycastResult, SDK_Vec3, SceneSettings, SceneSettingsMap, SessionConstraints, TriggerCallback, onEntitySelectionChangedType, viewport_info, SDK3DVerse_ExtensionInterface } from "./declareGlobal";
+import { AABB, ComponentFilter, Entities, Entity, GetSceneSessions_Session, PhysicsRaycastResult, SDK_Vec3, SceneSettings, SceneSettingsMap, SessionConstraints, TriggerCallback, onEntitySelectionChangedType, viewport_info, SDK3DVerse_ExtensionInterface, Viewport } from "./declareGlobal";
 
 export module _SDK3DVerse {
   export enum cameraControllerType {
@@ -106,19 +106,40 @@ export module _SDK3DVerse {
   export function startStreamer(connectionInfo: object, hardwareDecoding: boolean, hevcSupport: boolean): void { };
   export function updateControllerSetting(controllerSettings: object): void { };
   export class EntityTemplate {
-    constructor() { };
     public attachComponent(componentType: string, componentValue: object): EntityTemplate {
-      return new EntityTemplate
+      return new EntityTemplate()
     };
     public instantiateEntity(name: string = "unnamed entity", parent: Entity | null = null): Entity {
-      return new Entity
+      return new Entity()
     };
     public instantiateTransientEntity(name: string = "unnamed entity", parent: Entity | null = null, deleteOnClientDisconnection: boolean = false): Entity {
-      return new Entity
+      return new Entity()
     };
   }
 
   export module engineAPI {
+    export module cameraAPI{
+      export function getActiveViewports():Array<Viewport>{
+        return []
+      };
+      export function getClientCameras(clientUUID:Entity):Array<Entity>{
+        return []
+      }
+      export function getViewportByID():Viewport{
+        return new Viewport;
+      }
+      export function onMouseEvent(eventName:string, listener:Function){
+
+      }
+      export function refresh(){
+
+      }
+      export function stopTravel(){
+
+      }
+      // export function teleport(clientUUID:string, speed:number, viewportopt:Viewport):Promise{
+      // }
+    }
     export function assignClientToScripts(...entity: Entity[]): void { };
     export function canEdit(): boolean {
       return false;
@@ -169,7 +190,7 @@ export module _SDK3DVerse {
       return {}
     };
     export function getEntity(entityRTID: string): Entity {
-      return new Entity
+      return new Entity()
     };
     export function getRootEntities(): Entities {
       return []

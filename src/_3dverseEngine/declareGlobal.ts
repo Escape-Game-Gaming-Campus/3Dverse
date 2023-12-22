@@ -240,7 +240,7 @@ export class Entity {
                 0,0,1,0,
                 0,0,0,1]
     } ;
-    public getGlobalTransform(stopAtParen ? : Entity | null) : Transform {
+    public getGlobalTransform(stopAtParent ? : Entity | null) : Transform {
         return {}
     } ;
     public getID() : string {
@@ -256,7 +256,7 @@ export class Entity {
         return ""
     } ;
     public getParent() : Entity {
-        return new Entity
+        return new Entity()
     } ;
     public hasChildren() : boolean {
         return false
@@ -310,7 +310,7 @@ export class Viewport {
         return []
     };
     public getCamera() : Entity {
-        return new Entity
+        return new Entity()
     };
     public getId() : number {
         return 0
@@ -340,7 +340,7 @@ export class Viewport {
                 0,0,0,1]
     } ;
     public getWorldMatrix() : Entity {
-        return new Entity
+        return new Entity()
     };
     public getZoomFactor() : number {
         return 0
