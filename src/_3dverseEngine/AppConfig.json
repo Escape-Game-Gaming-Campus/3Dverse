@@ -15,6 +15,7 @@
         "SECRET": "201eb1f9e95745623191",
         "CLUSTER": "eu",
         "USE_TLS": true,
+        
         "IS_ACTIVE": true
     },
 
@@ -69,5 +70,5 @@
         ]
     },
 
-    "DetailLogs": true
+    "DetailLogs": false
 }
