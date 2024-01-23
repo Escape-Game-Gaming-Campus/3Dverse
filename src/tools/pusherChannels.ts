@@ -15,6 +15,7 @@ export class PusherChannels {
 
     public set(name: pusherChannels, value: any) {
         this.channels.set(name, value);
+        if (this.awaitChannels[name] === undefined) return;
         this.awaitChannels[name].forEach((awaitChannel) => {
             this.channels.get(name).bind(awaitChannel.EventName, awaitChannel.CallBack);
         });
