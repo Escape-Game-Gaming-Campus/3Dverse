@@ -1,6 +1,6 @@
 import pusherChannels from "../constants/pusherChannels";
 
-export class PusherChannels {
+class PusherChannels {
     public channels: Map<pusherChannels, any>;
     public awaitChannels: {[key in pusherChannels]: {EventName: string, CallBack: Function}[]};
 
@@ -8,7 +8,7 @@ export class PusherChannels {
         this.channels = new Map();
         var temp: {[key in pusherChannels]?: {EventName: string, CallBack: Function}[]} = {};
         for (var key in pusherChannels) {
-            temp[key as pusherChannels] = [];
+            temp[pusherChannels[key as keyof typeof pusherChannels]] = [];
         }
         this.awaitChannels = temp as {[key in pusherChannels]: {EventName: string, CallBack: Function}[]};
     }
@@ -23,30 +23,31 @@ export class PusherChannels {
     }
 
     public get(name: pusherChannels): Binding {
-        return new Binding(name, this.channels, this.setAwaitChannel as (name: pusherChannels, eventName: string, callback: Function) => {});
+        return new Binding(name, this.channels);
     }
 
-    private setAwaitChannel(name: pusherChannels, eventName: string, callback: Function) {
+    public setAwaitChannel(name: pusherChannels, eventName: string, callback: Function) {
         this.awaitChannels[name].push({EventName: eventName, CallBack: callback});
     }
 }
 
+var PChannels = new PusherChannels();
+export default PChannels;
+
 class Binding {
     public channel: pusherChannels;
     public channels: Map<pusherChannels, any>;
-    public setAwaitChannel: (name: pusherChannels, eventName: string, callback: Function) => {};
 
-    constructor(channel: pusherChannels, channels: Map<pusherChannels, any>, setAwaitChannel: (name: pusherChannels, eventName: string, callback: Function) => {}) {
+    constructor(channel: pusherChannels, channels: Map<pusherChannels, any>) {
         this.channel = channel;
         this.channels = channels;
-        this.setAwaitChannel = setAwaitChannel;
     }
 
     public bind(eventName: string, callback: Function) {
         if (this.channels.has(this.channel)) {
             this.channels.get(this.channel).bind(eventName, callback);
         } else {
-            this.setAwaitChannel(this.channel, eventName, callback);
+            PChannels.setAwaitChannel(this.channel, eventName, callback);
         }
     }
 }

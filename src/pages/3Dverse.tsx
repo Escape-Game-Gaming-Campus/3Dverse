@@ -17,12 +17,12 @@ import { Totoro } from '../components/enigms/totoro/totoro';
 import { LoadingBar } from '../components/loadingBar';
 import { initPlayerAPI, player, removePlayerApi, setPlayers, updatePlayerApi } from '../components/player';
 import Player from '../constants/players';
-import { PusherChannels } from '../tools/pusherChannels';
+import PChannels from '../tools/pusherChannels';
 
 
 declare const SDK3DVerse: typeof _SDK3DVerse;
 declare const Pusher: any;
-export var channel = new PusherChannels();
+export var channel = PChannels;
 declare const SDK3DVerse_VirtualJoystick_Ext: SDK3DVerse_ExtensionInterface;
 export var character: Character;
 var camViewport: Viewport;
