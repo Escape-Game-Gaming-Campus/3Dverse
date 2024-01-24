@@ -14,7 +14,7 @@ export class Totoro {
     public keyPickedUp:boolean = false;
     constructor(itemUUID: string) {
         this.itemUUID = itemUUID;
-        this.playerNear = { "timer": 0, "playerName": "" };
+        this.playerNear = { "timer": 0, "playerName": '' };
         this.itemCatch = false;
     };
 
@@ -38,7 +38,12 @@ export class Totoro {
     public setPlayerNear(players: Player[], itemPos: SDK_Vec3) {
         players.forEach((player) => {
             const selectedPlayer = this.hotAndCold(player, itemPos);
-            this.playerNear = selectedPlayer;
+            if (this.playerNear.playerName == '') {
+                this.playerNear = selectedPlayer;
+            }
+            else if (this.playerNear.timer > selectedPlayer.timer){
+                this.playerNear = selectedPlayer;
+            }
         })
     }
 
