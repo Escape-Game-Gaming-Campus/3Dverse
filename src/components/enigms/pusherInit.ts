@@ -5,12 +5,14 @@ import AppConfig from '../../_3dverseEngine/AppConfig.json';
 import { _SDK3DVerse } from '../../_3dverseEngine/declare';
 import Pusher from 'pusher-js';
 
+export var pusher: Pusher;
+
 export async function pusherInit() : Promise<boolean[]>{
     var setTotoroRoom: boolean = false;
     var setLightBulbs: boolean = false;
     Pusher.logToConsole = false;
 
-    var pusher = new Pusher(AppConfig.PUSHER.KEY, {
+    pusher = new Pusher(AppConfig.PUSHER.KEY, {
         cluster: 'eu'
     });
 

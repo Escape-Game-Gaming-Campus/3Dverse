@@ -31,6 +31,7 @@ var totoroSKey: SDK_Vec3;
 var updatePlayer: NodeJS.Timer
 var currentPlayerName: string
 var list: Function[] = [];
+export var pusher: Pusher;
 
 export const Canvas3Dverse = () => {
   const audioRef = useRef(new Audio('Boo_house.mp3'));
@@ -74,7 +75,7 @@ export const Canvas3Dverse = () => {
   async function pusherInit() {
     Pusher.logToConsole = false;
 
-    var pusher = new Pusher(AppConfig.PUSHER.KEY, {
+    pusher = new Pusher(AppConfig.PUSHER.KEY, {
       cluster: 'eu'
     });
 
