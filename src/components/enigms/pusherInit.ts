@@ -1,10 +1,11 @@
 import { SDK_Vec3 } from '../../_3dverseEngine/declareGlobal';
 import pusherChannels from '../../constants/pusherChannels';
-import { channel } from '../../pages/3Dverse';
+import { SDK3DVerse, channel } from '../../pages/3Dverse';
 import AppConfig from '../../_3dverseEngine/AppConfig.json';
 import { _SDK3DVerse } from '../../_3dverseEngine/declare';
+import Pusher from 'pusher-js';
 
-export async function pusherInit(SDK3DVerse: typeof _SDK3DVerse, Pusher : any) : Promise<boolean[]>{
+export async function pusherInit() : Promise<boolean[]>{
     var setTotoroRoom: boolean = false;
     var setLightBulbs: boolean = false;
     Pusher.logToConsole = false;

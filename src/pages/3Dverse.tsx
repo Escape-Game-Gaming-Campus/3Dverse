@@ -22,7 +22,7 @@ import Pusher from 'pusher-js';
 import { pusherInit } from '../components/enigms/pusherInit';
 
 
-declare const SDK3DVerse: typeof _SDK3DVerse;
+export declare const SDK3DVerse: typeof _SDK3DVerse;
 export var channel = PChannels;
 declare const SDK3DVerse_VirtualJoystick_Ext: SDK3DVerse_ExtensionInterface;
 export var character: Character;
