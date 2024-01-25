@@ -18,10 +18,10 @@ import { LoadingBar } from '../components/loadingBar';
 import { initPlayerAPI, player, removePlayerApi, setPlayers, updatePlayerApi } from '../components/player';
 import Player from '../constants/players';
 import PChannels from '../tools/pusherChannels';
+import Pusher from 'pusher-js';
 
 
 declare const SDK3DVerse: typeof _SDK3DVerse;
-declare const Pusher: any;
 export var channel = PChannels;
 declare const SDK3DVerse_VirtualJoystick_Ext: SDK3DVerse_ExtensionInterface;
 export var character: Character;
@@ -34,6 +34,7 @@ var list: Function[] = [];
 export const Canvas3Dverse = () => {
   const audioRef = useRef(new Audio('Boo_house.mp3'));
   const interactableObjects = AppConfig._3DVERSE.INTERACTIBLE_OBJECTS; //pin code / crime Scene / drawer / handle / lightbulb Totoro/ red base/blue base/green base
+  const [pusherReady, setPusherReady] = useState(false);
   const [countdown, setCountdown] = useState(10);
   const [countdown1, setCountdown1] = useState(10);
   const [secondalarm, setsecondAlarm] = useState(false);
@@ -52,13 +53,6 @@ export const Canvas3Dverse = () => {
   const [load3Dverse, setLoad3Dverse] = useState(false);
   const [currentPlayerNameState, setCurrentPlayerNameState] = useState("")
   const [totoro] = useState<Totoro>(new Totoro(AppConfig._3DVERSE.TOTORO_S_KEY));
-
-  const statusPusher = useScript(
-    `https://js.pusher.com/8.2.0/pusher.min.js`,
-    {
-      removeOnUnmount: false,
-    }
-  );
 
   const status3Dverse = useScript(
     `https://cdn.3dverse.com/legacy/sdk/latest/SDK3DVerse.js`,
@@ -90,11 +84,11 @@ export const Canvas3Dverse = () => {
       console.debug(JSON.stringify(data));
     });
     channel.get(pusherChannels.ENIGMS).bind('ddust2TryPsd', function (data: { valid: boolean }) {
-      setTotoroRoom(data.valid);  
+      setTotoroRoom(data.valid);
     });
     channel.get(pusherChannels.LIGHTBULBS).bind('lightsPowerOn', function (data: { status: string }) {
       setLightbulbs(true);
-  });
+    });
     channel.get(pusherChannels.LIGHTBULBS).bind('updateLightbulbs', async function (data: [{ place: boolean, lightColor: SDK_Vec3, valid: boolean }, { place: boolean, lightColor: SDK_Vec3, valid: boolean }, { place: boolean, lightColor: SDK_Vec3, valid: boolean }, { place: boolean, lightColor: SDK_Vec3, valid: boolean }]) {
       const redLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.RED.BULB);
       const redLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.RED.LIGHT);
@@ -165,6 +159,7 @@ export const Canvas3Dverse = () => {
       }
     });
 
+    setPusherReady(true);
     setPlayers();
   }
 
@@ -222,12 +217,6 @@ export const Canvas3Dverse = () => {
       }, 750)
     }
   }, [ready, currentPlayerNameState])
-
-  useEffect(() => {
-    if (statusPusher === 'ready') {
-      pusherInit();
-    }
-  }, [statusPusher]);
 
   useEffect(() => {
     if (status3Dverse === 'ready') {
@@ -343,11 +332,11 @@ export const Canvas3Dverse = () => {
     raycastGlobal?.fireRay(x, y);
   };
   useEffect(() => {
-    if (status3Dverse === 'ready' && statusPusher === 'ready') {
+    if (status3Dverse === 'ready' && pusherReady) {
       updateClient();
       setReady(true);
     }
-  }, [status3Dverse, statusPusher]);
+  }, [status3Dverse, pusherReady]);
 
   useEffect(() => {
     axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/ddust2/tryPsd`, { psd: code })
@@ -371,7 +360,7 @@ export const Canvas3Dverse = () => {
           await firstDoor.setGlobalTransform({ "position": [-80, 10, -20] });
           await firstDoor.setVisibility(false)
           // await SDK3DVerse.engineAPI.deleteEntities(entities);
-        } 
+        }
         // else if (!totoroRoom && entities.length > 0) {
         //   const firstDoor = entities[0];
         //   await firstDoor.setGlobalTransform({ "position": [-7.309777, -0.600371, -0.220404] });
@@ -382,7 +371,7 @@ export const Canvas3Dverse = () => {
 
     fetchData();
   }, [totoroRoom, load3Dverse]);
-  list = [handleDigicodeClick, handleCrimeSceneClick, handleDrawerClick, handleDrawerClick, handleLightbulbClick, handleBaseClick, handleBaseClick, handleBaseClick, handleBaseClick ,handleKeyClick];
+  list = [handleDigicodeClick, handleCrimeSceneClick, handleDrawerClick, handleDrawerClick, handleLightbulbClick, handleBaseClick, handleBaseClick, handleBaseClick, handleBaseClick, handleKeyClick];
 
   useEffect(() => {
     if (ready && load3Dverse) {
@@ -391,12 +380,11 @@ export const Canvas3Dverse = () => {
           if (totoro.timerEnd) {
             totoro.enigmHotAndCold(player as Player[], totoroSKey, currentPlayerName);
           }
-          if(totoro.keyPickedUp)
-          {clearInterval(intervalId);}
+          if (totoro.keyPickedUp) { clearInterval(intervalId); }
         }, 50);
       }
     }
-  
+
   }, [ready, load3Dverse, totoro, startHAD]);
 
 
@@ -409,7 +397,7 @@ export const Canvas3Dverse = () => {
           await firstDoor.setGlobalTransform({ "position": [-80, 10, -20] });
           await firstDoor.setVisibility(false)
           // await SDK3DVerse.engineAPI.deleteEntities(entities);
-        } 
+        }
         // else if (!lightbulbs && entities.length > 0) {
         //   const firstDoor = entities[0];
         //   await firstDoor.setGlobalTransform({ "position": [-7.309777, -0.600371, -0.220404] });
@@ -435,7 +423,7 @@ export const Canvas3Dverse = () => {
   }, [countdown, totoroRoom]);
 
   useEffect(() => {
-    if (countdown1 > 0 && secondalarm ) {
+    if (countdown1 > 0 && secondalarm) {
       const intervalId = setInterval(() => {
         setCountdown1((prevCountdown) => prevCountdown - 1);
       }, 1000);
@@ -448,7 +436,7 @@ export const Canvas3Dverse = () => {
 
   const playAlarm = () => {
     audioRef.current.loop = true;
-    audioRef.current.play().then(() => {}).catch(() => {});
+    audioRef.current.play().then(() => { }).catch(() => { });
   };
 
   const stopAlarm = () => {
@@ -461,9 +449,14 @@ export const Canvas3Dverse = () => {
     if (selectedEntity !== -1) list[selectedEntity](selectedEntity as any);
     setSelectedEntity(-1);
   }, [selectedEntity, load3Dverse]);
+
+  useEffect(() => {
+    pusherInit();
+  });
+
   return (
     <><LoadingBar ready={ready} loadPage={load3Dverse} />
-      {status3Dverse === 'ready' && statusPusher === 'ready' ?
+      {status3Dverse === 'ready' && pusherReady ?
         <>
           <canvas id='display-canvas' tabIndex={1} onClick={handleClick} />
           <div className='BlocNoteReact'>
