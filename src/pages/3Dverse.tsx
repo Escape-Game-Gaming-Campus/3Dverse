@@ -18,11 +18,11 @@ import { LoadingBar } from '../components/loadingBar';
 import { initPlayerAPI, player, removePlayerApi, setPlayers, updatePlayerApi } from '../components/player';
 import Player from '../constants/players';
 import PChannels from '../tools/pusherChannels';
+import Pusher from 'pusher-js';
 import { pusherInit } from '../components/enigms/pusherInit';
 
 
 declare const SDK3DVerse: typeof _SDK3DVerse;
-declare const Pusher: any;
 export var channel = PChannels;
 declare const SDK3DVerse_VirtualJoystick_Ext: SDK3DVerse_ExtensionInterface;
 export var character: Character;
@@ -35,6 +35,7 @@ var list: Function[] = [];
 export const Canvas3Dverse = () => {
   const audioRef = useRef(new Audio('Boo_house.mp3'));
   const interactableObjects = AppConfig._3DVERSE.INTERACTIBLE_OBJECTS; //pin code / crime Scene / drawer / handle / lightbulb Totoro/ red base/blue base/green base
+  const [pusherReady, setPusherReady] = useState(false);
   const [countdown, setCountdown] = useState(10);
   const [countdown1, setCountdown1] = useState(10);
   const [secondalarm, setsecondAlarm] = useState(false);
@@ -53,13 +54,6 @@ export const Canvas3Dverse = () => {
   const [load3Dverse, setLoad3Dverse] = useState(false);
   const [currentPlayerNameState, setCurrentPlayerNameState] = useState("")
   const [totoro] = useState<Totoro>(new Totoro(AppConfig._3DVERSE.TOTORO_S_KEY));
-
-  const statusPusher = useScript(
-    `https://js.pusher.com/8.2.0/pusher.min.js`,
-    {
-      removeOnUnmount: false,
-    }
-  );
 
   const status3Dverse = useScript(
     `https://cdn.3dverse.com/legacy/sdk/latest/SDK3DVerse.js`,
@@ -195,6 +189,8 @@ export const Canvas3Dverse = () => {
         }
       }
     });
+
+    setPusherReady(true);
     setPlayers();
   }
 
@@ -252,18 +248,6 @@ export const Canvas3Dverse = () => {
       }, 750)
     }
   }, [ready, currentPlayerNameState])
-
-  useEffect(() => {
-    if (statusPusher === 'ready') {
-      // (async () => {
-      //   const pusherinitalise = await pusherInit(SDK3DVerse, Pusher);
-      //   setPlayers();
-      //   setTotoroRoom(pusherinitalise[0]);
-      //   setLightbulbs(pusherinitalise[1]);
-      // })();
-      pusherInit()
-    }
-  }, [statusPusher]);
 
   useEffect(() => {
     if (status3Dverse === 'ready') {
@@ -379,11 +363,11 @@ export const Canvas3Dverse = () => {
     raycastGlobal?.fireRay(x, y);
   };
   useEffect(() => {
-    if (status3Dverse === 'ready' && statusPusher === 'ready') {
+    if (status3Dverse === 'ready' && pusherReady) {
       updateClient();
       setReady(true);
     }
-  }, [status3Dverse, statusPusher]);
+  }, [status3Dverse, pusherReady]);
 
   useEffect(() => {
     axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/ddust2/tryPsd`, { psd: code })
@@ -496,9 +480,14 @@ export const Canvas3Dverse = () => {
     if (selectedEntity !== -1) list[selectedEntity](selectedEntity as any);
     setSelectedEntity(-1);
   }, [selectedEntity, load3Dverse]);
+
+  useEffect(() => {
+    pusherInit();
+  });
+
   return (
     <><LoadingBar ready={ready} loadPage={load3Dverse} />
-      {status3Dverse === 'ready' && statusPusher === 'ready' ?
+      {status3Dverse === 'ready' && pusherReady ?
         <>
           <canvas id='display-canvas' tabIndex={1} onClick={handleClick} />
           <div className='BlocNoteReact'>

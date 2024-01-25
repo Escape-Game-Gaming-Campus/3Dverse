@@ -1,7 +1,8 @@
+import { Channel } from "pusher-js";
 import pusherChannels from "../constants/pusherChannels";
 
 class PusherChannels {
-    public channels: Map<pusherChannels, any>;
+    public channels: Map<pusherChannels, Channel>;
     public awaitChannels: {[key in pusherChannels]: {EventName: string, CallBack: Function}[]};
 
     constructor() {
@@ -13,11 +14,11 @@ class PusherChannels {
         this.awaitChannels = temp as {[key in pusherChannels]: {EventName: string, CallBack: Function}[]};
     }
 
-    public set(name: pusherChannels, value: any) {
+    public set(name: pusherChannels, value: Channel) {
         this.channels.set(name, value);
         if (this.awaitChannels[name] === undefined) return;
         this.awaitChannels[name].forEach((awaitChannel) => {
-            this.channels.get(name).bind(awaitChannel.EventName, awaitChannel.CallBack);
+            this.channels.get(name)?.bind(awaitChannel.EventName, awaitChannel.CallBack);
         });
         this.awaitChannels[name] = [];
     }
@@ -36,16 +37,16 @@ export default PChannels;
 
 class Binding {
     public channel: pusherChannels;
-    public channels: Map<pusherChannels, any>;
+    public channels: Map<pusherChannels, Channel>;
 
-    constructor(channel: pusherChannels, channels: Map<pusherChannels, any>) {
+    constructor(channel: pusherChannels, channels: Map<pusherChannels, Channel>) {
         this.channel = channel;
         this.channels = channels;
     }
 
     public bind(eventName: string, callback: Function) {
         if (this.channels.has(this.channel)) {
-            this.channels.get(this.channel).bind(eventName, callback);
+            this.channels.get(this.channel)?.bind(eventName, callback);
         } else {
             PChannels.setAwaitChannel(this.channel, eventName, callback);
         }
