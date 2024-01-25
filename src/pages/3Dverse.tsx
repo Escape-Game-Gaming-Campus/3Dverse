@@ -18,6 +18,7 @@ import { LoadingBar } from '../components/loadingBar';
 import { initPlayerAPI, player, removePlayerApi, setPlayers, updatePlayerApi } from '../components/player';
 import Player from '../constants/players';
 import PChannels from '../tools/pusherChannels';
+import { pusherInit } from '../components/enigms/pusherInit';
 
 
 declare const SDK3DVerse: typeof _SDK3DVerse;
@@ -90,11 +91,11 @@ export const Canvas3Dverse = () => {
       console.debug(JSON.stringify(data));
     });
     channel.get(pusherChannels.ENIGMS).bind('ddust2TryPsd', function (data: { valid: boolean }) {
-      setTotoroRoom(data.valid);  
+      setTotoroRoom(data.valid);
     });
     channel.get(pusherChannels.LIGHTBULBS).bind('lightsPowerOn', function (data: { status: string }) {
       setLightbulbs(true);
-  });
+    });
     channel.get(pusherChannels.LIGHTBULBS).bind('updateLightbulbs', async function (data: [{ place: boolean, lightColor: SDK_Vec3, valid: boolean }, { place: boolean, lightColor: SDK_Vec3, valid: boolean }, { place: boolean, lightColor: SDK_Vec3, valid: boolean }, { place: boolean, lightColor: SDK_Vec3, valid: boolean }]) {
       const redLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.RED.BULB);
       const redLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.RED.LIGHT);
@@ -105,66 +106,95 @@ export const Canvas3Dverse = () => {
       const yellowLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.YELLOW.BULB);
       const yellowLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.YELLOW.LIGHT);
       var LightConfig: { color: SDK_Vec3, intensity: number, range: number } = { color: [0, 0, 0], intensity: 0.1, range: 0.4 };
-      if (data[0].lightColor) {
-        LightConfig.color = data[0].lightColor;
-        await redLightbulbLight[0].setComponent("point_light", LightConfig);
-      }
-      if (data[1].lightColor) {
-        LightConfig.color = data[1].lightColor;
-        await blueLightbulbLight[0].setComponent("point_light", LightConfig);
-      }
-      if (data[2].lightColor) {
-        LightConfig.color = data[2].lightColor;
-        await greenLightbulbLight[0].setComponent("point_light", LightConfig);
-      }
-      if (data[3].lightColor) {
-        LightConfig.color = data[3].lightColor;
-        await yellowLightbulbLight[0].setComponent("point_light", LightConfig);
-      }
+      //   if (data[0].lightColor) {
+      //     LightConfig.color = data[0].lightColor;
+      //     await redLightbulbLight[0].setComponent("point_light", LightConfig);
+      //   }
+      //   if (data[1].lightColor) {
+      //     LightConfig.color = data[1].lightColor;
+      //     await blueLightbulbLight[0].setComponent("point_light", LightConfig);
+      //   }
+      //   if (data[2].lightColor) {
+      //     LightConfig.color = data[2].lightColor;
+      //     await greenLightbulbLight[0].setComponent("point_light", LightConfig);
+      //   }
+      //   if (data[3].lightColor) {
+      //     LightConfig.color = data[3].lightColor;
+      //     await yellowLightbulbLight[0].setComponent("point_light", LightConfig);
+      //   }
 
-      if (data[0].valid) {
-        await redLightbulbLight[0].setVisibility(true);
-      } else {
-        await redLightbulbLight[0].setVisibility(false);
-      }
-      if (data[1].valid) {
-        await blueLightbulbLight[0].setVisibility(true);
-      } else {
-        await blueLightbulbLight[0].setVisibility(false);
-      }
-      if (data[2].valid) {
-        await greenLightbulbLight[0].setVisibility(true);
-      } else {
-        await greenLightbulbLight[0].setVisibility(false);
-      }
-      if (data[3].valid) {
-        await yellowLightbulbLight[0].setVisibility(true);
-      } else {
-        await yellowLightbulbLight[0].setVisibility(false);
-      }
+      //   if (data[0].valid) {
+      //     await redLightbulbLight[0].setVisibility(true);
+      //   } else {
+      //     await redLightbulbLight[0].setVisibility(false);
+      //   }
+      //   if (data[1].valid) {
+      //     await blueLightbulbLight[0].setVisibility(true);
+      //   } else {
+      //     await blueLightbulbLight[0].setVisibility(false);
+      //   }
+      //   if (data[2].valid) {
+      //     await greenLightbulbLight[0].setVisibility(true);
+      //   } else {
+      //     await greenLightbulbLight[0].setVisibility(false);
+      //   }
+      //   if (data[3].valid) {
+      //     await yellowLightbulbLight[0].setVisibility(true);
+      //   } else {
+      //     await yellowLightbulbLight[0].setVisibility(false);
+      //   }
 
-      if (data[0].place) {
-        await redLightbulb[0].setVisibility(true);
-      } else {
-        await redLightbulb[0].setVisibility(false);
+      //   if (data[0].place) {
+      //     await redLightbulb[0].setVisibility(true);
+      //   } else {
+      //     await redLightbulb[0].setVisibility(false);
+      //   }
+      //   if (data[1].place) {
+      //     await blueLightbulb[0].setVisibility(true);
+      //   } else {
+      //     await blueLightbulb[0].setVisibility(false);
+      //   }
+      //   if (data[2].place) {
+      //     await greenLightbulb[0].setVisibility(true);
+      //   } else {
+      //     await greenLightbulb[0].setVisibility(false);
+      //   }
+      //   if (data[3].place) {
+      //     await yellowLightbulb[0].setVisibility(true);
+      //   } else {
+      //     await yellowLightbulb[0].setVisibility(false);
+      //   }
+      // });
+
+      const lightBulbsLight = [redLightbulbLight, blueLightbulbLight, greenLightbulbLight, yellowLightbulbLight];
+      const lightBulbs = [redLightbulb, blueLightbulb, greenLightbulb, yellowLightbulb];
+
+
+      /* Init light bulbs light */
+      for (let i = 0; i < data.length; i++) {
+        for (let j = 0; j < lightBulbsLight.length; j++) {
+          if (data[i].lightColor) {
+            LightConfig.color = data[i].lightColor;
+            await (lightBulbsLight[j])[0].setComponent("point_light", LightConfig);
+          }
+          if (data[j].valid) {
+            await (lightBulbsLight[j])[0].setVisibility(true);
+          } else {
+            await (lightBulbsLight[j])[0].setVisibility(false);
+          }
+        }
       }
-      if (data[1].place) {
-        await blueLightbulb[0].setVisibility(true);
-      } else {
-        await blueLightbulb[0].setVisibility(false);
-      }
-      if (data[2].place) {
-        await greenLightbulb[0].setVisibility(true);
-      } else {
-        await greenLightbulb[0].setVisibility(false);
-      }
-      if (data[3].place) {
-        await yellowLightbulb[0].setVisibility(true);
-      } else {
-        await yellowLightbulb[0].setVisibility(false);
+      /* Init light bulbs */
+      for (let i = 0; i < lightBulbs.length; i++) {
+        for (let j = 0; j < data.length; j++) {
+          if (data[0].place) {
+            await (lightBulbs[i])[0].setVisibility(true);
+          } else {
+            await (lightBulbs[i])[0].setVisibility(false);
+          }
+        }
       }
     });
-
     setPlayers();
   }
 
@@ -225,7 +255,13 @@ export const Canvas3Dverse = () => {
 
   useEffect(() => {
     if (statusPusher === 'ready') {
-      pusherInit();
+      // (async () => {
+      //   const pusherinitalise = await pusherInit(SDK3DVerse, Pusher);
+      //   setPlayers();
+      //   setTotoroRoom(pusherinitalise[0]);
+      //   setLightbulbs(pusherinitalise[1]);
+      // })();
+      pusherInit()
     }
   }, [statusPusher]);
 
@@ -371,7 +407,7 @@ export const Canvas3Dverse = () => {
           await firstDoor.setGlobalTransform({ "position": [-80, 10, -20] });
           await firstDoor.setVisibility(false)
           // await SDK3DVerse.engineAPI.deleteEntities(entities);
-        } 
+        }
         // else if (!totoroRoom && entities.length > 0) {
         //   const firstDoor = entities[0];
         //   await firstDoor.setGlobalTransform({ "position": [-7.309777, -0.600371, -0.220404] });
@@ -382,7 +418,7 @@ export const Canvas3Dverse = () => {
 
     fetchData();
   }, [totoroRoom, load3Dverse]);
-  list = [handleDigicodeClick, handleCrimeSceneClick, handleDrawerClick, handleDrawerClick, handleLightbulbClick, handleBaseClick, handleBaseClick, handleBaseClick, handleBaseClick ,handleKeyClick];
+  list = [handleDigicodeClick, handleCrimeSceneClick, handleDrawerClick, handleDrawerClick, handleLightbulbClick, handleBaseClick, handleBaseClick, handleBaseClick, handleBaseClick, handleKeyClick];
 
   useEffect(() => {
     if (ready && load3Dverse) {
@@ -391,12 +427,11 @@ export const Canvas3Dverse = () => {
           if (totoro.timerEnd) {
             totoro.enigmHotAndCold(player as Player[], totoroSKey, currentPlayerName);
           }
-          if(totoro.keyPickedUp)
-          {clearInterval(intervalId);}
+          if (totoro.keyPickedUp) { clearInterval(intervalId); }
         }, 50);
       }
     }
-  
+
   }, [ready, load3Dverse, totoro, startHAD]);
 
 
@@ -409,7 +444,7 @@ export const Canvas3Dverse = () => {
           await firstDoor.setGlobalTransform({ "position": [-80, 10, -20] });
           await firstDoor.setVisibility(false)
           // await SDK3DVerse.engineAPI.deleteEntities(entities);
-        } 
+        }
         // else if (!lightbulbs && entities.length > 0) {
         //   const firstDoor = entities[0];
         //   await firstDoor.setGlobalTransform({ "position": [-7.309777, -0.600371, -0.220404] });
@@ -435,7 +470,7 @@ export const Canvas3Dverse = () => {
   }, [countdown, totoroRoom]);
 
   useEffect(() => {
-    if (countdown1 > 0 && secondalarm ) {
+    if (countdown1 > 0 && secondalarm) {
       const intervalId = setInterval(() => {
         setCountdown1((prevCountdown) => prevCountdown - 1);
       }, 1000);
@@ -448,7 +483,7 @@ export const Canvas3Dverse = () => {
 
   const playAlarm = () => {
     audioRef.current.loop = true;
-    audioRef.current.play().then(() => {}).catch(() => {});
+    audioRef.current.play().then(() => { }).catch(() => { });
   };
 
   const stopAlarm = () => {
