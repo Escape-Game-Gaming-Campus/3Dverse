@@ -1,15 +1,13 @@
 import { Entities, SDK_Vec3 } from '../../_3dverseEngine/declareGlobal';
 import pusherChannels from '../../constants/pusherChannels';
-import { SDK3DVerse, channel } from '../../pages/3Dverse';
+import { channel } from '../../pages/3Dverse';
 import AppConfig from '../../_3dverseEngine/AppConfig.json';
 import { _SDK3DVerse } from '../../_3dverseEngine/declare';
 import Pusher from 'pusher-js';
 
 export var pusher: Pusher;
 
-export async function pusherInit() : Promise<boolean[]>{
-    var setTotoroRoom: boolean = false;
-    var setLightBulbs: boolean = false;
+export async function initPusher(setLightbulbs: Function, setTotoroRoom: Function, SDK3DVerse: typeof _SDK3DVerse) : Promise<void>{
     Pusher.logToConsole = false;
 
     pusher = new Pusher(AppConfig.PUSHER.KEY, {
@@ -23,10 +21,10 @@ export async function pusherInit() : Promise<boolean[]>{
         console.debug(JSON.stringify(data));
     });
     channel.get(pusherChannels.ENIGMS).bind('ddust2TryPsd', function (data: { valid: boolean }) {
-        setTotoroRoom = data.valid;
+        setTotoroRoom(data.valid);
     });
     channel.get(pusherChannels.LIGHTBULBS).bind('lightsPowerOn', function (data: { status: string }) {
-        setLightBulbs = true;
+        setLightbulbs(true);
     });
     channel.get(pusherChannels.LIGHTBULBS).bind('updateLightbulbs', async function (data: [{ place: boolean, lightColor: SDK_Vec3, valid: boolean }, { place: boolean, lightColor: SDK_Vec3, valid: boolean }, { place: boolean, lightColor: SDK_Vec3, valid: boolean }, { place: boolean, lightColor: SDK_Vec3, valid: boolean }]) {
       const lightbulbs: Entities[] = [
@@ -59,6 +57,4 @@ export async function pusherInit() : Promise<boolean[]>{
         }
       });
     });
-
-    return [setTotoroRoom, setLightBulbs]
 }

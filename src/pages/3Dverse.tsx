@@ -19,7 +19,7 @@ import { initPlayerAPI, player, removePlayerApi, setPlayers, updatePlayerApi } f
 import Player from '../constants/players';
 import PChannels from '../tools/pusherChannels';
 import Pusher from 'pusher-js';
-import { pusherInit } from '../components/enigms/pusherInit';
+import { initPusher } from '../components/enigms/pusherInit';
 
 
 export declare const SDK3DVerse: typeof _SDK3DVerse;
@@ -70,61 +70,6 @@ export const Canvas3Dverse = () => {
         .then((data) => { })
         .catch(err => { });
     }, 1000);
-  }
-
-  async function pusherInit() {
-    Pusher.logToConsole = false;
-
-    pusher = new Pusher(AppConfig.PUSHER.KEY, {
-      cluster: 'eu'
-    });
-
-    for (const value in pusherChannels) {
-      channel.set(pusherChannels[value as keyof typeof pusherChannels], pusher.subscribe(pusherChannels[value as keyof typeof pusherChannels]));
-    }
-    channel.get(pusherChannels.DEV).bind('helloWorld', function (data: object) {
-      console.debug(JSON.stringify(data));
-    });
-    channel.get(pusherChannels.ENIGMS).bind('ddust2TryPsd', function (data: { valid: boolean }) {
-      setTotoroRoom(data.valid);
-    });
-    channel.get(pusherChannels.LIGHTBULBS).bind('lightsPowerOn', function (data: { status: string }) {
-      setLightbulbs(true);
-    });
-    channel.get(pusherChannels.LIGHTBULBS).bind('updateLightbulbs', async function (data: [{ place: boolean, lightColor: SDK_Vec3, valid: boolean }, { place: boolean, lightColor: SDK_Vec3, valid: boolean }, { place: boolean, lightColor: SDK_Vec3, valid: boolean }, { place: boolean, lightColor: SDK_Vec3, valid: boolean }]) {
-      const lightbulbs: Entities[] = [
-        await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.RED.BULB),
-        await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.BLUE.BULB),
-        await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.GREEN.BULB),
-        await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.YELLOW.BULB)
-      ];
-      const lightbulbsLight: Entities[] = [
-        await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.RED.LIGHT),
-        await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.BLUE.LIGHT),
-        await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.GREEN.LIGHT),
-        await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.YELLOW.LIGHT)
-      ];
-      var LightConfig: { color: SDK_Vec3, intensity: number, range: number } = { color: [0, 0, 0], intensity: 0.1, range: 0.4 };
-      data.forEach((lightbulbData, i) => {
-        if (lightbulbData.lightColor) {
-          LightConfig.color = lightbulbData.lightColor;
-          lightbulbsLight[i][0].setComponent("point_light", LightConfig);
-        }
-        if (lightbulbData.valid) {
-          lightbulbsLight[i][0].setVisibility(true);
-        } else {
-          lightbulbsLight[i][0].setVisibility(false);
-        }
-        if (lightbulbData.place) {
-          lightbulbs[i][0].setVisibility(true);
-        } else {
-          lightbulbs[i][0].setVisibility(false);
-        }
-      });
-    });
-
-    setPusherReady(true);
-    setPlayers();
   }
 
   const initApp = useCallback(async () => {
@@ -415,14 +360,18 @@ export const Canvas3Dverse = () => {
   }, [selectedEntity, load3Dverse]);
 
   useEffect(() => {
-    pusherInit();
-  });
+    if (!load3Dverse) return;
+    initPusher(setLightbulbs, setTotoroRoom, SDK3DVerse).then((res) => {
+      setPusherReady(true);
+      setPlayers();
+    });
+  }, [load3Dverse]);
 
   return (
     <><LoadingBar ready={ready} loadPage={load3Dverse} />
+      <canvas id='display-canvas' tabIndex={1} onClick={handleClick} />
       {status3Dverse === 'ready' && pusherReady ?
         <>
-          <canvas id='display-canvas' tabIndex={1} onClick={handleClick} />
           <div className='BlocNoteReact'>
             <BlocNoteReact />
           </div>
