@@ -20,7 +20,8 @@
     },
 
     "LIFX": {
-        "TOKEN_ACCESS": "c95ba8384d244425e9fbf21951ab16801b8e88aa5224831a16f720793b282470"
+        "TOKEN_ACCESS": "c95ba8384d244425e9fbf21951ab16801b8e88aa5224831a16f720793b282470",
+        "LIGHT_NAME": "GC light"
     },
 
     "_3DVERSE": {
