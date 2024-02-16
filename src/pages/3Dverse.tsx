@@ -34,7 +34,7 @@ var list: Function[] = [];
 
 export const Canvas3Dverse = () => {
   const audioRef = useRef(new Audio('Boo_house.mp3'));
-  const interactableObjects = AppConfig._3DVERSE.INTERACTIBLE_OBJECTS; //pin code / crime Scene / drawer / handle / lightbulb Totoro/ red base/blue base/green base/doortotoro2
+  const interactableObjects = AppConfig._3DVERSE.INTERACTIBLE_OBJECTS; //pin code / crime Scene / drawer / handle / lightbulb Totoro/ red base/blue base/green base/doortotoro2/Button
   const [pusherReady, setPusherReady] = useState(false);
   const [countdown, setCountdown] = useState(10);
   const [countdown1, setCountdown1] = useState(10);
@@ -54,6 +54,7 @@ export const Canvas3Dverse = () => {
   const [ready, setReady] = useState(false);
   const [load3Dverse, setLoad3Dverse] = useState(false);
   const [currentPlayerNameState, setCurrentPlayerNameState] = useState("")
+  // const [HotAndCold,setHotAndCold]= useState(false);
   const [totoro] = useState<Totoro>(new Totoro(AppConfig._3DVERSE.TOTORO_S_KEY));
 
   const status3Dverse = useScript(
@@ -100,10 +101,10 @@ export const Canvas3Dverse = () => {
       const greenLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.GREEN.LIGHT);
       const yellowLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.YELLOW.BULB);
       const yellowLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.YELLOW.LIGHT);
-      const Light1 = await SDK3DVerse.engineAPI.findEntitiesByEUID("d71ca407-a83c-4948-96f2-f5d6722d62f4");
-      const Light2 = await SDK3DVerse.engineAPI.findEntitiesByEUID("c9289e99-8575-475d-8d83-74268f5451f1");
-      const Light3 = await SDK3DVerse.engineAPI.findEntitiesByEUID("1b3bc3fd-9206-4b6d-9107-0fd92ecc3e7b");
-      const Light4 = await SDK3DVerse.engineAPI.findEntitiesByEUID("55d98fac-f44f-4e7d-814f-486873657b1b");
+      const Light1 = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.RED.WHITE);
+      const Light2 = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.BLUE.WHITE);
+      const Light3 = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.GREEN.WHITE);
+      const Light4 = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.YELLOW.WHITE);
       Light1[0].setVisibility(false);
       Light2[0].setVisibility(false);
       Light3[0].setVisibility(false);
@@ -169,10 +170,10 @@ export const Canvas3Dverse = () => {
       if (data[3].valid) {
         counter += 1;
       }
-      const Light1 = await SDK3DVerse.engineAPI.findEntitiesByEUID("d71ca407-a83c-4948-96f2-f5d6722d62f4");
-      const Light2 = await SDK3DVerse.engineAPI.findEntitiesByEUID("c9289e99-8575-475d-8d83-74268f5451f1");
-      const Light3 = await SDK3DVerse.engineAPI.findEntitiesByEUID("1b3bc3fd-9206-4b6d-9107-0fd92ecc3e7b");
-      const Light4 = await SDK3DVerse.engineAPI.findEntitiesByEUID("55d98fac-f44f-4e7d-814f-486873657b1b");
+      const Light1 = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.RED.WHITE);
+      const Light2 = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.BLUE.WHITE);
+      const Light3 = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.GREEN.WHITE);
+      const Light4 = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.YELLOW.WHITE);
       for (let index = 0; index < 2; index++) {
         Light1[0].setVisibility(true);
         Light2[0].setVisibility(true);
@@ -285,11 +286,12 @@ export const Canvas3Dverse = () => {
     // update player
     if (currentPlayerName && ready && !updatePlayer) {
       updatePlayer = setInterval(() => {
-        updatePlayerApi(currentPlayerName, camViewport.getTransform().position)
-        setCurrentPlayerNameState(currentPlayerName)
+        if(totoro.hotAndColdBool)
+        {updatePlayerApi(currentPlayerName, camViewport.getTransform().position)
+        setCurrentPlayerNameState(currentPlayerName)}
       }, 750)
     }
-  }, [ready, currentPlayerNameState])
+  }, [ready, currentPlayerNameState,totoro.hotAndColdBool])
 
   useEffect(() => {
     if (status3Dverse === 'ready') {
@@ -318,7 +320,7 @@ export const Canvas3Dverse = () => {
     }
   };
   const handleGreenButtonClick = async () => {
-    console.log("test");
+    console.log("button clicked");
     axios.get(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/mastermind/get`, {});
   };
   const handleDrawerClick = async () => {
@@ -347,14 +349,13 @@ export const Canvas3Dverse = () => {
   };
 
   const handleDoorClick = async () => {
-    console.log("salut");
     const door = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.TOTORO_DOOR2);
     const doorTransform = await door[0].getGlobalTransform();
     if (doorTransform.orientation) {
       if (!doorOpen) {
         await door[0].setGlobalTransform({ "orientation": [0, 1, 0, 0] });
         setDoorOpen(false);
-        const light = await SDK3DVerse.engineAPI.findEntitiesByEUID("27bef8c3-3abe-48ab-9650-2185a4074cc5");
+        const light = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.TOTORO_DOOR_2_LIGHT);
         light[0].setVisibility(false);
       } else {
         console.log("test");
@@ -364,7 +365,7 @@ export const Canvas3Dverse = () => {
 
   const handleKeyClick = async () => {
     const key = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.TOTORO_S_KEY);
-    const light = await SDK3DVerse.engineAPI.findEntitiesByEUID("19c5baf1-7a5c-4444-ac20-8ba75724933b");
+    const light = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.TOTORO_S_KEY_LIGHT);
     const door = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.TOTORO_DOOR);
     await door[0].setGlobalTransform({ "orientation": [0, 1, 0, 0] });
     // await door[0].setVisibility(false);
@@ -454,7 +455,7 @@ export const Canvas3Dverse = () => {
   }, [codeCrime]);
 
   const Noeil = async () => {
-    const light = await SDK3DVerse.engineAPI.findEntitiesByEUID("250c7776-7e6e-490f-a221-0fd3137deadb");
+    const light = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.CRIME_SCENE);
     light[0].setVisibility(false);
 
   };
@@ -467,7 +468,7 @@ export const Canvas3Dverse = () => {
           const firstDoor = entities[0];
           await firstDoor.setGlobalTransform({ "orientation": [0, 1, 0, 0] });
           // await firstDoor.setVisibility(false)
-          const light = await SDK3DVerse.engineAPI.findEntitiesByEUID("8265e45d-9e4b-4727-ab21-ee96012728f8");
+          const light = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.DIGICODE_LIGHT);
           light[0].setVisibility(false)
           // await SDK3DVerse.engineAPI.deleteEntities(entities);
         }
@@ -488,9 +489,10 @@ export const Canvas3Dverse = () => {
       if (startHAD) {
         const intervalId = setInterval(() => {
           if (totoro.timerEnd) {
+            totoro.hotAndColdBool = true;
             totoro.enigmHotAndCold(player as Player[], totoroSKey, currentPlayerName);
           }
-          if (totoro.keyPickedUp) { clearInterval(intervalId); }
+          if (totoro.keyPickedUp) { clearInterval(intervalId);totoro.hotAndColdBool=false }
         }, 50);
       }
     }

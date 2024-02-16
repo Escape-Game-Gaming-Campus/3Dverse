@@ -41,19 +41,23 @@
             "LIGHTS_BULBS": {
                 "RED": {
                     "BULB": "fdb384bd-8785-42d5-9831-5d4269713502",
-                    "LIGHT": "d8a9d815-9682-42cf-b205-f8cc69a6c5d6"
+                    "LIGHT": "d8a9d815-9682-42cf-b205-f8cc69a6c5d6",
+                    "WHITE": "d71ca407-a83c-4948-96f2-f5d6722d62f4"
                 },
                 "GREEN": {
                     "BULB": "cd8a4b3e-de57-41ba-9151-95e6a016f226",
-                    "LIGHT": "54145b1f-2b48-4a47-8aa5-68f8e1b37c12"
+                    "LIGHT": "54145b1f-2b48-4a47-8aa5-68f8e1b37c12",
+                    "WHITE": "c9289e99-8575-475d-8d83-74268f5451f1"
                 },
                 "BLUE": {
                     "BULB": "43bb9e8d-2672-4a0a-aa0d-5f3c214ea624",
-                    "LIGHT": "89ec5c77-4806-4e1d-9ebc-454a85d538d5"
+                    "LIGHT": "89ec5c77-4806-4e1d-9ebc-454a85d538d5",
+                    "WHITE": "1b3bc3fd-9206-4b6d-9107-0fd92ecc3e7b"
                 },
                 "YELLOW": {
                     "BULB": "d00d5d42-dc9a-4d9e-99f7-e5a4073273a6",
-                    "LIGHT": "2fdd8c52-caf7-4d7e-a829-f398859e8862"
+                    "LIGHT": "2fdd8c52-caf7-4d7e-a829-f398859e8862",
+                    "WHITE": "55d98fac-f44f-4e7d-814f-486873657b1b"
                 }
             }
         },
@@ -71,7 +75,11 @@
             "067d7652-6e53-4ec0-aca7-4a630f8356bf",
             "92ec050c-c617-44c3-b12a-614f936b97e9",
             "167a5ab7-aa30-4ae1-aa6a-96b126d57041"
-        ]
+        ],
+        "DIGICODE_LIGHT":"8265e45d-9e4b-4727-ab21-ee96012728f8",
+        "TOTORO_DOOR_2_LIGHT":"27bef8c3-3abe-48ab-9650-2185a4074cc5",
+        "TOTORO_S_KEY_LIGHT":"19c5baf1-7a5c-4444-ac20-8ba75724933b",
+        "CRIME_SCENE":"250c7776-7e6e-490f-a221-0fd3137deadb"
     },
 
     "DetailLogs": false
