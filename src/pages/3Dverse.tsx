@@ -34,7 +34,7 @@ var list: Function[] = [];
 
 export const Canvas3Dverse = () => {
   const audioRef = useRef(new Audio('Boo_house.mp3'));
-  const interactableObjects = AppConfig._3DVERSE.INTERACTIBLE_OBJECTS; //pin code / crime Scene / drawer / handle / lightbulb Totoro/ red base/blue base/green base
+  const interactableObjects = AppConfig._3DVERSE.INTERACTIBLE_OBJECTS; //pin code / crime Scene / drawer / handle / lightbulb Totoro/ red base/blue base/green base/doortotoro2/Button
   const [pusherReady, setPusherReady] = useState(false);
   const [countdown, setCountdown] = useState(10);
   const [countdown1, setCountdown1] = useState(10);
@@ -43,6 +43,7 @@ export const Canvas3Dverse = () => {
   const [selectedEntity, setSelectedEntity] = useState(-1);
   const [digicodeOpen, setDigicodeOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [doorOpen, setDoorOpen] = useState(false);
   const [crimeSceneOpen, setCrimeSceneOpen] = useState(false);
   const [totoroRoom, setTotoroRoom] = useState(false);
   const [lightbulbs, setLightbulbs] = useState(false);
@@ -53,6 +54,7 @@ export const Canvas3Dverse = () => {
   const [ready, setReady] = useState(false);
   const [load3Dverse, setLoad3Dverse] = useState(false);
   const [currentPlayerNameState, setCurrentPlayerNameState] = useState("")
+  // const [HotAndCold,setHotAndCold]= useState(false);
   const [totoro] = useState<Totoro>(new Totoro(AppConfig._3DVERSE.TOTORO_S_KEY));
 
   const status3Dverse = useScript(
@@ -68,7 +70,7 @@ export const Canvas3Dverse = () => {
         .then((response) => response.json())
         .then((data) => { })
         .catch(err => { });
-    }, 1000);
+    }, 10000);
   }
 
   async function pusherInit() {
@@ -99,96 +101,136 @@ export const Canvas3Dverse = () => {
       const greenLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.GREEN.LIGHT);
       const yellowLightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.YELLOW.BULB);
       const yellowLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.YELLOW.LIGHT);
+      const Light1 = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.RED.WHITE);
+      const Light2 = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.BLUE.WHITE);
+      const Light3 = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.GREEN.WHITE);
+      const Light4 = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.YELLOW.WHITE);
+      Light1[0].setVisibility(false);
+      Light2[0].setVisibility(false);
+      Light3[0].setVisibility(false);
+      Light4[0].setVisibility(false);
       var LightConfig: { color: SDK_Vec3, intensity: number, range: number } = { color: [0, 0, 0], intensity: 0.1, range: 0.4 };
-      //   if (data[0].lightColor) {
-      //     LightConfig.color = data[0].lightColor;
-      //     await redLightbulbLight[0].setComponent("point_light", LightConfig);
-      //   }
-      //   if (data[1].lightColor) {
-      //     LightConfig.color = data[1].lightColor;
-      //     await blueLightbulbLight[0].setComponent("point_light", LightConfig);
-      //   }
-      //   if (data[2].lightColor) {
-      //     LightConfig.color = data[2].lightColor;
-      //     await greenLightbulbLight[0].setComponent("point_light", LightConfig);
-      //   }
-      //   if (data[3].lightColor) {
-      //     LightConfig.color = data[3].lightColor;
-      //     await yellowLightbulbLight[0].setComponent("point_light", LightConfig);
-      //   }
-
-      //   if (data[0].valid) {
-      //     await redLightbulbLight[0].setVisibility(true);
-      //   } else {
-      //     await redLightbulbLight[0].setVisibility(false);
-      //   }
-      //   if (data[1].valid) {
-      //     await blueLightbulbLight[0].setVisibility(true);
-      //   } else {
-      //     await blueLightbulbLight[0].setVisibility(false);
-      //   }
-      //   if (data[2].valid) {
-      //     await greenLightbulbLight[0].setVisibility(true);
-      //   } else {
-      //     await greenLightbulbLight[0].setVisibility(false);
-      //   }
-      //   if (data[3].valid) {
-      //     await yellowLightbulbLight[0].setVisibility(true);
-      //   } else {
-      //     await yellowLightbulbLight[0].setVisibility(false);
-      //   }
-
-      //   if (data[0].place) {
-      //     await redLightbulb[0].setVisibility(true);
-      //   } else {
-      //     await redLightbulb[0].setVisibility(false);
-      //   }
-      //   if (data[1].place) {
-      //     await blueLightbulb[0].setVisibility(true);
-      //   } else {
-      //     await blueLightbulb[0].setVisibility(false);
-      //   }
-      //   if (data[2].place) {
-      //     await greenLightbulb[0].setVisibility(true);
-      //   } else {
-      //     await greenLightbulb[0].setVisibility(false);
-      //   }
-      //   if (data[3].place) {
-      //     await yellowLightbulb[0].setVisibility(true);
-      //   } else {
-      //     await yellowLightbulb[0].setVisibility(false);
-      //   }
-      // });
-
-      const lightBulbsLight = [redLightbulbLight, blueLightbulbLight, greenLightbulbLight, yellowLightbulbLight];
-      const lightBulbs = [redLightbulb, blueLightbulb, greenLightbulb, yellowLightbulb];
-
-
-      /* Init light bulbs light */
-      for (let i = 0; i < data.length; i++) {
-        for (let j = 0; j < lightBulbsLight.length; j++) {
-          if (data[i].lightColor) {
-            LightConfig.color = data[i].lightColor;
-            await (lightBulbsLight[j])[0].setComponent("point_light", LightConfig);
-          }
-          if (data[j].valid) {
-            await (lightBulbsLight[j])[0].setVisibility(true);
-          } else {
-            await (lightBulbsLight[j])[0].setVisibility(false);
-          }
-        }
+      if (data[0].lightColor) {
+        LightConfig.color = data[0].lightColor;
+        await blueLightbulbLight[0].setVisibility(false);
+        await redLightbulbLight[0].setVisibility(false);
+        await greenLightbulbLight[0].setVisibility(false);
+        await yellowLightbulbLight[0].setVisibility(false);
+        await redLightbulbLight[0].setComponent("point_light", LightConfig);
       }
-      /* Init light bulbs */
-      for (let i = 0; i < lightBulbs.length; i++) {
-        for (let j = 0; j < data.length; j++) {
-          if (data[0].place) {
-            await (lightBulbs[i])[0].setVisibility(true);
-          } else {
-            await (lightBulbs[i])[0].setVisibility(false);
-          }
-        }
+      if (data[1].lightColor) {
+        LightConfig.color = data[1].lightColor;
+        await blueLightbulbLight[0].setComponent("point_light", LightConfig);
+      }
+      if (data[2].lightColor) {
+        LightConfig.color = data[2].lightColor;
+        await greenLightbulbLight[0].setComponent("point_light", LightConfig);
+      }
+      if (data[3].lightColor) {
+        LightConfig.color = data[3].lightColor;
+        await yellowLightbulbLight[0].setComponent("point_light", LightConfig);
+      }
+      if (data[0].place) {
+        await redLightbulb[0].setVisibility(true);
+      } else {
+        await redLightbulb[0].setVisibility(false);
+      }
+      if (data[1].place) {
+        await blueLightbulb[0].setVisibility(true);
+      } else {
+        await blueLightbulb[0].setVisibility(false);
+      }
+      if (data[2].place) {
+        await greenLightbulb[0].setVisibility(true);
+      } else {
+        await greenLightbulb[0].setVisibility(false);
+      }
+      if (data[3].place) {
+        await yellowLightbulb[0].setVisibility(true);
+      } else {
+        await yellowLightbulb[0].setVisibility(false);
       }
     });
+    channel.get(pusherChannels.LIGHTBULBS).bind('updateMasterMind', async function (data: [{ place: boolean, lightColor: SDK_Vec3, valid: boolean }, { place: boolean, lightColor: SDK_Vec3, valid: boolean }, { place: boolean, lightColor: SDK_Vec3, valid: boolean }, { place: boolean, lightColor: SDK_Vec3, valid: boolean }]) {
+      let counter = 0;
+      const redLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.RED.LIGHT);
+      const blueLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.BLUE.LIGHT);
+      const greenLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.GREEN.LIGHT);
+      const yellowLightbulbLight = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.YELLOW.LIGHT);
+      console.log(data);
+      if (data[0].valid) {
+        counter += 1;
+      }
+      if (data[1].valid) {
+        counter += 1;
+      }
+      if (data[2].valid) {
+        counter += 1;
+      }
+      if (data[3].valid) {
+        counter += 1;
+      }
+      const Light1 = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.RED.WHITE);
+      const Light2 = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.BLUE.WHITE);
+      const Light3 = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.GREEN.WHITE);
+      const Light4 = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.LIGHTS_BULBS.YELLOW.WHITE);
+      for (let index = 0; index < 2; index++) {
+        Light1[0].setVisibility(true);
+        Light2[0].setVisibility(true);
+        Light3[0].setVisibility(true);
+        Light4[0].setVisibility(true);
+        await sleep(500);
+        Light1[0].setVisibility(false);
+        Light2[0].setVisibility(false);
+        Light3[0].setVisibility(false);
+        Light4[0].setVisibility(false);
+        await sleep(500);
+      }
+      if (counter == 1) {
+        Light1[0].setVisibility(true);
+      } else if (counter == 2) {
+        Light1[0].setVisibility(true);
+        Light2[0].setVisibility(true);
+      } else if (counter == 3) {
+        Light1[0].setVisibility(true);
+        Light2[0].setVisibility(true);
+        Light3[0].setVisibility(true);
+      } else if (counter == 4) {
+        await yellowLightbulbLight[0].setVisibility(true);
+        await greenLightbulbLight[0].setVisibility(true);
+        await blueLightbulbLight[0].setVisibility(true);
+        await redLightbulbLight[0].setVisibility(true);
+      }
+    })
+
+    // const lightBulbsLight = [redLightbulbLight, blueLightbulbLight, greenLightbulbLight, yellowLightbulbLight];
+    // const lightBulbs = [redLightbulb, blueLightbulb, greenLightbulb, yellowLightbulb];
+
+
+    /* Init light bulbs light */
+    // for (let i = 0; i < data.length; i++) {
+    //   for (let j = 0; j < lightBulbsLight.length; j++) {
+    //     if (data[i].lightColor) {
+    //       LightConfig.color = data[i].lightColor;
+    //       await (lightBulbsLight[j])[0].setComponent("point_light", LightConfig);
+    //     }
+    //     if (data[j].valid) {
+    //       await (lightBulbsLight[j])[0].setVisibility(true);
+    //     } else {
+    //       await (lightBulbsLight[j])[0].setVisibility(false);
+    //     }
+    //   }
+    // }
+    // /* Init light bulbs */
+    // for (let i = 0; i < lightBulbs.length; i++) {
+    //   for (let j = 0; j < data.length; j++) {
+    //     if (data[0].place) {
+    //       await (lightBulbs[i])[0].setVisibility(true);
+    //     } else {
+    //       await (lightBulbs[i])[0].setVisibility(false);
+    //     }
+    //   }
+    // }
 
     setPusherReady(true);
     setPlayers();
@@ -204,6 +246,7 @@ export const Canvas3Dverse = () => {
       //   defaultControllerType : SDK3DVerse.controller_type.none,
       // },
       createDefaultCamera: false,
+      isTransient: true,
       startSimulation: "on-assets-loaded"
     });
     await SDK3DVerse.engineAPI.startSimulation();
@@ -243,11 +286,12 @@ export const Canvas3Dverse = () => {
     // update player
     if (currentPlayerName && ready && !updatePlayer) {
       updatePlayer = setInterval(() => {
-        updatePlayerApi(currentPlayerName, camViewport.getTransform().position)
-        setCurrentPlayerNameState(currentPlayerName)
+        if(totoro.hotAndColdBool)
+        {updatePlayerApi(currentPlayerName, camViewport.getTransform().position)
+        setCurrentPlayerNameState(currentPlayerName)}
       }, 750)
     }
-  }, [ready, currentPlayerNameState])
+  }, [ready, currentPlayerNameState,totoro.hotAndColdBool])
 
   useEffect(() => {
     if (status3Dverse === 'ready') {
@@ -256,7 +300,7 @@ export const Canvas3Dverse = () => {
     }
   }, [status3Dverse, initApp]);
 
-  const handleDigicodeClick = () => {
+  const handleDigicodeClick = async () => {
     if (!totoroRoom) {
       if (digicodeOpen) {
       } else {
@@ -265,7 +309,9 @@ export const Canvas3Dverse = () => {
       }
     }
   };
-
+  async function sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
   const handleCrimeSceneClick = () => {
     if (crimeSceneOpen) {
     } else {
@@ -273,21 +319,27 @@ export const Canvas3Dverse = () => {
       bluringCanvas(25);
     }
   };
-
+  const handleGreenButtonClick = async () => {
+    console.log("button clicked");
+    axios.get(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/mastermind/get`, {});
+  };
   const handleDrawerClick = async () => {
     const drawer = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.DRAWER);
     const handle = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.HANDLE);
     const lightbulb = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BULB_ENIGM.DRAWER_BULB);
+    const light = await SDK3DVerse.engineAPI.findEntitiesByEUID("bcf7ce1f-0bc4-49fe-baeb-5dba814b753a");
     const drawerTransform = await drawer[0].getGlobalTransform();
     const handleTransform = await handle[0].getGlobalTransform();
     const lightbulbTransform = await lightbulb[0].getGlobalTransform();
     if (drawerTransform.position && handleTransform.position && lightbulbTransform.position) {
       if (drawerOpen) {
+        light[0].setVisibility(false);
         await drawer[0].setGlobalTransform({ "position": [drawerTransform.position[0] + 0.2, drawerTransform.position[1], drawerTransform.position[2]] })
         await handle[0].setGlobalTransform({ "position": [handleTransform.position[0] + 0.2, handleTransform.position[1], handleTransform.position[2]] })
         await lightbulb[0].setGlobalTransform({ "position": [lightbulbTransform.position[0] + 0.2, lightbulbTransform.position[1], lightbulbTransform.position[2]] })
         setDrawerOpen(false);
       } else {
+        light[0].setVisibility(false);
         await drawer[0].setGlobalTransform({ "position": [drawerTransform.position[0] - 0.2, drawerTransform.position[1], drawerTransform.position[2]] })
         await handle[0].setGlobalTransform({ "position": [handleTransform.position[0] - 0.2, handleTransform.position[1], handleTransform.position[2]] })
         await lightbulb[0].setGlobalTransform({ "position": [lightbulbTransform.position[0] - 0.2, lightbulbTransform.position[1], lightbulbTransform.position[2]] })
@@ -296,12 +348,29 @@ export const Canvas3Dverse = () => {
     }
   };
 
+  const handleDoorClick = async () => {
+    const door = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.TOTORO_DOOR2);
+    const doorTransform = await door[0].getGlobalTransform();
+    if (doorTransform.orientation) {
+      if (!doorOpen) {
+        await door[0].setGlobalTransform({ "orientation": [0, 1, 0, 0] });
+        setDoorOpen(false);
+        const light = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.TOTORO_DOOR_2_LIGHT);
+        light[0].setVisibility(false);
+      } else {
+        console.log("test");
+      }
+    }
+  };
+
   const handleKeyClick = async () => {
     const key = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.TOTORO_S_KEY);
+    const light = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.TOTORO_S_KEY_LIGHT);
     const door = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.TOTORO_DOOR);
-    await door[0].setGlobalTransform({ "position": [-80, 10, -20] });
-    await door[0].setVisibility(false);
+    await door[0].setGlobalTransform({ "orientation": [0, 1, 0, 0] });
+    // await door[0].setVisibility(false);
     await key[0].setVisibility(false);
+    light[0].setVisibility(false);
     totoro.keyPickedUp = true;
   };
 
@@ -337,7 +406,7 @@ export const Canvas3Dverse = () => {
       await lightbulb[0].setVisibility(true);
     } else {
       await lightbulb[0].setVisibility(false);
-      await lightbulbLight[0].setVisibility(false);
+      // await lightbulbLight[0].setVisibility(false);
       axios.delete(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/lightbulbs/remove`, {
         data: {
           "bases": [baseId - 5]
@@ -380,7 +449,16 @@ export const Canvas3Dverse = () => {
     axios.post(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/hallway2/tryPsd`, { psd: codeCrime })
       .then((response) => { })
       .catch(error => console.error('Error:', error));
+    if (codeCrime == "1234") {
+      Noeil();
+    }
   }, [codeCrime]);
+
+  const Noeil = async () => {
+    const light = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.CRIME_SCENE);
+    light[0].setVisibility(false);
+
+  };
   //à rajouter dans l'API
   useEffect(() => {
     const fetchData = async () => {
@@ -388,8 +466,10 @@ export const Canvas3Dverse = () => {
         const entities = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.DDUST2_DOOR);
         if (totoroRoom && entities.length > 0) {
           const firstDoor = entities[0];
-          await firstDoor.setGlobalTransform({ "position": [-80, 10, -20] });
-          await firstDoor.setVisibility(false)
+          await firstDoor.setGlobalTransform({ "orientation": [0, 1, 0, 0] });
+          // await firstDoor.setVisibility(false)
+          const light = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.DIGICODE_LIGHT);
+          light[0].setVisibility(false)
           // await SDK3DVerse.engineAPI.deleteEntities(entities);
         }
         // else if (!totoroRoom && entities.length > 0) {
@@ -402,16 +482,17 @@ export const Canvas3Dverse = () => {
 
     fetchData();
   }, [totoroRoom, load3Dverse]);
-  list = [handleDigicodeClick, handleCrimeSceneClick, handleDrawerClick, handleDrawerClick, handleLightbulbClick, handleBaseClick, handleBaseClick, handleBaseClick, handleBaseClick, handleKeyClick];
+  list = [handleDigicodeClick, handleCrimeSceneClick, handleDrawerClick, handleDrawerClick, handleLightbulbClick, handleBaseClick, handleBaseClick, handleBaseClick, handleBaseClick, handleKeyClick, handleDoorClick, handleGreenButtonClick];
 
   useEffect(() => {
     if (ready && load3Dverse) {
       if (startHAD) {
         const intervalId = setInterval(() => {
           if (totoro.timerEnd) {
+            totoro.hotAndColdBool = true;
             totoro.enigmHotAndCold(player as Player[], totoroSKey, currentPlayerName);
           }
-          if (totoro.keyPickedUp) { clearInterval(intervalId); }
+          if (totoro.keyPickedUp) { clearInterval(intervalId);totoro.hotAndColdBool=false }
         }, 50);
       }
     }
@@ -483,7 +564,7 @@ export const Canvas3Dverse = () => {
 
   useEffect(() => {
     pusherInit();
-  });
+  }, []);
 
   return (
     <><LoadingBar ready={ready} loadPage={load3Dverse} />
