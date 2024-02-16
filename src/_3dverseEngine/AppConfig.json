@@ -28,7 +28,8 @@
         "USER_TOKEN": "public_BQu_i8IdJABS79mV",
         "SCENE_UUID": "4dd77691-e9b5-46f0-bf3f-cb8b1dab66ce",
 
-        "DDUST2_DOOR": "16a525a0-5892-4065-a11b-a94862c153a6",
+        "DDUST2_DOOR": "2387fbbf-7f15-4caa-9f49-76fa6089ce55",
+        "TOTORO_DOOR2":"eb619ac6-4e23-468e-aba4-e2baf244bdfa",
         "CORVO_DOOR": "97c1c2dd-345b-4e9d-a6fe-3f474dade409",
         "TOTORO_S_KEY": "067d7652-6e53-4ec0-aca7-4a630f8356bf",
         "CHARACTER": "92f7e23e-a3e3-48b1-a07c-cf5bff258374",
@@ -39,7 +40,7 @@
             "DRAWER_BULB": "ba406661-7b0e-4436-b059-ecfa590bbb00",
             "LIGHTS_BULBS": {
                 "RED": {
-                    "BULB": "c8e714d5-bbca-4f8a-b3cd-129ade233c8a",
+                    "BULB": "fdb384bd-8785-42d5-9831-5d4269713502",
                     "LIGHT": "d8a9d815-9682-42cf-b205-f8cc69a6c5d6"
                 },
                 "GREEN": {
@@ -63,11 +64,13 @@
             "a46593ad-794c-4cb1-b0f3-728ec6803859",
             "7b79a430-8aea-4f6a-8c1c-1eb05fe41089",
             "c930d200-ae0a-4467-b106-663ca3dfe0cf",
-            "3900effd-c890-4066-a3ca-64119ebe650e",
+            "57876bf8-6952-480e-8d06-21d005096049",
             "e8d9cf51-4ff3-4cbc-ab05-38ff66aedf03",
             "963be081-3931-486c-b8fc-da896ce49340",
             "915cefae-5e8e-4ebc-b9c7-ea90a54259fd",
-            "067d7652-6e53-4ec0-aca7-4a630f8356bf"
+            "067d7652-6e53-4ec0-aca7-4a630f8356bf",
+            "92ec050c-c617-44c3-b12a-614f936b97e9",
+            "167a5ab7-aa30-4ae1-aa6a-96b126d57041"
         ]
     },
 
