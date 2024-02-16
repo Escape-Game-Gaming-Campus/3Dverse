@@ -1,18 +1,18 @@
 {
     "FRONT": {
-        "HOST": "http://localhost",
-        "PORT": "3000"
+        "HOST": "http://www.gwenitora.com/gc/escape-game/",
+        "PORT": "80"
     },
 
     "API": {
-        "HOST": "http://localhost",
-        "PORT": "3001"
+        "HOST": "http://www.gwenitora.com",
+        "PORT": "3000"
     },
 
     "PUSHER": {
-        "APP_ID": "1720823",
-        "KEY": "39f939b9f53716caf5d8",
-        "SECRET": "201eb1f9e95745623191",
+        "APP_ID": "1728296",
+        "KEY": "32ee446795765e658248",
+        "SECRET": "900a8a7cc089d1db1183",
         "CLUSTER": "eu",
         "USE_TLS": true,
         
