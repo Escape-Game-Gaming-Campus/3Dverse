@@ -204,6 +204,7 @@ export const Canvas3Dverse = () => {
       //   defaultControllerType : SDK3DVerse.controller_type.none,
       // },
       createDefaultCamera: false,
+      isTransient:true,
       startSimulation: "on-assets-loaded"
     });
     await SDK3DVerse.engineAPI.startSimulation();
@@ -337,7 +338,7 @@ export const Canvas3Dverse = () => {
       await lightbulb[0].setVisibility(true);
     } else {
       await lightbulb[0].setVisibility(false);
-      await lightbulbLight[0].setVisibility(false);
+      // await lightbulbLight[0].setVisibility(false);
       axios.delete(`${AppConfig.API.HOST}:${AppConfig.API.PORT}/lightbulbs/remove`, {
         data: {
           "bases": [baseId - 5]
@@ -483,7 +484,7 @@ export const Canvas3Dverse = () => {
 
   useEffect(() => {
     pusherInit();
-  });
+  },[]);
 
   return (
     <><LoadingBar ready={ready} loadPage={load3Dverse} />
