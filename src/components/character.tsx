@@ -10,7 +10,7 @@ export class Character {
   public async InitFirstPersonController(charCtlSceneUUID: string, playerName: string) {
     const playerTemplate = new this.SDK3DVerse.EntityTemplate();
     playerTemplate.attachComponent("scene_ref", { value: charCtlSceneUUID });
-    playerTemplate.attachComponent("local_transform", { position: [-10, 1, -10] });
+    playerTemplate.attachComponent("local_transform", { position: [8.64819, 1, -9.504951]});
     const parentEntity = null;
     const deleteOnClientDisconnection = true;
     const playerSceneEntity = await playerTemplate.instantiateTransientEntity(
