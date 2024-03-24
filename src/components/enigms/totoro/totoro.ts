@@ -12,6 +12,7 @@ export class Totoro {
     private SDK3Dverse?: typeof _SDK3DVerse;
     public timerEnd: boolean = true;
     public keyPickedUp:boolean = false;
+    public hotAndColdBool = false;
     constructor(itemUUID: string) {
         this.itemUUID = itemUUID;
         this.playerNear = { "timer": 0, "playerName": "" };
