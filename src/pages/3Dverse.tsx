@@ -200,6 +200,8 @@ export const Canvas3Dverse = () => {
         await greenLightbulbLight[0].setVisibility(true);
         await blueLightbulbLight[0].setVisibility(true);
         await redLightbulbLight[0].setVisibility(true);
+        const Light5 = await SDK3DVerse.engineAPI.findEntitiesByEUID(AppConfig._3DVERSE.BUTTON_LIGHT);
+        Light5[0].setVisibility(false);
       }
     })
 

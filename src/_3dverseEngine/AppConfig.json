@@ -47,12 +47,12 @@
                 "GREEN": {
                     "BULB": "cd8a4b3e-de57-41ba-9151-95e6a016f226",
                     "LIGHT": "54145b1f-2b48-4a47-8aa5-68f8e1b37c12",
-                    "WHITE": "c9289e99-8575-475d-8d83-74268f5451f1"
+                    "WHITE": "1b3bc3fd-9206-4b6d-9107-0fd92ecc3e7b"
                 },
                 "BLUE": {
                     "BULB": "43bb9e8d-2672-4a0a-aa0d-5f3c214ea624",
                     "LIGHT": "89ec5c77-4806-4e1d-9ebc-454a85d538d5",
-                    "WHITE": "1b3bc3fd-9206-4b6d-9107-0fd92ecc3e7b"
+                    "WHITE": "c9289e99-8575-475d-8d83-74268f5451f1"
                 },
                 "YELLOW": {
                     "BULB": "d00d5d42-dc9a-4d9e-99f7-e5a4073273a6",
@@ -79,7 +79,8 @@
         "DIGICODE_LIGHT":"8265e45d-9e4b-4727-ab21-ee96012728f8",
         "TOTORO_DOOR_2_LIGHT":"27bef8c3-3abe-48ab-9650-2185a4074cc5",
         "TOTORO_S_KEY_LIGHT":"19c5baf1-7a5c-4444-ac20-8ba75724933b",
-        "CRIME_SCENE":"250c7776-7e6e-490f-a221-0fd3137deadb"
+        "CRIME_SCENE":"250c7776-7e6e-490f-a221-0fd3137deadb",
+        "BUTTON_LIGHT":"d4680658-c9c7-4c2b-8a2e-5e203447c359"
     },
 
     "DetailLogs": false
