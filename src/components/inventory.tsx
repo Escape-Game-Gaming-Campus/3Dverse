@@ -59,7 +59,7 @@ export class Inventory
     }
 }
 
-export const inventory : Inventory = new Inventory(`${AppConfig.FRONT.HOST}:${AppConfig.FRONT.PORT}/img/case.png`, `${AppConfig.FRONT.HOST}:${AppConfig.FRONT.PORT}/img/selectedCase.png`);
+export const inventory : Inventory = new Inventory(`${AppConfig.FRONT.HOST}${AppConfig.FRONT.HOST.split("/").length > 2 ? `:${AppConfig.FRONT.PORT}` : ""}/img/case.png`, `${AppConfig.FRONT.HOST}${AppConfig.FRONT.HOST.split("/").length > 2 ? `:${AppConfig.FRONT.PORT}` : ""}/img/selectedCase.png`);
 
 export const InventoryReact: React.FC<InventoryProps> = ({itemSelected, setItemSelected}) =>{
     const [invComponent, setInvComponent] = useState(<></>);
